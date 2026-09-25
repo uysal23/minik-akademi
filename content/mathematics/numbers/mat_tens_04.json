@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "1.0",
+  "id": "ACT-MAT-TENS-04",
+  "domain": "MATHEMATICS",
+  "curriculumId": "MAT-TENS-04",
+  "sourceType": "ADAPTED",
+  "sourceRef": {
+    "sourceCode": "MA-02",
+    "pageStart": 68,
+    "pageEnd": 68
+  },
+  "title": "Sayıyı abaküste gösterme",
+  "learningLevel": "GRADE_1",
+  "activityType": "TAP_CHOICE",
+  "instruction": {
+    "text": "17 sayısını onluk ve birlik olarak göster.",
+    "audioId": "aud_act_mat_tens_04_instruction",
+    "voiceProfile": "TEACHER_MATH",
+    "replayAllowed": true
+  },
+  "learningTarget": {
+    "conceptId": "MAT-TENS-04",
+    "targetSymbol": "17",
+    "numberRange": {
+      "min": 10,
+      "max": 20
+    }
+  },
+  "prerequisites": [
+    "MAT-TENS-03"
+  ],
+  "interaction": {
+    "mode": "TAP",
+    "retryStrategy": "HIGHLIGHT_HINT",
+    "options": [
+      {
+        "id": "opt_1",
+        "label": "1 onluk 7 birlik",
+        "value": "1 onluk 7 birlik",
+        "correct": true
+      },
+      {
+        "id": "opt_2",
+        "label": "7 onluk 1 birlik",
+        "value": "7 onluk 1 birlik",
+        "correct": false
+      },
+      {
+        "id": "opt_3",
+        "label": "1 onluk 5 birlik",
+        "value": "1 onluk 5 birlik",
+        "correct": false
+      }
+    ]
+  },
+  "assets": {
+    "visualIds": [],
+    "avatarUse": {
+      "enabled": true,
+      "role": "GUIDE",
+      "pose": "thinking"
+    }
+  },
+  "audio": {
+    "extraAudioIds": []
+  },
+  "animation": {
+    "entry": "FADE_IN",
+    "success": "SOFT_GLOW",
+    "retry": "HIGHLIGHT_HINT",
+    "reducedMotionFallback": "FADE_IN"
+  },
+  "feedback": {
+    "successAudioId": "aud_common_success_01",
+    "retryAudioId": "aud_common_retry_01",
+    "successSfx": "SFX_SUCCESS_CHIME",
+    "retrySfx": "SFX_RETRY_SOFT",
+    "punitive": false
+  },
+  "safety": {
+    "reviewed": false,
+    "prohibitedContentPresent": false,
+    "externalUrl": false,
+    "ads": false,
+    "purchase": false
+  },
+  "progression": {
+    "completionRule": "COMPLETE_ON_SUCCESS",
+    "repeatEligible": true,
+    "unlocks": []
+  },
+  "metadata": {
+    "locale": "tr-TR",
+    "authoringVersion": 1,
+    "notes": "Kaynak matematik etkinliğinin özgün dijital uyarlaması."
+  }
+}
