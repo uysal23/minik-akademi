@@ -59,5 +59,6 @@ data class AppSettings(
     val largeUi: Boolean = false,
     val highContrast: Boolean = false,
     val leftHanded: Boolean = false,
-    val dailyGoalMinutes: Int = 10
+    val dailyGoalMinutes: Int = 10,
+    val completedTracingActivities: Set<String> = emptySet()
 )
