@@ -253,6 +253,10 @@ private fun TraceBoard(
         }
     }
 
+    val guideColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.35f)
+    val childColor = MaterialTheme.colorScheme.primary
+    val successColor = MaterialTheme.colorScheme.secondary
+
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center
@@ -279,10 +283,6 @@ private fun TraceBoard(
                     )
                 }
         ) {
-            val guideColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.35f)
-            val childColor = MaterialTheme.colorScheme.primary
-            val successColor = MaterialTheme.colorScheme.secondary
-
             normalizedGuide.forEachIndexed { index, n ->
                 val point = Offset(n.x * size.width, n.y * size.height)
                 drawCircle(
