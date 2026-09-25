@@ -1,0 +1,117 @@
+{
+  "schemaVersion": "1.0",
+  "id": "LIT-U-SOUND-001",
+  "domain": "LITERACY",
+  "curriculumId": "LIT-G2-U",
+  "sourceType": "ADAPTED",
+  "sourceRef": {
+    "sourceCode": "TR-03",
+    "pageStart": 92,
+    "pageEnd": 95
+  },
+  "title": "u Sesini Bul",
+  "learningLevel": "GRADE_1",
+  "activityType": "FIND_SOUND_OBJECT",
+  "instruction": {
+    "text": "İsminde u sesi olan varlıkları seç.",
+    "audioId": "aud_lit_u_sound_001_instruction",
+    "voiceProfile": "TEACHER_PHONICS",
+    "replayAllowed": true
+  },
+  "learningTarget": {
+    "conceptId": "LIT-G2-U",
+    "targetSymbol": "u",
+    "allowedLetters": [
+      "a",
+      "n",
+      "e",
+      "t",
+      "i",
+      "l",
+      "o",
+      "k",
+      "u"
+    ]
+  },
+  "prerequisites": [
+    "LIT-U-FIND-001"
+  ],
+  "interaction": {
+    "mode": "MULTI_TAP",
+    "retryStrategy": "HIGHLIGHT_HINT",
+    "options": [
+      {
+        "id": "obj_1",
+        "label": "yumurta",
+        "value": "yumurta",
+        "correct": true
+      },
+      {
+        "id": "obj_2",
+        "label": "uçurtma",
+        "value": "uçurtma",
+        "correct": true
+      },
+      {
+        "id": "obj_3",
+        "label": "uçak",
+        "value": "uçak",
+        "correct": true
+      },
+      {
+        "id": "obj_4",
+        "label": "elma",
+        "value": "elma",
+        "correct": false
+      },
+      {
+        "id": "obj_5",
+        "label": "inek",
+        "value": "inek",
+        "correct": false
+      }
+    ]
+  },
+  "assets": {
+    "visualIds": [],
+    "avatarUse": {
+      "enabled": true,
+      "role": "GUIDE",
+      "pose": "point_right"
+    }
+  },
+  "audio": {
+    "extraAudioIds": []
+  },
+  "animation": {
+    "entry": "SLIDE_RIGHT",
+    "success": "SOFT_GLOW",
+    "retry": "HIGHLIGHT_HINT",
+    "reducedMotionFallback": "FADE_IN"
+  },
+  "feedback": {
+    "successAudioId": "aud_common_success_01",
+    "retryAudioId": "aud_common_retry_01",
+    "successSfx": "SFX_SUCCESS_CHIME",
+    "retrySfx": "SFX_RETRY_SOFT",
+    "punitive": false
+  },
+  "safety": {
+    "reviewed": false,
+    "prohibitedContentPresent": false,
+    "externalUrl": false,
+    "ads": false,
+    "purchase": false
+  },
+  "progression": {
+    "completionRule": "COMPLETE_ON_SUCCESS",
+    "repeatEligible": true,
+    "unlocks": [
+      "LIT-U-TRACE-001"
+    ]
+  },
+  "metadata": {
+    "locale": "tr-TR",
+    "authoringVersion": 1
+  }
+}
