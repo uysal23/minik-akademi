@@ -162,6 +162,60 @@
             "e",
             "t"
           ]
+        },
+        {
+          "id": "LIT-G1-SEQ",
+          "title": "a → n → e → t sıra kuralı",
+          "sourceType": "SOURCE",
+          "sourceCode": "TR-02",
+          "pageRange": [
+            14,
+            82
+          ],
+          "order": 5,
+          "prerequisites": [
+            "LIT-G1-T"
+          ],
+          "unlockedLetters": [
+            "a",
+            "n",
+            "e",
+            "t"
+          ]
+        },
+        {
+          "id": "LIT-G1-BUILD",
+          "title": "Grup 1 hece ve kelime oluşturma",
+          "sourceType": "SOURCE",
+          "sourceCode": "TR-02",
+          "pageRange": [
+            41,
+            82
+          ],
+          "order": 6,
+          "prerequisites": [
+            "LIT-G1-N"
+          ],
+          "unlockedLetters": [
+            "a",
+            "n",
+            "e",
+            "t"
+          ]
+        },
+        {
+          "id": "LIT-LISTEN-01",
+          "title": "Dinleme, görselden tahmin ve anlama",
+          "sourceType": "SOURCE",
+          "sourceCode": "TR-02",
+          "pageRange": [
+            25,
+            82
+          ],
+          "order": 7,
+          "prerequisites": [
+            "LIT-G1-A"
+          ]
         }
       ]
     },
@@ -284,13 +338,91 @@
             "k",
             "u"
           ]
+        },
+        {
+          "id": "LIT-G2-SEQ",
+          "title": "i → l → o → k → u sıra kuralı",
+          "sourceType": "SOURCE",
+          "sourceCode": "TR-03",
+          "pageRange": [
+            10,
+            112
+          ],
+          "order": 6,
+          "prerequisites": [
+            "LIT-G2-U"
+          ],
+          "unlockedLetters": [
+            "a",
+            "n",
+            "e",
+            "t",
+            "i",
+            "l",
+            "o",
+            "k",
+            "u"
+          ]
+        },
+        {
+          "id": "LIT-WORD-ADV",
+          "title": "Karışık hecelerden anlamlı kelime",
+          "sourceType": "SOURCE",
+          "sourceCode": "TR-03",
+          "pageRange": [
+            119,
+            121
+          ],
+          "order": 7,
+          "prerequisites": [
+            "LIT-G2-U"
+          ],
+          "unlockedLetters": [
+            "a",
+            "n",
+            "e",
+            "t",
+            "i",
+            "l",
+            "o",
+            "k",
+            "u"
+          ]
+        },
+        {
+          "id": "LIT-REMEDIAL",
+          "title": "Ses / hece / kelime tekrar ve destek",
+          "sourceType": "SOURCE",
+          "sourceCode": "TR-03",
+          "pageRange": [
+            116,
+            125
+          ],
+          "order": 8,
+          "prerequisites": [
+            "LIT-G2-I"
+          ]
+        },
+        {
+          "id": "LIT-ADAPT-OBJ",
+          "title": "Yeni güvenli nesnelerle ses etkinliği",
+          "sourceType": "ADAPTED",
+          "sourceCode": "TR-03",
+          "pageRange": [
+            10,
+            125
+          ],
+          "order": 9,
+          "prerequisites": [
+            "LIT-G2-I"
+          ]
         }
       ]
     },
     {
       "id": "SEQ-MAT-SPATIAL",
       "domain": "MATHEMATICS",
-      "title": "Nesnelerin Geometrisi — Uzamsal İlişkiler",
+      "title": "Nesnelerin Geometrisi — Uzamsal İlişkiler ve Eş Nesneler",
       "nodes": [
         {
           "id": "MAT-SP-01",
@@ -404,16 +536,72 @@
         },
         {
           "id": "MAT-EQ-01",
-          "title": "Eş nesneler",
+          "title": "Eş araç / nesne bulma",
           "sourceType": "SOURCE",
           "sourceCode": "MA-01",
           "pageRange": [
             45,
-            49
+            46
           ],
           "order": 9,
           "prerequisites": [
             "MAT-SP-08"
+          ]
+        },
+        {
+          "id": "MAT-EQ-02",
+          "title": "Eş şekli bulma / tamamlama",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-01",
+          "pageRange": [
+            47,
+            47
+          ],
+          "order": 10,
+          "prerequisites": [
+            "MAT-EQ-01"
+          ]
+        },
+        {
+          "id": "MAT-EQ-03",
+          "title": "Eş nesneleri eşleştirme",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-01",
+          "pageRange": [
+            48,
+            48
+          ],
+          "order": 11,
+          "prerequisites": [
+            "MAT-EQ-02"
+          ]
+        },
+        {
+          "id": "MAT-EQ-04",
+          "title": "İki görseli eş hâle getirme",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-01",
+          "pageRange": [
+            49,
+            49
+          ],
+          "order": 12,
+          "prerequisites": [
+            "MAT-EQ-03"
+          ]
+        },
+        {
+          "id": "MAT-SP-ADAPT",
+          "title": "Avatarla konum görevleri",
+          "sourceType": "ADAPTED",
+          "sourceCode": "MA-01",
+          "pageRange": [
+            12,
+            43
+          ],
+          "order": 13,
+          "prerequisites": [
+            "MAT-SP-01"
           ]
         }
       ]
@@ -603,12 +791,12 @@
         },
         {
           "id": "MAT-NUM-01",
-          "title": "Sayıları tanıma ve nicelik",
+          "title": "Rakam ve sayı farkı / sayıları tanıma",
           "sourceType": "SOURCE",
           "sourceCode": "MA-02",
           "pageRange": [
             61,
-            64
+            61
           ],
           "order": 11,
           "prerequisites": [
@@ -620,17 +808,143 @@
           }
         },
         {
-          "id": "MAT-TENS-01",
-          "title": "Onluk ve birlik",
+          "id": "MAT-NUM-02",
+          "title": "Görseldeki varlıkları sayma",
           "sourceType": "SOURCE",
           "sourceCode": "MA-02",
           "pageRange": [
-            65,
-            71
+            62,
+            64
           ],
           "order": 12,
           "prerequisites": [
             "MAT-NUM-01"
+          ],
+          "constraints": {
+            "numberMin": 0,
+            "numberMax": 20
+          }
+        },
+        {
+          "id": "MAT-NUM-03",
+          "title": "Verilen sayı kadar nesne oluşturma",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            64,
+            64
+          ],
+          "order": 13,
+          "prerequisites": [
+            "MAT-NUM-02"
+          ],
+          "constraints": {
+            "numberMin": 0,
+            "numberMax": 20
+          }
+        },
+        {
+          "id": "MAT-TENS-01",
+          "title": "10 birlik = 1 onluk",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            65,
+            65
+          ],
+          "order": 14,
+          "prerequisites": [
+            "MAT-NUM-03"
+          ],
+          "constraints": {
+            "numberMin": 10,
+            "numberMax": 20
+          }
+        },
+        {
+          "id": "MAT-TENS-02",
+          "title": "Onluk / birlik gruplama",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            66,
+            66
+          ],
+          "order": 15,
+          "prerequisites": [
+            "MAT-TENS-01"
+          ],
+          "constraints": {
+            "numberMin": 10,
+            "numberMax": 20
+          }
+        },
+        {
+          "id": "MAT-TENS-03",
+          "title": "Abaküsten sayı okuma",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            67,
+            67
+          ],
+          "order": 16,
+          "prerequisites": [
+            "MAT-TENS-02"
+          ],
+          "constraints": {
+            "numberMin": 10,
+            "numberMax": 20
+          }
+        },
+        {
+          "id": "MAT-TENS-04",
+          "title": "Sayıyı abaküste gösterme",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            68,
+            68
+          ],
+          "order": 17,
+          "prerequisites": [
+            "MAT-TENS-03"
+          ],
+          "constraints": {
+            "numberMin": 10,
+            "numberMax": 20
+          }
+        },
+        {
+          "id": "MAT-TENS-05",
+          "title": "Birim küp → onluk / birlik / sayı",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            69,
+            69
+          ],
+          "order": 18,
+          "prerequisites": [
+            "MAT-TENS-04"
+          ],
+          "constraints": {
+            "numberMin": 10,
+            "numberMax": 20
+          }
+        },
+        {
+          "id": "MAT-TENS-06",
+          "title": "Onluk-birlik ↔ sayı",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            70,
+            71
+          ],
+          "order": 19,
+          "prerequisites": [
+            "MAT-TENS-05"
           ],
           "constraints": {
             "numberMin": 10,
@@ -646,9 +960,9 @@
             72,
             74
           ],
-          "order": 13,
+          "order": 20,
           "prerequisites": [
-            "MAT-NUM-01"
+            "MAT-NUM-02"
           ],
           "constraints": {
             "numberMin": 1,
@@ -657,16 +971,34 @@
         },
         {
           "id": "MAT-CMP-01",
-          "title": "Eşit / daha çok / daha az",
+          "title": "Eşit çokluk",
           "sourceType": "SOURCE",
           "sourceCode": "MA-02",
           "pageRange": [
             75,
+            75
+          ],
+          "order": 21,
+          "prerequisites": [
+            "MAT-NUM-02"
+          ],
+          "constraints": {
+            "numberMin": 0,
+            "numberMax": 20
+          }
+        },
+        {
+          "id": "MAT-CMP-02",
+          "title": "Daha çok / daha az",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            76,
             81
           ],
-          "order": 14,
+          "order": 22,
           "prerequisites": [
-            "MAT-NUM-01"
+            "MAT-CMP-01"
           ],
           "constraints": {
             "numberMin": 0,
@@ -682,9 +1014,9 @@
             82,
             86
           ],
-          "order": 15,
+          "order": 23,
           "prerequisites": [
-            "MAT-NUM-01"
+            "MAT-NUM-02"
           ],
           "constraints": {
             "numberMin": 1,
@@ -700,7 +1032,7 @@
             87,
             89
           ],
-          "order": 16,
+          "order": 24,
           "prerequisites": [
             "MAT-SKIP-01"
           ],
@@ -718,7 +1050,7 @@
             90,
             93
           ],
-          "order": 17,
+          "order": 25,
           "prerequisites": [
             "MAT-SKIP-05"
           ],
@@ -736,7 +1068,7 @@
             94,
             97
           ],
-          "order": 18,
+          "order": 26,
           "prerequisites": [
             "MAT-SKIP-01"
           ],
@@ -754,7 +1086,7 @@
             98,
             99
           ],
-          "order": 19,
+          "order": 27,
           "prerequisites": [
             "MAT-SKIP-01"
           ],
@@ -772,7 +1104,7 @@
             100,
             102
           ],
-          "order": 20,
+          "order": 28,
           "prerequisites": [
             "MAT-SKIP-02"
           ],
@@ -783,31 +1115,127 @@
         },
         {
           "id": "MAT-PAT-01",
-          "title": "Örüntüler",
+          "title": "Örüntü kuralını fark etme",
           "sourceType": "SOURCE",
           "sourceCode": "MA-02",
           "pageRange": [
             103,
-            112
+            104
           ],
-          "order": 21,
+          "order": 29,
           "prerequisites": [
-            "MAT-NUM-01"
+            "MAT-NUM-02"
           ]
         },
         {
-          "id": "MAT-ASSESS-01",
-          "title": "Ünite tekrar ve değerlendirme",
+          "id": "MAT-PAT-02",
+          "title": "Örüntüyü tamamlama",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            105,
+            108
+          ],
+          "order": 30,
+          "prerequisites": [
+            "MAT-PAT-01"
+          ]
+        },
+        {
+          "id": "MAT-PAT-03",
+          "title": "Örüntü kuralını ifade etme",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            109,
+            110
+          ],
+          "order": 31,
+          "prerequisites": [
+            "MAT-PAT-02"
+          ]
+        },
+        {
+          "id": "MAT-PAT-04",
+          "title": "Örüntü kuralıyla yol bulma",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            111,
+            112
+          ],
+          "order": 32,
+          "prerequisites": [
+            "MAT-PAT-03"
+          ]
+        },
+        {
+          "id": "MAT-REV-01",
+          "title": "10'dan büyük / küçük çokluk",
           "sourceType": "SOURCE",
           "sourceCode": "MA-02",
           "pageRange": [
             113,
+            115
+          ],
+          "order": 33,
+          "prerequisites": [
+            "MAT-NUM-02"
+          ],
+          "constraints": {
+            "numberMin": 0,
+            "numberMax": 20
+          }
+        },
+        {
+          "id": "MAT-REV-02",
+          "title": "Sağdan / soldan sıra",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            116,
+            116
+          ],
+          "order": 34,
+          "prerequisites": [
+            "MAT-ORD-01"
+          ],
+          "constraints": {
+            "numberMin": 1,
+            "numberMax": 10
+          }
+        },
+        {
+          "id": "MAT-ASSESS-01",
+          "title": "Ünite değerlendirme",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            117,
             120
           ],
-          "order": 22,
+          "order": 35,
           "prerequisites": [
-            "MAT-PAT-01"
+            "MAT-PAT-04"
           ]
+        },
+        {
+          "id": "MAT-COUNT-ADAPT",
+          "title": "Yeni güvenli nesnelerle sayma",
+          "sourceType": "ADAPTED",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            10,
+            120
+          ],
+          "order": 36,
+          "prerequisites": [
+            "MAT-DIGIT-1"
+          ],
+          "constraints": {
+            "numberMin": 0,
+            "numberMax": 100
+          }
         }
       ]
     },
@@ -818,7 +1246,7 @@
       "nodes": [
         {
           "id": "MAT-LEN-01",
-          "title": "Uzun / kısa",
+          "title": "Uzun / kısa karşılaştırma",
           "sourceType": "SOURCE",
           "sourceCode": "MA-03",
           "pageRange": [
@@ -827,17 +1255,17 @@
           ],
           "order": 1,
           "prerequisites": [
-            "MAT-NUM-01"
+            "MAT-NUM-02"
           ]
         },
         {
           "id": "MAT-LEN-02",
-          "title": "Standart olmayan ölçme",
+          "title": "Parmak, karış, kulaç, ayak, adım",
           "sourceType": "SOURCE",
           "sourceCode": "MA-03",
           "pageRange": [
             15,
-            19
+            17
           ],
           "order": 2,
           "prerequisites": [
@@ -845,13 +1273,13 @@
           ]
         },
         {
-          "id": "MAT-LEN-05",
-          "title": "Tahmin ve ölçüm",
+          "id": "MAT-LEN-03",
+          "title": "Uygun standart olmayan ölçme aracını seçme",
           "sourceType": "SOURCE",
           "sourceCode": "MA-03",
           "pageRange": [
-            20,
-            22
+            15,
+            16
           ],
           "order": 3,
           "prerequisites": [
@@ -859,15 +1287,113 @@
           ]
         },
         {
+          "id": "MAT-LEN-04",
+          "title": "Ölçüyle mesafe / uzunluk yorumlama",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-03",
+          "pageRange": [
+            17,
+            19
+          ],
+          "order": 4,
+          "prerequisites": [
+            "MAT-LEN-03"
+          ]
+        },
+        {
+          "id": "MAT-LEN-05",
+          "title": "Tahmin → ölçüm → karşılaştırma",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-03",
+          "pageRange": [
+            20,
+            22
+          ],
+          "order": 5,
+          "prerequisites": [
+            "MAT-LEN-04"
+          ]
+        },
+        {
           "id": "MAT-MASS-01",
-          "title": "Ağır / hafif / eşit",
+          "title": "Ağır / hafif",
           "sourceType": "SOURCE",
           "sourceCode": "MA-03",
           "pageRange": [
             23,
+            24
+          ],
+          "order": 6,
+          "prerequisites": [
+            "MAT-LEN-01"
+          ]
+        },
+        {
+          "id": "MAT-MASS-02",
+          "title": "Teraziyle ağır / hafif / eşit",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-03",
+          "pageRange": [
+            25,
+            25
+          ],
+          "order": 7,
+          "prerequisites": [
+            "MAT-MASS-01"
+          ]
+        },
+        {
+          "id": "MAT-MASS-03",
+          "title": "En hafif / en ağır",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-03",
+          "pageRange": [
+            26,
+            26
+          ],
+          "order": 8,
+          "prerequisites": [
+            "MAT-MASS-02"
+          ]
+        },
+        {
+          "id": "MAT-MASS-04",
+          "title": "Ağırdan hafife / hafiften ağıra",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-03",
+          "pageRange": [
+            27,
+            27
+          ],
+          "order": 9,
+          "prerequisites": [
+            "MAT-MASS-03"
+          ]
+        },
+        {
+          "id": "MAT-MASS-05",
+          "title": "Ağır nesneleri izleyerek yol bulma",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-03",
+          "pageRange": [
+            28,
             28
           ],
-          "order": 4,
+          "order": 10,
+          "prerequisites": [
+            "MAT-MASS-04"
+          ]
+        },
+        {
+          "id": "MAT-MEASURE-ADAPT",
+          "title": "Yeni günlük nesnelerle ölçme / karşılaştırma",
+          "sourceType": "ADAPTED",
+          "sourceCode": "MA-03",
+          "pageRange": [
+            10,
+            28
+          ],
+          "order": 11,
           "prerequisites": [
             "MAT-LEN-01"
           ]
@@ -881,18 +1407,18 @@
       "nodes": [
         {
           "id": "EXT-ADD-01",
-          "title": "Toplama",
+          "title": "Toplama öğretimi",
           "sourceType": "EXTENSION",
           "sourceCode": null,
           "pageRange": null,
           "order": 1,
           "prerequisites": [
-            "MAT-CMP-01"
+            "MAT-CMP-02"
           ]
         },
         {
           "id": "EXT-SUB-01",
-          "title": "Çıkarma",
+          "title": "Çıkarma öğretimi",
           "sourceType": "EXTENSION",
           "sourceCode": null,
           "pageRange": null,
@@ -903,7 +1429,7 @@
         },
         {
           "id": "EXT-MUL-01",
-          "title": "Çarpma",
+          "title": "Çarpma öğretimi",
           "sourceType": "EXTENSION",
           "sourceCode": null,
           "pageRange": null,
