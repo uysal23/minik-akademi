@@ -17,7 +17,6 @@ AUDIO_DIR = ROOT / "audio"
 FORBIDDEN_KEYS = {
     "url",
     "uri",
-    "externalurl",
     "remoteurl",
     "remoteuri",
     "streamurl",
