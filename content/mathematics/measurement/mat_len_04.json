@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "1.0",
+  "id": "ACT-MAT-LEN-04",
+  "domain": "MATHEMATICS",
+  "curriculumId": "MAT-LEN-04",
+  "sourceType": "ADAPTED",
+  "sourceRef": {
+    "sourceCode": "MA-03",
+    "pageStart": 17,
+    "pageEnd": 19
+  },
+  "title": "Ölçüyle mesafe / uzunluk yorumlama",
+  "learningLevel": "GRADE_1",
+  "activityType": "MEASURE_NONSTANDARD",
+  "instruction": {
+    "text": "Masa 5 karış, kalemlik 2 karış. Hangisi daha uzundur?",
+    "audioId": "aud_act_mat_len_04_instruction",
+    "voiceProfile": "TEACHER_MATH",
+    "replayAllowed": true
+  },
+  "learningTarget": {
+    "conceptId": "MAT-LEN-04",
+    "targetSymbol": "5 karış / 2 karış"
+  },
+  "prerequisites": [
+    "MAT-LEN-03"
+  ],
+  "interaction": {
+    "mode": "TAP",
+    "retryStrategy": "HIGHLIGHT_HINT",
+    "options": [
+      {
+        "id": "opt_1",
+        "label": "masa",
+        "value": "masa",
+        "correct": true
+      },
+      {
+        "id": "opt_2",
+        "label": "kalemlik",
+        "value": "kalemlik",
+        "correct": false
+      },
+      {
+        "id": "opt_3",
+        "label": "eşit",
+        "value": "eşit",
+        "correct": false
+      }
+    ]
+  },
+  "assets": {
+    "visualIds": [],
+    "avatarUse": {
+      "enabled": true,
+      "role": "GUIDE",
+      "pose": "thinking"
+    }
+  },
+  "audio": {
+    "extraAudioIds": []
+  },
+  "animation": {
+    "entry": "FADE_IN",
+    "success": "SOFT_GLOW",
+    "retry": "HIGHLIGHT_HINT",
+    "reducedMotionFallback": "FADE_IN"
+  },
+  "feedback": {
+    "successAudioId": "aud_common_success_01",
+    "retryAudioId": "aud_common_retry_01",
+    "successSfx": "SFX_SUCCESS_CHIME",
+    "retrySfx": "SFX_RETRY_SOFT",
+    "punitive": false
+  },
+  "safety": {
+    "reviewed": false,
+    "prohibitedContentPresent": false,
+    "externalUrl": false,
+    "ads": false,
+    "purchase": false
+  },
+  "progression": {
+    "completionRule": "COMPLETE_ON_SUCCESS",
+    "repeatEligible": true,
+    "unlocks": []
+  },
+  "metadata": {
+    "locale": "tr-TR",
+    "authoringVersion": 1,
+    "notes": "Kaynak ölçme etkinliğinin özgün dijital uyarlaması."
+  }
+}
