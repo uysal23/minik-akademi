@@ -31,6 +31,7 @@ android {
     }
 
     sourceSets["main"].assets.srcDir(rootProject.file("content"))
+    sourceSets["main"].assets.srcDir(rootProject.file("audio/generated"))
 }
 
 
