@@ -27,6 +27,8 @@ import com.uysal.minikakademi.feature.parentdashboard.ParentDashboardScreen
 import com.uysal.minikakademi.feature.parentgate.ParentGateScreen
 import com.uysal.minikakademi.feature.settings.ParentSettingsScreen
 import com.uysal.minikakademi.feature.splash.SplashScreen
+import com.uysal.minikakademi.feature.tracing.TracingActivityScreen
+import com.uysal.minikakademi.feature.tracing.TracingHomeScreen
 import kotlinx.coroutines.launch
 
 @Composable
@@ -148,7 +150,7 @@ fun MinikAkademiNavHost(
                     navController.navigate(AppRoute.learningPath("continue"))
                 },
                 onOpenTracing = {
-                    navController.navigate(AppRoute.learningPath("tracing"))
+                    navController.navigate(AppRoute.TRACING_HOME)
                 },
                 onOpenLiteracy = {
                     navController.navigate(AppRoute.learningPath("literacy"))
@@ -171,6 +173,24 @@ fun MinikAkademiNavHost(
             LearningPathScreen(
                 category = category,
                 onBackHome = { navController.popBackStack() }
+            )
+        }
+
+        composable(AppRoute.TRACING_HOME) {
+            TracingHomeScreen(
+                onOpenActivity = { activityId ->
+                    navController.navigate(AppRoute.tracingActivity(activityId))
+                },
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(AppRoute.TRACING_ACTIVITY_PATTERN) { backStackEntry ->
+            val activityId = backStackEntry.arguments?.getString("activityId").orEmpty()
+            TracingActivityScreen(
+                activityId = activityId,
+                onBack = { navController.popBackStack() },
+                onComplete = { }
             )
         }
 
