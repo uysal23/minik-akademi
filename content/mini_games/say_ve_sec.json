@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "1.0",
+  "id": "GAME-MATH-COUNT-001",
+  "domain": "MATHEMATICS",
+  "curriculumId": "MAT-NUM-02",
+  "sourceType": "ADAPTED",
+  "sourceRef": {
+    "sourceCode": "MA-02",
+    "pageStart": 62,
+    "pageEnd": 64
+  },
+  "title": "Say ve Seç",
+  "learningLevel": "GRADE_1",
+  "activityType": "COUNT_OBJECTS",
+  "instruction": {
+    "text": "Nesneleri say ve doğru sayıyı seç.",
+    "audioId": "aud_game_math_count_001_instruction",
+    "voiceProfile": "TEACHER_MATH",
+    "replayAllowed": true
+  },
+  "learningTarget": {
+    "conceptId": "MAT-NUM-02",
+    "targetSymbol": "7",
+    "numberRange": {
+      "min": 0,
+      "max": 20
+    }
+  },
+  "prerequisites": [
+    "MAT-NUM-02"
+  ],
+  "interaction": {
+    "mode": "TAP",
+    "retryStrategy": "HIGHLIGHT_HINT",
+    "options": [
+      {
+        "id": "opt_1",
+        "label": "6",
+        "value": 6,
+        "correct": false
+      },
+      {
+        "id": "opt_2",
+        "label": "7",
+        "value": 7,
+        "correct": true
+      },
+      {
+        "id": "opt_3",
+        "label": "8",
+        "value": 8,
+        "correct": false
+      }
+    ]
+  },
+  "assets": {
+    "visualIds": [],
+    "avatarUse": {
+      "enabled": true,
+      "role": "GUIDE",
+      "pose": "happy"
+    }
+  },
+  "audio": {
+    "extraAudioIds": []
+  },
+  "animation": {
+    "entry": "POP_IN",
+    "success": "SMALL_STARS",
+    "retry": "HIGHLIGHT_HINT",
+    "reducedMotionFallback": "FADE_IN"
+  },
+  "feedback": {
+    "successAudioId": "aud_common_success_01",
+    "retryAudioId": "aud_common_retry_01",
+    "successSfx": "SFX_SUCCESS_CHIME",
+    "retrySfx": "SFX_RETRY_SOFT",
+    "punitive": false
+  },
+  "safety": {
+    "reviewed": false,
+    "prohibitedContentPresent": false,
+    "externalUrl": false,
+    "ads": false,
+    "purchase": false
+  },
+  "progression": {
+    "completionRule": "COMPLETE_ON_SUCCESS",
+    "repeatEligible": true,
+    "unlocks": []
+  },
+  "metadata": {
+    "locale": "tr-TR",
+    "authoringVersion": 1,
+    "notes": "Build Step 10 pedagojik mini oyun; bağımlılık döngüsü, puan baskısı veya rastgele ödül içermez."
+  }
+}
