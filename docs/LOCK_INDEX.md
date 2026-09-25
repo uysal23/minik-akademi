@@ -21,6 +21,7 @@
 | feature/tracing/README.md — Pre-Writing / Tracing | 1.0 | LOCKED | 7 |
 | LITERACY_MODULE_V1.md — Türkçe Okuma-Yazma | 1.0 | LOCKED | 8 |
 | feature/mathematics/README.md — Matematik | 1.0 | LOCKED | 9 |
+| feature/mini-games/README.md — Mini Oyunlar | 1.0 | LOCKED | 10 |
 
 ## Kural
 
