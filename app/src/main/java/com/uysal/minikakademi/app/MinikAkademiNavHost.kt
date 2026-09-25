@@ -19,6 +19,9 @@ import com.uysal.minikakademi.feature.learningpath.LearningPathScreen
 import com.uysal.minikakademi.feature.literacy.LetterLessonScreen
 import com.uysal.minikakademi.feature.literacy.LiteracyActivityScreen
 import com.uysal.minikakademi.feature.literacy.LiteracyHomeScreen
+import com.uysal.minikakademi.feature.mathematics.MathematicsActivityScreen
+import com.uysal.minikakademi.feature.mathematics.MathematicsCategoryScreen
+import com.uysal.minikakademi.feature.mathematics.MathematicsHomeScreen
 import com.uysal.minikakademi.feature.onboarding.LearningLevelScreen
 import com.uysal.minikakademi.feature.onboarding.ParentPinSetupScreen
 import com.uysal.minikakademi.feature.onboarding.ParentStartGateScreen
@@ -159,7 +162,7 @@ fun MinikAkademiNavHost(
                     navController.navigate(AppRoute.LITERACY_HOME)
                 },
                 onOpenMath = {
-                    navController.navigate(AppRoute.learningPath("math"))
+                    navController.navigate(AppRoute.MATHEMATICS_HOME)
                 },
                 onOpenGames = {
                     navController.navigate(AppRoute.learningPath("games"))
@@ -237,6 +240,44 @@ fun MinikAkademiNavHost(
                 onComplete = {
                     scope.launch {
                         repository.markLiteracyActivityComplete(activityId)
+                    }
+                }
+            )
+        }
+
+        composable(AppRoute.MATHEMATICS_HOME) {
+            MathematicsHomeScreen(
+                avatarId = settings.avatarId,
+                completedActivityIds = settings.completedMathematicsActivities,
+                onOpenCategory = { sequenceId ->
+                    navController.navigate(AppRoute.mathematicsCategory(sequenceId))
+                },
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(AppRoute.MATHEMATICS_CATEGORY_PATTERN) { backStackEntry ->
+            val sequenceId = backStackEntry.arguments?.getString("sequenceId").orEmpty()
+            MathematicsCategoryScreen(
+                sequenceId = sequenceId,
+                avatarId = settings.avatarId,
+                completedActivityIds = settings.completedMathematicsActivities,
+                onOpenActivity = { activityId ->
+                    navController.navigate(AppRoute.mathematicsActivity(activityId))
+                },
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(AppRoute.MATHEMATICS_ACTIVITY_PATTERN) { backStackEntry ->
+            val activityId = backStackEntry.arguments?.getString("activityId").orEmpty()
+            MathematicsActivityScreen(
+                activityId = activityId,
+                avatarId = settings.avatarId,
+                onBack = { navController.popBackStack() },
+                onComplete = {
+                    scope.launch {
+                        repository.markMathematicsActivityComplete(activityId)
                     }
                 }
             )
