@@ -49,7 +49,10 @@ fun ParentDashboardScreen(
             }
             KidCard {
                 Text("Matematik", style = MaterialTheme.typography.titleMedium)
-                Text("İlerleme verisi ders modülleri bağlandığında burada görünecek.")
+                Text(
+                    "Tamamlanan Matematik etkinliği: " +
+                        settings.completedMathematicsActivities.size
+                )
             }
             KidCard {
                 Text("Tekrar Önerisi", style = MaterialTheme.typography.titleMedium)
