@@ -1,6 +1,7 @@
 package com.uysal.minikakademi.core.datastore
 
 import android.content.Context
+import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
@@ -90,8 +91,10 @@ class AppPreferencesRepository(private val context: Context) {
         it[Keys.setupComplete] = value
     }
 
-    private suspend fun edit(block: (androidx.datastore.preferences.core.MutablePreferences) -> Unit) {
-        context.minikAkademiDataStore.edit(block)
+    private suspend fun edit(block: (MutablePreferences) -> Unit) {
+        context.minikAkademiDataStore.edit { preferences ->
+            block(preferences)
+        }
     }
 
     private inline fun <reified T : Enum<T>> enumOrDefault(raw: String?, default: T): T =
@@ -99,6 +102,8 @@ class AppPreferencesRepository(private val context: Context) {
 
     private fun hashPin(pin: String): String {
         val digest = MessageDigest.getInstance("SHA-256").digest(pin.toByteArray())
-        return digest.joinToString(separator = "") { "%02x".format(it) }
+        return digest.joinToString(separator = "") { byte ->
+            "%02x".format(byte.toInt() and 0xff)
+        }
     }
 }
