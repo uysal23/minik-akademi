@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-09-26 — Mini Games V1.0
+
+- Build Step 10 completed and locked.
+- Five pedagogical mini games added under `content/mini_games/`: Harf Avı, Say ve Seç, Eşini Bul, Yol Bulma and Gruplama.
+- Mini games reuse already taught literacy, pre-writing and mathematics concepts rather than creating an unrelated reward loop.
+- Game unlock rules are tied to progress in the relevant learning modules.
+- Selected child avatar is preserved in game list and game screens.
+- Mini-game completion persists locally through Preferences DataStore and is shown in the parent dashboard.
+- No countdown pressure, lives, coins, loot boxes, leaderboards or online competition were added.
+- Content Validation run 36193843755 completed successfully.
+- Android Build run 36193789722 completed successfully, including `:app:assembleDebug` and debug APK artifact upload.
+- Final object artwork, avatar artwork, female teacher audio and soft SFX remain deferred to Build Step 11.
+
 ## 2026-09-25 — Mathematics V1.0
 
 - Source-mapped mathematics feature module completed and locked.
