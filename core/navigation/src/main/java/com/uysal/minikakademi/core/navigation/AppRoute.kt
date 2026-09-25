@@ -3,6 +3,7 @@ package com.uysal.minikakademi.core.navigation
 object AppRoute {
     const val SPLASH = "splash"
     const val WELCOME = "welcome"
+    const val PARENT_START_GATE = "parent_start_gate"
     const val CHILD_PROFILE = "child_profile"
     const val LEARNING_LEVEL = "learning_level"
     const val AVATAR = "avatar"
