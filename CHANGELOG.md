@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-09-25 — Pre-Writing / Tracing V1.0
+
+- Interactive tracing feature module added and locked.
+- Five source-mapped pre-writing activities added under `content/literacy/preparation/`.
+- Wave, spiral, zigzag and curved tracing guides implemented.
+- Finger stroke rendering and guide-proximity completion detection implemented.
+- Five-difference visual-attention activity implemented.
+- Selected child avatar is used in tracing home and activity screens.
+- Completed tracing activities persist locally in Preferences DataStore.
+- Root content directory is packaged into Android assets for offline runtime loading.
+- Content validator defects discovered during first real content authoring were corrected; authoring validation now passes.
+- Content Validation run 36168713215 completed successfully.
+- Android Build run 36169159298 completed the debug APK build and artifact upload successfully.
+
 ## 2026-09-25 — Android App Shell V1.0
 
 - Multi-module Kotlin + Jetpack Compose Android project created.
