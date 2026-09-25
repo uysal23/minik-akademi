@@ -55,6 +55,13 @@ fun ParentDashboardScreen(
                 )
             }
             KidCard {
+                Text("Mini Oyunlar", style = MaterialTheme.typography.titleMedium)
+                Text(
+                    "Tamamlanan mini oyun: " +
+                        settings.completedMiniGames.size
+                )
+            }
+            KidCard {
                 Text("Tekrar Önerisi", style = MaterialTheme.typography.titleMedium)
                 Text("Henüz kayıtlı tekrar bulunmuyor.")
             }
