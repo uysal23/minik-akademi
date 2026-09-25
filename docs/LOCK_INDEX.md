@@ -18,6 +18,7 @@
 | CHILD_SAFETY_RULES.md | 1.0 | LOCKED | 4 |
 | CONTENT_SCHEMA_V1.md | 1.0 | LOCKED | 5 |
 | app/README.md — Android App Shell | 1.0 | LOCKED | 6 |
+| feature/tracing/README.md — Pre-Writing / Tracing | 1.0 | LOCKED | 7 |
 
 ## Kural
 
