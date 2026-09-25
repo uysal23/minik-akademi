@@ -1,4 +1,4 @@
-generation: 1
+generation: 2
 provider: antalia-1
 model: cloud0day3/antalia-1
 device: github-actions-cpu
