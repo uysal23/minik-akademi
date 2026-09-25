@@ -178,6 +178,7 @@ fun MinikAkademiNavHost(
 
         composable(AppRoute.TRACING_HOME) {
             TracingHomeScreen(
+                avatarId = settings.avatarId,
                 completedActivityIds = settings.completedTracingActivities,
                 onOpenActivity = { activityId ->
                     navController.navigate(AppRoute.tracingActivity(activityId))
@@ -190,6 +191,7 @@ fun MinikAkademiNavHost(
             val activityId = backStackEntry.arguments?.getString("activityId").orEmpty()
             TracingActivityScreen(
                 activityId = activityId,
+                avatarId = settings.avatarId,
                 onBack = { navController.popBackStack() },
                 onComplete = {
                     scope.launch {
