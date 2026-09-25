@@ -61,5 +61,6 @@ data class AppSettings(
     val leftHanded: Boolean = false,
     val dailyGoalMinutes: Int = 10,
     val completedTracingActivities: Set<String> = emptySet(),
-    val completedLiteracyActivities: Set<String> = emptySet()
+    val completedLiteracyActivities: Set<String> = emptySet(),
+    val completedMathematicsActivities: Set<String> = emptySet()
 )
