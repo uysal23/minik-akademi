@@ -83,8 +83,8 @@ private object MathematicsContentLoader {
         "mathematics/extensions"
     )
 
-    fun loadActivities(context: Context): List<MathActivityConfig> =
-        directories.flatMap { directory ->
+    fun loadActivities(context: Context): List<MathActivityConfig> {
+        val authored = directories.flatMap { directory ->
             context.assets.list(directory)
                 .orEmpty()
                 .filter { it.endsWith(".json") }
@@ -98,6 +98,136 @@ private object MathematicsContentLoader {
                     }.getOrNull()
                 }
         }
+
+        val authoredNodes = authored.map { it.curriculumId }.toSet()
+        return authored + synthesizeMissingActivities(context, authoredNodes)
+    }
+
+    private fun synthesizeMissingActivities(
+        context: Context,
+        authoredNodes: Set<String>
+    ): List<MathActivityConfig> {
+        val text = context.assets.open("curriculum_manifest.json")
+            .bufferedReader()
+            .use { it.readText() }
+        val root = JSONObject(text)
+        val sequences = root.getJSONArray("sequences")
+        val result = mutableListOf<MathActivityConfig>()
+
+        for (sequenceIndex in 0 until sequences.length()) {
+            val sequence = sequences.getJSONObject(sequenceIndex)
+            if (sequence.getString("domain") != "MATHEMATICS") continue
+            val nodes = sequence.getJSONArray("nodes")
+
+            for (nodeIndex in 0 until nodes.length()) {
+                val node = nodes.getJSONObject(nodeIndex)
+                val id = node.getString("id")
+                if (id in authoredNodes) continue
+                result.add(
+                    fallbackActivity(
+                        id = id,
+                        title = node.getString("title"),
+                        sourceType = node.getString("sourceType")
+                    )
+                )
+            }
+        }
+        return result
+    }
+
+    private fun fallbackActivity(
+        id: String,
+        title: String,
+        sourceType: String
+    ): MathActivityConfig {
+        fun option(value: String, correct: Boolean) =
+            MathOption(id = "opt_" + value.hashCode().toUInt(), label = value, correct = correct)
+
+        fun choice(
+            target: String,
+            correct: String,
+            wrong1: String,
+            wrong2: String,
+            type: String = "TAP_CHOICE",
+            instruction: String = title
+        ) = MathActivityConfig(
+            id = "ACT-$id",
+            curriculumId = id,
+            sourceType = sourceType,
+            title = title,
+            activityType = type,
+            instruction = instruction,
+            targetSymbol = target,
+            options = listOf(
+                option(correct, true),
+                option(wrong1, false),
+                option(wrong2, false)
+            )
+        )
+
+        if (id.startsWith("MAT-DIGIT-")) {
+            val digit = id.removePrefix("MAT-DIGIT-")
+            return MathActivityConfig(
+                id = "ACT-$id",
+                curriculumId = id,
+                sourceType = sourceType,
+                title = title,
+                activityType = "TRACE_NUMBER",
+                instruction = "$digit rakamının noktalı yolunu parmağınla takip et.",
+                targetSymbol = digit,
+                options = emptyList()
+            )
+        }
+
+        return when (id) {
+            "MAT-NUM-01" -> MathActivityConfig(
+                id = "ACT-$id", curriculumId = id, sourceType = sourceType,
+                title = title, activityType = "NUMBER_INTRO",
+                instruction = "Rakamların sayıları oluşturduğunu incele.",
+                targetSymbol = "19", options = emptyList()
+            )
+            "MAT-NUM-02" -> choice("7", "7", "6", "8", "COUNT_OBJECTS", "Nesneleri say ve doğru sayıyı seç.")
+            "MAT-NUM-03" -> choice("12", "12", "10", "14", "COUNT_OBJECTS", "Verilen sayı kadar nesne olduğunu kontrol et.")
+            "MAT-TENS-01" -> choice("10 birlik = ?", "1 onluk", "2 onluk", "10 onluk")
+            "MAT-TENS-02" -> choice("18", "1 onluk 8 birlik", "8 onluk 1 birlik", "18 onluk")
+            "MAT-TENS-03" -> choice("1 onluk 5 birlik", "15", "51", "5")
+            "MAT-TENS-04" -> choice("17", "1 onluk 7 birlik", "7 onluk 1 birlik", "1 onluk 5 birlik")
+            "MAT-TENS-05" -> choice("1 onluk 3 birlik", "13", "31", "10")
+            "MAT-TENS-06" -> choice("16", "1 onluk 6 birlik", "6 onluk 1 birlik", "1 onluk 9 birlik")
+            "MAT-ORD-01" -> choice("1.  2.  3.  4.  5.", "3.", "2.", "5.", "ORDER_ITEMS", "Üçüncü sırayı seç.")
+            "MAT-CMP-01" -> choice("●●●   ●●●", "eşit", "solda daha çok", "sağda daha çok", "COMPARE_QUANTITY")
+            "MAT-CMP-02" -> choice("●●●●●●   ●●●●", "solda daha çok", "sağda daha çok", "eşit", "COMPARE_QUANTITY")
+            "MAT-SKIP-01" -> choice("1, 2, 3, 4, ?", "5", "6", "7", "RHYTHMIC_COUNT")
+            "MAT-SKIP-05" -> choice("5, 10, 15, 20, ?", "25", "30", "22", "RHYTHMIC_COUNT")
+            "MAT-SKIP-10" -> choice("10, 20, 30, 40, ?", "50", "45", "60", "RHYTHMIC_COUNT")
+            "MAT-SKIP-02" -> choice("2, 4, 6, 8, ?", "10", "9", "12", "RHYTHMIC_COUNT")
+            "MAT-BACK-01" -> choice("20, 19, 18, 17, ?", "16", "15", "14", "RHYTHMIC_COUNT")
+            "MAT-BACK-02" -> choice("20, 18, 16, 14, ?", "12", "13", "10", "RHYTHMIC_COUNT")
+            "MAT-PAT-01" -> choice("sarı, sarı, mor, sarı, sarı, mor, ?", "sarı", "mor", "mavi", "PATTERN_COMPLETE")
+            "MAT-PAT-02" -> choice("üçgen, daire, üçgen, daire, ?", "üçgen", "daire", "kare", "PATTERN_COMPLETE")
+            "MAT-PAT-03" -> choice("kare, kare, daire; kare, kare, daire; ?", "kare", "daire", "üçgen", "PATTERN_COMPLETE")
+            "MAT-PAT-04" -> choice("yıldız, daire, yıldız, daire, ?", "yıldız", "daire", "kare", "PATTERN_COMPLETE")
+            "MAT-REV-01" -> choice("12 ve 8", "12", "8", "10", "COMPARE_QUANTITY", "10'dan büyük olan sayıyı seç.")
+            "MAT-REV-02" -> choice("soldan: 1 2 3 4 5", "3.", "2.", "4.", "ORDER_ITEMS", "Soldan üçüncü sırayı seç.")
+            "MAT-ASSESS-01" -> choice("2, 4, 6, 8, ?", "10", "9", "12", "RHYTHMIC_COUNT", "İkişer ritmik saymayı tamamla.")
+            "MAT-COUNT-ADAPT" -> choice("9", "9", "8", "10", "COUNT_OBJECTS", "Yeni nesneleri say ve doğru sayıyı seç.")
+            "MAT-LEN-01" -> choice("────────   ────", "soldaki daha uzun", "sağdaki daha uzun", "eşit", "COMPARE_LENGTH")
+            "MAT-LEN-02" -> choice("Sınıfın uzunluğu", "adım", "parmak", "silgi", "MEASURE_NONSTANDARD")
+            "MAT-LEN-03" -> choice("Silginin boyu", "parmak", "adım", "kulaç", "MEASURE_NONSTANDARD")
+            "MAT-LEN-04" -> choice("Masa 5 karış, kalemlik 2 karış", "masa daha uzun", "kalemlik daha uzun", "eşit", "MEASURE_NONSTANDARD")
+            "MAT-LEN-05" -> choice("Tahmin 6 karış, ölçüm 5 karış", "fark 1", "fark 2", "fark 3", "MEASURE_NONSTANDARD")
+            "MAT-MASS-01" -> choice("kitap ve silgi", "kitap daha ağır", "silgi daha ağır", "eşit", "COMPARE_MASS")
+            "MAT-MASS-02" -> choice("terazinin iki tarafı aynı seviyede", "eşit ağırlık", "sol daha ağır", "sağ daha ağır", "COMPARE_MASS")
+            "MAT-MASS-03" -> choice("karpuz, elma, çilek", "karpuz", "elma", "çilek", "COMPARE_MASS", "En ağır olanı seç.")
+            "MAT-MASS-04" -> choice("ağırdan hafife", "karpuz > elma > çilek", "çilek > elma > karpuz", "elma > karpuz > çilek", "ORDER_ITEMS")
+            "MAT-MASS-05" -> choice("daha ağır nesneyi takip et", "kitap", "tüy", "pamuk", "COMPARE_MASS")
+            "MAT-MEASURE-ADAPT" -> choice("Masa kaç karış?", "5 karış", "2 adım", "1 kulaç", "MEASURE_NONSTANDARD")
+            "EXT-ADD-01" -> choice("3 + 2", "5", "4", "6", "ADD_OBJECTS", "3 nesneye 2 nesne daha ekle. Toplamı seç.")
+            "EXT-SUB-01" -> choice("5 - 2", "3", "2", "4", "SUBTRACT_OBJECTS", "5 nesneden 2 nesneyi ayır. Kalanı seç.")
+            "EXT-MUL-01" -> choice("3 × 2", "6", "5", "8", "GROUP_OBJECTS", "3 grupta 2'şer nesne var. Toplamı seç.")
+            else -> choice(title, "Doğru", "Tekrar bak", "Başka seçenek")
+        }
+    }
 
     fun loadNodes(context: Context, activities: List<MathActivityConfig>): List<MathNode> {
         val activityNodes = activities.map { it.curriculumId }.toSet()
