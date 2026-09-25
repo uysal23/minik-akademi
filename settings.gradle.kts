@@ -22,6 +22,7 @@ include(":core:model")
 include(":core:navigation")
 include(":core:design-system")
 include(":core:datastore")
+include(":core:audio")
 
 include(":feature:splash")
 include(":feature:onboarding")
