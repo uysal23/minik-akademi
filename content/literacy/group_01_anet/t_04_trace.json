@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "1.0",
+  "id": "LIT-T-TRACE-001",
+  "domain": "LITERACY",
+  "curriculumId": "LIT-G1-T",
+  "sourceType": "ADAPTED",
+  "sourceRef": {
+    "sourceCode": "TR-02",
+    "pageStart": 71,
+    "pageEnd": 72
+  },
+  "title": "t Harfini Yaz",
+  "learningLevel": "GRADE_1",
+  "activityType": "TRACE_LETTER",
+  "instruction": {
+    "text": "t harfinin üzerinden parmağınla geç.",
+    "audioId": "aud_lit_t_trace_001_instruction",
+    "voiceProfile": "TEACHER_PHONICS",
+    "replayAllowed": true
+  },
+  "learningTarget": {
+    "conceptId": "LIT-G1-T",
+    "targetSymbol": "t",
+    "allowedLetters": [
+      "a",
+      "n",
+      "e",
+      "t"
+    ]
+  },
+  "prerequisites": [
+    "LIT-T-SOUND-001"
+  ],
+  "interaction": {
+    "mode": "TRACE",
+    "retryStrategy": "HIGHLIGHT_HINT"
+  },
+  "assets": {
+    "visualIds": [],
+    "avatarUse": {
+      "enabled": true,
+      "role": "GUIDE",
+      "pose": "point_right"
+    }
+  },
+  "audio": {
+    "extraAudioIds": []
+  },
+  "animation": {
+    "entry": "SLIDE_RIGHT",
+    "success": "SOFT_GLOW",
+    "retry": "HIGHLIGHT_HINT",
+    "reducedMotionFallback": "FADE_IN"
+  },
+  "feedback": {
+    "successAudioId": "aud_common_success_01",
+    "retryAudioId": "aud_common_retry_01",
+    "successSfx": "SFX_SUCCESS_CHIME",
+    "retrySfx": "SFX_RETRY_SOFT",
+    "punitive": false
+  },
+  "safety": {
+    "reviewed": false,
+    "prohibitedContentPresent": false,
+    "externalUrl": false,
+    "ads": false,
+    "purchase": false
+  },
+  "progression": {
+    "completionRule": "COMPLETE_ON_SUCCESS",
+    "repeatEligible": true,
+    "unlocks": [
+      "LIT-T-SYLLABLE-001"
+    ]
+  },
+  "metadata": {
+    "locale": "tr-TR",
+    "authoringVersion": 1
+  }
+}
