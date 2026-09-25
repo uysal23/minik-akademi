@@ -20,7 +20,11 @@
   },
   "learningTarget": {
     "conceptId": "MAT-ASSESS-01",
-    "targetSymbol": "2, 4, 6, 8, ?"
+    "targetSymbol": "2, 4, 6, 8, ?",
+    "numberRange": {
+      "min": 2,
+      "max": 20
+    }
   },
   "prerequisites": [
     "MAT-PAT-04"
