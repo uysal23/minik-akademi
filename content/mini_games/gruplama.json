@@ -1,0 +1,139 @@
+{
+  "schemaVersion": "1.0",
+  "id": "GAME-MATH-GROUP-001",
+  "domain": "MATHEMATICS",
+  "curriculumId": "MAT-TENS-01",
+  "sourceType": "ADAPTED",
+  "sourceRef": {
+    "sourceCode": "MA-02",
+    "pageStart": 65,
+    "pageEnd": 65
+  },
+  "title": "Gruplama",
+  "learningLevel": "GRADE_1",
+  "activityType": "MULTI_SELECT",
+  "instruction": {
+    "text": "10 nesnenin tamamını seç ve bir onluk oluştur.",
+    "audioId": "aud_game_math_group_001_instruction",
+    "voiceProfile": "TEACHER_MATH",
+    "replayAllowed": true
+  },
+  "learningTarget": {
+    "conceptId": "MAT-TENS-01",
+    "targetSymbol": "10",
+    "numberRange": {
+      "min": 10,
+      "max": 20
+    }
+  },
+  "prerequisites": [
+    "MAT-TENS-01"
+  ],
+  "interaction": {
+    "mode": "MULTI_TAP",
+    "retryStrategy": "HIGHLIGHT_HINT",
+    "options": [
+      {
+        "id": "obj_1",
+        "label": "●",
+        "value": 1,
+        "correct": true
+      },
+      {
+        "id": "obj_2",
+        "label": "●",
+        "value": 2,
+        "correct": true
+      },
+      {
+        "id": "obj_3",
+        "label": "●",
+        "value": 3,
+        "correct": true
+      },
+      {
+        "id": "obj_4",
+        "label": "●",
+        "value": 4,
+        "correct": true
+      },
+      {
+        "id": "obj_5",
+        "label": "●",
+        "value": 5,
+        "correct": true
+      },
+      {
+        "id": "obj_6",
+        "label": "●",
+        "value": 6,
+        "correct": true
+      },
+      {
+        "id": "obj_7",
+        "label": "●",
+        "value": 7,
+        "correct": true
+      },
+      {
+        "id": "obj_8",
+        "label": "●",
+        "value": 8,
+        "correct": true
+      },
+      {
+        "id": "obj_9",
+        "label": "●",
+        "value": 9,
+        "correct": true
+      },
+      {
+        "id": "obj_10",
+        "label": "●",
+        "value": 10,
+        "correct": true
+      }
+    ]
+  },
+  "assets": {
+    "visualIds": [],
+    "avatarUse": {
+      "enabled": true,
+      "role": "GUIDE",
+      "pose": "happy"
+    }
+  },
+  "audio": {
+    "extraAudioIds": []
+  },
+  "animation": {
+    "entry": "POP_IN",
+    "success": "SMALL_STARS",
+    "retry": "HIGHLIGHT_HINT",
+    "reducedMotionFallback": "FADE_IN"
+  },
+  "feedback": {
+    "successAudioId": "aud_common_success_01",
+    "retryAudioId": "aud_common_retry_01",
+    "successSfx": "SFX_SUCCESS_CHIME",
+    "retrySfx": "SFX_RETRY_SOFT",
+    "punitive": false
+  },
+  "safety": {
+    "reviewed": false,
+    "prohibitedContentPresent": false,
+    "externalUrl": false,
+    "ads": false,
+    "purchase": false
+  },
+  "progression": {
+    "completionRule": "COMPLETE_ON_SUCCESS",
+    "repeatEligible": true,
+    "unlocks": []
+  },
+  "metadata": {
+    "locale": "tr-TR",
+    "authoringVersion": 1,
+    "notes": "Build Step 10 pedagojik mini oyun; bağımlılık döngüsü, puan baskısı veya rastgele ödül içermez."
+  }
+}
