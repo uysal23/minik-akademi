@@ -4,8 +4,8 @@
 |---|---:|---|---:|
 | BUILD_PROCESS.md | 1.0 | LOCKED | Global |
 | PROJECT_STRUCTURE_V1.md | 1.0 | LOCKED | 1 |
-| PRODUCT_SPEC_V1.md | - | NOT STARTED | 2 |
-| UI_FLOW_V1.md | - | NOT STARTED | 2 |
+| PRODUCT_SPEC_V1.md | 1.0 | LOCKED | 2 |
+| UI_FLOW_V1.md | 1.0 | LOCKED | 2 |
 | CURRICULUM_LOCK_V1.md | - | NOT STARTED | 3 |
 | SOURCE_MAPPING.md | - | NOT STARTED | 3 |
 | AVATAR_SYSTEM_V1.md | - | NOT STARTED | 4 |
