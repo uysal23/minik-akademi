@@ -178,6 +178,7 @@ fun MinikAkademiNavHost(
 
         composable(AppRoute.TRACING_HOME) {
             TracingHomeScreen(
+                completedActivityIds = settings.completedTracingActivities,
                 onOpenActivity = { activityId ->
                     navController.navigate(AppRoute.tracingActivity(activityId))
                 },
@@ -190,7 +191,11 @@ fun MinikAkademiNavHost(
             TracingActivityScreen(
                 activityId = activityId,
                 onBack = { navController.popBackStack() },
-                onComplete = { }
+                onComplete = {
+                    scope.launch {
+                        repository.markTracingActivityComplete(activityId)
+                    }
+                }
             )
         }
 
