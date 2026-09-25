@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "1.0",
+  "id": "PRE-VIS-DIFFERENCE-001",
+  "domain": "PREWRITING",
+  "curriculumId": "PRE-VIS-01",
+  "sourceType": "ADAPTED",
+  "sourceRef": {
+    "sourceCode": "TR-01",
+    "pageStart": 39,
+    "pageEnd": 39
+  },
+  "title": "5 Farkı Bul",
+  "learningLevel": "PRESCHOOL_START",
+  "activityType": "FIND_DIFFERENCE",
+  "instruction": {
+    "text": "İki grubu karşılaştır. Sağ tarafta farklı olan 5 şekli bul.",
+    "audioId": "aud_pre_vis_difference_001_instruction",
+    "voiceProfile": "TEACHER_WARM",
+    "replayAllowed": true
+  },
+  "learningTarget": {
+    "conceptId": "PRE-VIS-01",
+    "targetSymbol": "DIFF_SET_01"
+  },
+  "prerequisites": [
+    "PRE-TRACE-03"
+  ],
+  "interaction": {
+    "mode": "TAP",
+    "retryStrategy": "HIGHLIGHT_HINT"
+  },
+  "assets": {
+    "visualIds": [],
+    "avatarUse": {
+      "enabled": true,
+      "role": "GUIDE",
+      "pose": "point_right"
+    }
+  },
+  "audio": {
+    "extraAudioIds": []
+  },
+  "animation": {
+    "entry": "FADE_IN",
+    "success": "SOFT_GLOW",
+    "retry": "HIGHLIGHT_HINT",
+    "reducedMotionFallback": "FADE_IN"
+  },
+  "feedback": {
+    "successAudioId": "aud_common_success_01",
+    "retryAudioId": "aud_common_retry_01",
+    "successSfx": "SFX_SUCCESS_CHIME",
+    "retrySfx": "SFX_RETRY_SOFT",
+    "punitive": false
+  },
+  "safety": {
+    "reviewed": false,
+    "prohibitedContentPresent": false,
+    "externalUrl": false,
+    "ads": false,
+    "purchase": false
+  },
+  "progression": {
+    "completionRule": "COMPLETE_ON_SUCCESS",
+    "repeatEligible": true,
+    "unlocks": []
+  },
+  "metadata": {
+    "locale": "tr-TR",
+    "authoringVersion": 1,
+    "notes": "TR-01 iki resim arasındaki 5 farkı bulma etkinliğinin sade, özgün dijital uyarlaması."
+  }
+}
