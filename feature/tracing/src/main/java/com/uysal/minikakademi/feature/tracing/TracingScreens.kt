@@ -82,6 +82,7 @@ private object TracingContentLoader {
 
 @Composable
 fun TracingHomeScreen(
+    completedActivityIds: Set<String>,
     onOpenActivity: (String) -> Unit,
     onBack: () -> Unit
 ) {
@@ -126,6 +127,13 @@ fun TracingHomeScreen(
                                 fontWeight = FontWeight.Bold
                             )
                             Text(activity.instruction)
+                            if (activity.id in completedActivityIds) {
+                                Text(
+                                    text = "✓ Tamamlandı",
+                                    color = MaterialTheme.colorScheme.primary,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
                         }
                     }
                 }
