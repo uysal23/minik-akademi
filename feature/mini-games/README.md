@@ -1,6 +1,6 @@
 # Minik Akademi — Mini Oyunlar V1
 
-**Status:** VERIFYING  
+**Status:** LOCKED  
 **Version:** 1.0  
 **Build Step:** 10
 
@@ -86,4 +86,15 @@ mevcut mini-game ID ve audio ID'lerine bağlanacaktır.
 
 ---
 
-Content ve Android doğrulamaları tamamlanınca durum **LOCKED V1.0** yapılacaktır.
+## Doğrulama
+
+- Mini oyun JSON: **5**
+- Content Validation run: **36193843755 — PASS**
+- Android Build run: **36193789722 — PASS**
+- Gradle configuration: **PASS**
+- `:app:assembleDebug`: **PASS**
+- Debug APK artifact upload: **PASS**
+
+---
+
+**LOCKED — Mini Oyunlar V1.0**
