@@ -33,6 +33,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import com.uysal.minikakademi.core.designsystem.AvatarPlaceholder
 import com.uysal.minikakademi.core.designsystem.KidCard
 import com.uysal.minikakademi.core.designsystem.KidPrimaryButton
 import com.uysal.minikakademi.core.designsystem.KidScreen
@@ -82,6 +83,7 @@ private object TracingContentLoader {
 
 @Composable
 fun TracingHomeScreen(
+    avatarId: String,
     completedActivityIds: Set<String>,
     onOpenActivity: (String) -> Unit,
     onBack: () -> Unit
@@ -98,11 +100,20 @@ fun TracingHomeScreen(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Text("Çiziyorum", style = MaterialTheme.typography.headlineMedium)
-            Text(
-                "Parmağınla çizgileri takip et. Acele etmene gerek yok.",
-                style = MaterialTheme.typography.bodyLarge
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                AvatarPlaceholder(avatarId = avatarId, size = 64.dp)
+                Column {
+                    Text("Çiziyorum", style = MaterialTheme.typography.headlineMedium)
+                    Text(
+                        "Parmağınla çizgileri takip et. Acele etmene gerek yok.",
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
+            }
 
             if (activities.isEmpty()) {
                 KidCard {
@@ -147,6 +158,7 @@ fun TracingHomeScreen(
 @Composable
 fun TracingActivityScreen(
     activityId: String,
+    avatarId: String,
     onBack: () -> Unit,
     onComplete: () -> Unit
 ) {
@@ -172,8 +184,17 @@ fun TracingActivityScreen(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Text(config.title, style = MaterialTheme.typography.headlineMedium)
-            Text(config.instruction, style = MaterialTheme.typography.bodyLarge)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                AvatarPlaceholder(avatarId = avatarId, size = 58.dp)
+                Column {
+                    Text(config.title, style = MaterialTheme.typography.headlineMedium)
+                    Text(config.instruction, style = MaterialTheme.typography.bodyLarge)
+                }
+            }
 
             if (config.activityType == "FIND_DIFFERENCE") {
                 FindDifferenceGame(
