@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "1.0",
+  "id": "GAME-PRE-MAZE-001",
+  "domain": "PREWRITING",
+  "curriculumId": "PRE-TRACE-03",
+  "sourceType": "ADAPTED",
+  "sourceRef": {
+    "sourceCode": "TR-01",
+    "pageStart": 22,
+    "pageEnd": 38
+  },
+  "title": "Yol Bulma",
+  "learningLevel": "GRADE_1",
+  "activityType": "MAZE_TARGET_SYMBOL",
+  "instruction": {
+    "text": "Avatarı doğru yolu seçerek hedefe ulaştır.",
+    "audioId": "aud_game_pre_maze_001_instruction",
+    "voiceProfile": "TEACHER_WARM",
+    "replayAllowed": true
+  },
+  "learningTarget": {
+    "conceptId": "PRE-TRACE-03",
+    "targetSymbol": "hedef"
+  },
+  "prerequisites": [
+    "PRE-TRACE-03"
+  ],
+  "interaction": {
+    "mode": "TAP",
+    "retryStrategy": "HIGHLIGHT_HINT",
+    "options": [
+      {
+        "id": "opt_1",
+        "label": "→ ↓ →",
+        "value": "right_down_right",
+        "correct": true
+      },
+      {
+        "id": "opt_2",
+        "label": "→ ↑ →",
+        "value": "right_up_right",
+        "correct": false
+      },
+      {
+        "id": "opt_3",
+        "label": "↓ ← ↓",
+        "value": "down_left_down",
+        "correct": false
+      }
+    ]
+  },
+  "assets": {
+    "visualIds": [],
+    "avatarUse": {
+      "enabled": true,
+      "role": "GUIDE",
+      "pose": "happy"
+    }
+  },
+  "audio": {
+    "extraAudioIds": []
+  },
+  "animation": {
+    "entry": "POP_IN",
+    "success": "SMALL_STARS",
+    "retry": "HIGHLIGHT_HINT",
+    "reducedMotionFallback": "FADE_IN"
+  },
+  "feedback": {
+    "successAudioId": "aud_common_success_01",
+    "retryAudioId": "aud_common_retry_01",
+    "successSfx": "SFX_SUCCESS_CHIME",
+    "retrySfx": "SFX_RETRY_SOFT",
+    "punitive": false
+  },
+  "safety": {
+    "reviewed": false,
+    "prohibitedContentPresent": false,
+    "externalUrl": false,
+    "ads": false,
+    "purchase": false
+  },
+  "progression": {
+    "completionRule": "COMPLETE_ON_SUCCESS",
+    "repeatEligible": true,
+    "unlocks": []
+  },
+  "metadata": {
+    "locale": "tr-TR",
+    "authoringVersion": 1,
+    "notes": "Build Step 10 pedagojik mini oyun; bağımlılık döngüsü, puan baskısı veya rastgele ödül içermez."
+  }
+}
