@@ -111,7 +111,7 @@ private object LiteracyContentLoader {
                         for (i in 0 until array.length()) add(array.getString(i))
                     }
                 }
-                add(
+                result.add(
                     LiteracyNode(
                         id = id,
                         title = node.getString("title"),
