@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "1.0",
+  "id": "PRE-TRACE-PATH-001",
+  "domain": "PREWRITING",
+  "curriculumId": "PRE-TRACE-01",
+  "sourceType": "ADAPTED",
+  "sourceRef": {
+    "sourceCode": "TR-01",
+    "pageStart": 11,
+    "pageEnd": 13
+  },
+  "title": "Yolu Takip Et",
+  "learningLevel": "PRESCHOOL_START",
+  "activityType": "TRACE_PATH",
+  "instruction": {
+    "text": "Başlangıç noktasından hedefe kadar noktalı yolu parmağınla takip et.",
+    "audioId": "aud_pre_trace_path_001_instruction",
+    "voiceProfile": "TEACHER_WARM",
+    "replayAllowed": true
+  },
+  "learningTarget": {
+    "conceptId": "PRE-TRACE-01",
+    "targetSymbol": "WAVE_PATH"
+  },
+  "prerequisites": [],
+  "interaction": {
+    "mode": "TRACE",
+    "retryStrategy": "HIGHLIGHT_HINT"
+  },
+  "assets": {
+    "visualIds": [],
+    "avatarUse": {
+      "enabled": true,
+      "role": "GUIDE",
+      "pose": "point_right"
+    }
+  },
+  "audio": {
+    "extraAudioIds": []
+  },
+  "animation": {
+    "entry": "FADE_IN",
+    "success": "SOFT_GLOW",
+    "retry": "HIGHLIGHT_HINT",
+    "reducedMotionFallback": "FADE_IN"
+  },
+  "feedback": {
+    "successAudioId": "aud_common_success_01",
+    "retryAudioId": "aud_common_retry_01",
+    "successSfx": "SFX_SUCCESS_CHIME",
+    "retrySfx": "SFX_RETRY_SOFT",
+    "punitive": false
+  },
+  "safety": {
+    "reviewed": false,
+    "prohibitedContentPresent": false,
+    "externalUrl": false,
+    "ads": false,
+    "purchase": false
+  },
+  "progression": {
+    "completionRule": "COMPLETE_ON_SUCCESS",
+    "repeatEligible": true,
+    "unlocks": [
+      "PRE-TRACE-02"
+    ]
+  },
+  "metadata": {
+    "locale": "tr-TR",
+    "authoringVersion": 1,
+    "notes": "TR-01 hedefe çizgi üzerinden ulaşma etkinliklerinin özgün dijital uyarlaması."
+  }
+}
