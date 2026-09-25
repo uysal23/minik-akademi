@@ -39,6 +39,7 @@ class AppPreferencesRepository(private val context: Context) {
         val dailyGoalMinutes = intPreferencesKey("daily_goal_minutes")
         val parentPinHash = stringPreferencesKey("parent_pin_hash")
         val completedTracingActivities = stringSetPreferencesKey("completed_tracing_activities")
+        val completedLiteracyActivities = stringSetPreferencesKey("completed_literacy_activities")
     }
 
     val settings: Flow<AppSettings> = context.minikAkademiDataStore.data.map { prefs ->
@@ -60,7 +61,8 @@ class AppPreferencesRepository(private val context: Context) {
             highContrast = prefs[Keys.highContrast] ?: false,
             leftHanded = prefs[Keys.leftHanded] ?: false,
             dailyGoalMinutes = prefs[Keys.dailyGoalMinutes] ?: 10,
-            completedTracingActivities = prefs[Keys.completedTracingActivities] ?: emptySet()
+            completedTracingActivities = prefs[Keys.completedTracingActivities] ?: emptySet(),
+            completedLiteracyActivities = prefs[Keys.completedLiteracyActivities] ?: emptySet()
         )
     }
 
@@ -84,6 +86,11 @@ class AppPreferencesRepository(private val context: Context) {
     suspend fun markTracingActivityComplete(activityId: String) = edit { prefs ->
         val current = prefs[Keys.completedTracingActivities] ?: emptySet()
         prefs[Keys.completedTracingActivities] = current + activityId
+    }
+
+    suspend fun markLiteracyActivityComplete(activityId: String) = edit { prefs ->
+        val current = prefs[Keys.completedLiteracyActivities] ?: emptySet()
+        prefs[Keys.completedLiteracyActivities] = current + activityId
     }
 
     suspend fun setParentPin(pin: String) = edit {
