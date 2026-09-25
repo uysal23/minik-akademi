@@ -1,0 +1,919 @@
+{
+  "manifestVersion": "1.0",
+  "status": "LOCKED",
+  "locale": "tr-TR",
+  "sourceSet": [
+    "TR-01",
+    "TR-02",
+    "TR-03",
+    "MA-01",
+    "MA-02",
+    "MA-03"
+  ],
+  "sequences": [
+    {
+      "id": "SEQ-PREWRITING",
+      "domain": "PREWRITING",
+      "title": "Okuma Yazmaya Hazırlık",
+      "nodes": [
+        {
+          "id": "PRE-TRACE-01",
+          "title": "Hedefe çizgi izleme",
+          "sourceType": "SOURCE",
+          "sourceCode": "TR-01",
+          "pageRange": [
+            11,
+            21
+          ],
+          "order": 1,
+          "prerequisites": []
+        },
+        {
+          "id": "PRE-TRACE-02",
+          "title": "Görseli çizgiyle tamamlama",
+          "sourceType": "SOURCE",
+          "sourceCode": "TR-01",
+          "pageRange": [
+            14,
+            30
+          ],
+          "order": 2,
+          "prerequisites": [
+            "PRE-TRACE-01"
+          ]
+        },
+        {
+          "id": "PRE-TRACE-03",
+          "title": "Ok yönünde kesik çizgi",
+          "sourceType": "SOURCE",
+          "sourceCode": "TR-01",
+          "pageRange": [
+            22,
+            38
+          ],
+          "order": 3,
+          "prerequisites": [
+            "PRE-TRACE-02"
+          ]
+        },
+        {
+          "id": "PRE-TRACE-04",
+          "title": "Çizgiyi tekrar üretme",
+          "sourceType": "SOURCE",
+          "sourceCode": "TR-01",
+          "pageRange": [
+            22,
+            38
+          ],
+          "order": 4,
+          "prerequisites": [
+            "PRE-TRACE-03"
+          ]
+        },
+        {
+          "id": "PRE-VIS-01",
+          "title": "Fark bulma",
+          "sourceType": "SOURCE",
+          "sourceCode": "TR-01",
+          "pageRange": [
+            39,
+            39
+          ],
+          "order": 5,
+          "prerequisites": [
+            "PRE-TRACE-03"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "SEQ-LIT-G1",
+      "domain": "LITERACY",
+      "title": "Harf Grubu 1 — a n e t",
+      "nodes": [
+        {
+          "id": "LIT-G1-A",
+          "title": "a sesi ve harfi",
+          "sourceType": "SOURCE",
+          "sourceCode": "TR-02",
+          "pageRange": [
+            14,
+            23
+          ],
+          "order": 1,
+          "prerequisites": [],
+          "unlockedLetters": [
+            "a"
+          ]
+        },
+        {
+          "id": "LIT-G1-N",
+          "title": "n sesi ve harfi",
+          "sourceType": "SOURCE",
+          "sourceCode": "TR-02",
+          "pageRange": [
+            30,
+            42
+          ],
+          "order": 2,
+          "prerequisites": [
+            "LIT-G1-A"
+          ],
+          "unlockedLetters": [
+            "a",
+            "n"
+          ]
+        },
+        {
+          "id": "LIT-G1-E",
+          "title": "e sesi ve harfi",
+          "sourceType": "SOURCE",
+          "sourceCode": "TR-02",
+          "pageRange": [
+            48,
+            65
+          ],
+          "order": 3,
+          "prerequisites": [
+            "LIT-G1-N"
+          ],
+          "unlockedLetters": [
+            "a",
+            "n",
+            "e"
+          ]
+        },
+        {
+          "id": "LIT-G1-T",
+          "title": "t sesi ve harfi",
+          "sourceType": "SOURCE",
+          "sourceCode": "TR-02",
+          "pageRange": [
+            66,
+            82
+          ],
+          "order": 4,
+          "prerequisites": [
+            "LIT-G1-E"
+          ],
+          "unlockedLetters": [
+            "a",
+            "n",
+            "e",
+            "t"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "SEQ-LIT-G2",
+      "domain": "LITERACY",
+      "title": "Harf Grubu 2 — i l o k u",
+      "nodes": [
+        {
+          "id": "LIT-G2-I",
+          "title": "i sesi ve harfi",
+          "sourceType": "SOURCE",
+          "sourceCode": "TR-03",
+          "pageRange": [
+            10,
+            21
+          ],
+          "order": 1,
+          "prerequisites": [
+            "LIT-G1-T"
+          ],
+          "unlockedLetters": [
+            "a",
+            "n",
+            "e",
+            "t",
+            "i"
+          ]
+        },
+        {
+          "id": "LIT-G2-L",
+          "title": "l sesi ve harfi",
+          "sourceType": "SOURCE",
+          "sourceCode": "TR-03",
+          "pageRange": [
+            26,
+            40
+          ],
+          "order": 2,
+          "prerequisites": [
+            "LIT-G2-I"
+          ],
+          "unlockedLetters": [
+            "a",
+            "n",
+            "e",
+            "t",
+            "i",
+            "l"
+          ]
+        },
+        {
+          "id": "LIT-G2-O",
+          "title": "o sesi ve harfi",
+          "sourceType": "SOURCE",
+          "sourceCode": "TR-03",
+          "pageRange": [
+            48,
+            67
+          ],
+          "order": 3,
+          "prerequisites": [
+            "LIT-G2-L"
+          ],
+          "unlockedLetters": [
+            "a",
+            "n",
+            "e",
+            "t",
+            "i",
+            "l",
+            "o"
+          ]
+        },
+        {
+          "id": "LIT-G2-K",
+          "title": "k sesi ve harfi",
+          "sourceType": "SOURCE",
+          "sourceCode": "TR-03",
+          "pageRange": [
+            68,
+            91
+          ],
+          "order": 4,
+          "prerequisites": [
+            "LIT-G2-O"
+          ],
+          "unlockedLetters": [
+            "a",
+            "n",
+            "e",
+            "t",
+            "i",
+            "l",
+            "o",
+            "k"
+          ]
+        },
+        {
+          "id": "LIT-G2-U",
+          "title": "u sesi ve harfi",
+          "sourceType": "SOURCE",
+          "sourceCode": "TR-03",
+          "pageRange": [
+            92,
+            112
+          ],
+          "order": 5,
+          "prerequisites": [
+            "LIT-G2-K"
+          ],
+          "unlockedLetters": [
+            "a",
+            "n",
+            "e",
+            "t",
+            "i",
+            "l",
+            "o",
+            "k",
+            "u"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "SEQ-MAT-SPATIAL",
+      "domain": "MATHEMATICS",
+      "title": "Nesnelerin Geometrisi — Uzamsal İlişkiler",
+      "nodes": [
+        {
+          "id": "MAT-SP-01",
+          "title": "Altında / üstünde",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-01",
+          "pageRange": [
+            12,
+            15
+          ],
+          "order": 1,
+          "prerequisites": []
+        },
+        {
+          "id": "MAT-SP-02",
+          "title": "Etrafında",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-01",
+          "pageRange": [
+            16,
+            19
+          ],
+          "order": 2,
+          "prerequisites": [
+            "MAT-SP-01"
+          ]
+        },
+        {
+          "id": "MAT-SP-03",
+          "title": "Arasında",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-01",
+          "pageRange": [
+            20,
+            23
+          ],
+          "order": 3,
+          "prerequisites": [
+            "MAT-SP-02"
+          ]
+        },
+        {
+          "id": "MAT-SP-04",
+          "title": "Önde / arkada",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-01",
+          "pageRange": [
+            24,
+            25
+          ],
+          "order": 4,
+          "prerequisites": [
+            "MAT-SP-03"
+          ]
+        },
+        {
+          "id": "MAT-SP-05",
+          "title": "Yakın / uzak",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-01",
+          "pageRange": [
+            26,
+            29
+          ],
+          "order": 5,
+          "prerequisites": [
+            "MAT-SP-04"
+          ]
+        },
+        {
+          "id": "MAT-SP-06",
+          "title": "Yüksekte / alçakta",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-01",
+          "pageRange": [
+            30,
+            32
+          ],
+          "order": 6,
+          "prerequisites": [
+            "MAT-SP-05"
+          ]
+        },
+        {
+          "id": "MAT-SP-07",
+          "title": "İçinde / dışında",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-01",
+          "pageRange": [
+            33,
+            36
+          ],
+          "order": 7,
+          "prerequisites": [
+            "MAT-SP-06"
+          ]
+        },
+        {
+          "id": "MAT-SP-08",
+          "title": "Sağında / solunda",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-01",
+          "pageRange": [
+            37,
+            43
+          ],
+          "order": 8,
+          "prerequisites": [
+            "MAT-SP-07"
+          ]
+        },
+        {
+          "id": "MAT-EQ-01",
+          "title": "Eş nesneler",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-01",
+          "pageRange": [
+            45,
+            49
+          ],
+          "order": 9,
+          "prerequisites": [
+            "MAT-SP-08"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "SEQ-MAT-NUMBERS",
+      "domain": "MATHEMATICS",
+      "title": "Sayılar ve Nicelikler 1",
+      "nodes": [
+        {
+          "id": "MAT-DIGIT-1",
+          "title": "1 rakamı",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            10,
+            14
+          ],
+          "order": 1,
+          "prerequisites": [],
+          "constraints": {
+            "numberMin": 0,
+            "numberMax": 1
+          }
+        },
+        {
+          "id": "MAT-DIGIT-2",
+          "title": "2 rakamı",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            15,
+            19
+          ],
+          "order": 2,
+          "prerequisites": [
+            "MAT-DIGIT-1"
+          ],
+          "constraints": {
+            "numberMin": 0,
+            "numberMax": 2
+          }
+        },
+        {
+          "id": "MAT-DIGIT-3",
+          "title": "3 rakamı",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            20,
+            25
+          ],
+          "order": 3,
+          "prerequisites": [
+            "MAT-DIGIT-2"
+          ],
+          "constraints": {
+            "numberMin": 0,
+            "numberMax": 3
+          }
+        },
+        {
+          "id": "MAT-DIGIT-4",
+          "title": "4 rakamı",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            26,
+            30
+          ],
+          "order": 4,
+          "prerequisites": [
+            "MAT-DIGIT-3"
+          ],
+          "constraints": {
+            "numberMin": 0,
+            "numberMax": 4
+          }
+        },
+        {
+          "id": "MAT-DIGIT-5",
+          "title": "5 rakamı",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            31,
+            35
+          ],
+          "order": 5,
+          "prerequisites": [
+            "MAT-DIGIT-4"
+          ],
+          "constraints": {
+            "numberMin": 0,
+            "numberMax": 5
+          }
+        },
+        {
+          "id": "MAT-DIGIT-6",
+          "title": "6 rakamı",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            36,
+            41
+          ],
+          "order": 6,
+          "prerequisites": [
+            "MAT-DIGIT-5"
+          ],
+          "constraints": {
+            "numberMin": 0,
+            "numberMax": 6
+          }
+        },
+        {
+          "id": "MAT-DIGIT-7",
+          "title": "7 rakamı",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            42,
+            46
+          ],
+          "order": 7,
+          "prerequisites": [
+            "MAT-DIGIT-6"
+          ],
+          "constraints": {
+            "numberMin": 0,
+            "numberMax": 7
+          }
+        },
+        {
+          "id": "MAT-DIGIT-8",
+          "title": "8 rakamı",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            47,
+            51
+          ],
+          "order": 8,
+          "prerequisites": [
+            "MAT-DIGIT-7"
+          ],
+          "constraints": {
+            "numberMin": 0,
+            "numberMax": 8
+          }
+        },
+        {
+          "id": "MAT-DIGIT-9",
+          "title": "9 rakamı",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            52,
+            56
+          ],
+          "order": 9,
+          "prerequisites": [
+            "MAT-DIGIT-8"
+          ],
+          "constraints": {
+            "numberMin": 0,
+            "numberMax": 9
+          }
+        },
+        {
+          "id": "MAT-DIGIT-0",
+          "title": "0 rakamı",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            57,
+            60
+          ],
+          "order": 10,
+          "prerequisites": [
+            "MAT-DIGIT-9"
+          ],
+          "constraints": {
+            "numberMin": 0,
+            "numberMax": 9
+          }
+        },
+        {
+          "id": "MAT-NUM-01",
+          "title": "Sayıları tanıma ve nicelik",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            61,
+            64
+          ],
+          "order": 11,
+          "prerequisites": [
+            "MAT-DIGIT-0"
+          ],
+          "constraints": {
+            "numberMin": 0,
+            "numberMax": 20
+          }
+        },
+        {
+          "id": "MAT-TENS-01",
+          "title": "Onluk ve birlik",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            65,
+            71
+          ],
+          "order": 12,
+          "prerequisites": [
+            "MAT-NUM-01"
+          ],
+          "constraints": {
+            "numberMin": 10,
+            "numberMax": 20
+          }
+        },
+        {
+          "id": "MAT-ORD-01",
+          "title": "Sıra bildiren sayılar",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            72,
+            74
+          ],
+          "order": 13,
+          "prerequisites": [
+            "MAT-NUM-01"
+          ],
+          "constraints": {
+            "numberMin": 1,
+            "numberMax": 10
+          }
+        },
+        {
+          "id": "MAT-CMP-01",
+          "title": "Eşit / daha çok / daha az",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            75,
+            81
+          ],
+          "order": 14,
+          "prerequisites": [
+            "MAT-NUM-01"
+          ],
+          "constraints": {
+            "numberMin": 0,
+            "numberMax": 20
+          }
+        },
+        {
+          "id": "MAT-SKIP-01",
+          "title": "İleri birer ritmik sayma",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            82,
+            86
+          ],
+          "order": 15,
+          "prerequisites": [
+            "MAT-NUM-01"
+          ],
+          "constraints": {
+            "numberMin": 1,
+            "numberMax": 100
+          }
+        },
+        {
+          "id": "MAT-SKIP-05",
+          "title": "İleri beşer ritmik sayma",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            87,
+            89
+          ],
+          "order": 16,
+          "prerequisites": [
+            "MAT-SKIP-01"
+          ],
+          "constraints": {
+            "numberMin": 5,
+            "numberMax": 100
+          }
+        },
+        {
+          "id": "MAT-SKIP-10",
+          "title": "İleri onar ritmik sayma",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            90,
+            93
+          ],
+          "order": 17,
+          "prerequisites": [
+            "MAT-SKIP-05"
+          ],
+          "constraints": {
+            "numberMin": 10,
+            "numberMax": 100
+          }
+        },
+        {
+          "id": "MAT-SKIP-02",
+          "title": "İleri ikişer ritmik sayma",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            94,
+            97
+          ],
+          "order": 18,
+          "prerequisites": [
+            "MAT-SKIP-01"
+          ],
+          "constraints": {
+            "numberMin": 2,
+            "numberMax": 20
+          }
+        },
+        {
+          "id": "MAT-BACK-01",
+          "title": "20'den geriye birer",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            98,
+            99
+          ],
+          "order": 19,
+          "prerequisites": [
+            "MAT-SKIP-01"
+          ],
+          "constraints": {
+            "numberMin": 1,
+            "numberMax": 20
+          }
+        },
+        {
+          "id": "MAT-BACK-02",
+          "title": "20'den geriye ikişer",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            100,
+            102
+          ],
+          "order": 20,
+          "prerequisites": [
+            "MAT-SKIP-02"
+          ],
+          "constraints": {
+            "numberMin": 2,
+            "numberMax": 20
+          }
+        },
+        {
+          "id": "MAT-PAT-01",
+          "title": "Örüntüler",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            103,
+            112
+          ],
+          "order": 21,
+          "prerequisites": [
+            "MAT-NUM-01"
+          ]
+        },
+        {
+          "id": "MAT-ASSESS-01",
+          "title": "Ünite tekrar ve değerlendirme",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-02",
+          "pageRange": [
+            113,
+            120
+          ],
+          "order": 22,
+          "prerequisites": [
+            "MAT-PAT-01"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "SEQ-MAT-MEASURE",
+      "domain": "MATHEMATICS",
+      "title": "Sayılar ve Nicelikler 2",
+      "nodes": [
+        {
+          "id": "MAT-LEN-01",
+          "title": "Uzun / kısa",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-03",
+          "pageRange": [
+            10,
+            14
+          ],
+          "order": 1,
+          "prerequisites": [
+            "MAT-NUM-01"
+          ]
+        },
+        {
+          "id": "MAT-LEN-02",
+          "title": "Standart olmayan ölçme",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-03",
+          "pageRange": [
+            15,
+            19
+          ],
+          "order": 2,
+          "prerequisites": [
+            "MAT-LEN-01"
+          ]
+        },
+        {
+          "id": "MAT-LEN-05",
+          "title": "Tahmin ve ölçüm",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-03",
+          "pageRange": [
+            20,
+            22
+          ],
+          "order": 3,
+          "prerequisites": [
+            "MAT-LEN-02"
+          ]
+        },
+        {
+          "id": "MAT-MASS-01",
+          "title": "Ağır / hafif / eşit",
+          "sourceType": "SOURCE",
+          "sourceCode": "MA-03",
+          "pageRange": [
+            23,
+            28
+          ],
+          "order": 4,
+          "prerequisites": [
+            "MAT-LEN-01"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "SEQ-EXTENSIONS",
+      "domain": "MATHEMATICS",
+      "title": "Kaynak Dışı Genişletmeler",
+      "nodes": [
+        {
+          "id": "EXT-ADD-01",
+          "title": "Toplama",
+          "sourceType": "EXTENSION",
+          "sourceCode": null,
+          "pageRange": null,
+          "order": 1,
+          "prerequisites": [
+            "MAT-CMP-01"
+          ]
+        },
+        {
+          "id": "EXT-SUB-01",
+          "title": "Çıkarma",
+          "sourceType": "EXTENSION",
+          "sourceCode": null,
+          "pageRange": null,
+          "order": 2,
+          "prerequisites": [
+            "EXT-ADD-01"
+          ]
+        },
+        {
+          "id": "EXT-MUL-01",
+          "title": "Çarpma",
+          "sourceType": "EXTENSION",
+          "sourceCode": null,
+          "pageRange": null,
+          "order": 3,
+          "prerequisites": [
+            "EXT-ADD-01",
+            "MAT-SKIP-02"
+          ]
+        }
+      ]
+    }
+  ]
+}
