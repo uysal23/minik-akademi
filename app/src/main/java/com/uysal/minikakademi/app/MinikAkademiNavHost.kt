@@ -22,6 +22,8 @@ import com.uysal.minikakademi.feature.literacy.LiteracyHomeScreen
 import com.uysal.minikakademi.feature.mathematics.MathematicsActivityScreen
 import com.uysal.minikakademi.feature.mathematics.MathematicsCategoryScreen
 import com.uysal.minikakademi.feature.mathematics.MathematicsHomeScreen
+import com.uysal.minikakademi.feature.minigames.MiniGameScreen
+import com.uysal.minikakademi.feature.minigames.MiniGamesHomeScreen
 import com.uysal.minikakademi.feature.onboarding.LearningLevelScreen
 import com.uysal.minikakademi.feature.onboarding.ParentPinSetupScreen
 import com.uysal.minikakademi.feature.onboarding.ParentStartGateScreen
@@ -165,7 +167,7 @@ fun MinikAkademiNavHost(
                     navController.navigate(AppRoute.MATHEMATICS_HOME)
                 },
                 onOpenGames = {
-                    navController.navigate(AppRoute.learningPath("games"))
+                    navController.navigate(AppRoute.MINI_GAMES_HOME)
                 },
                 onParentAccess = {
                     parentPinError = false
@@ -278,6 +280,34 @@ fun MinikAkademiNavHost(
                 onComplete = {
                     scope.launch {
                         repository.markMathematicsActivityComplete(activityId)
+                    }
+                }
+            )
+        }
+
+        composable(AppRoute.MINI_GAMES_HOME) {
+            MiniGamesHomeScreen(
+                avatarId = settings.avatarId,
+                completedMiniGames = settings.completedMiniGames,
+                completedTracingActivities = settings.completedTracingActivities,
+                completedLiteracyActivities = settings.completedLiteracyActivities,
+                completedMathematicsActivities = settings.completedMathematicsActivities,
+                onOpenGame = { gameId ->
+                    navController.navigate(AppRoute.miniGame(gameId))
+                },
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(AppRoute.MINI_GAME_PATTERN) { backStackEntry ->
+            val gameId = backStackEntry.arguments?.getString("gameId").orEmpty()
+            MiniGameScreen(
+                gameId = gameId,
+                avatarId = settings.avatarId,
+                onBack = { navController.popBackStack() },
+                onComplete = {
+                    scope.launch {
+                        repository.markMiniGameComplete(gameId)
                     }
                 }
             )
