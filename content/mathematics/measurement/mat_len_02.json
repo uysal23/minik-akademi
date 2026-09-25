@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "1.0",
+  "id": "ACT-MAT-LEN-02",
+  "domain": "MATHEMATICS",
+  "curriculumId": "MAT-LEN-02",
+  "sourceType": "ADAPTED",
+  "sourceRef": {
+    "sourceCode": "MA-03",
+    "pageStart": 15,
+    "pageEnd": 17
+  },
+  "title": "Parmak, karış, kulaç, ayak, adım",
+  "learningLevel": "GRADE_1",
+  "activityType": "MEASURE_NONSTANDARD",
+  "instruction": {
+    "text": "Sınıfın uzunluğu için uygun ölçme aracını seç.",
+    "audioId": "aud_act_mat_len_02_instruction",
+    "voiceProfile": "TEACHER_MATH",
+    "replayAllowed": true
+  },
+  "learningTarget": {
+    "conceptId": "MAT-LEN-02",
+    "targetSymbol": "sınıf"
+  },
+  "prerequisites": [
+    "MAT-LEN-01"
+  ],
+  "interaction": {
+    "mode": "TAP",
+    "retryStrategy": "HIGHLIGHT_HINT",
+    "options": [
+      {
+        "id": "opt_1",
+        "label": "adım",
+        "value": "adım",
+        "correct": true
+      },
+      {
+        "id": "opt_2",
+        "label": "parmak",
+        "value": "parmak",
+        "correct": false
+      },
+      {
+        "id": "opt_3",
+        "label": "silgi",
+        "value": "silgi",
+        "correct": false
+      }
+    ]
+  },
+  "assets": {
+    "visualIds": [],
+    "avatarUse": {
+      "enabled": true,
+      "role": "GUIDE",
+      "pose": "thinking"
+    }
+  },
+  "audio": {
+    "extraAudioIds": []
+  },
+  "animation": {
+    "entry": "FADE_IN",
+    "success": "SOFT_GLOW",
+    "retry": "HIGHLIGHT_HINT",
+    "reducedMotionFallback": "FADE_IN"
+  },
+  "feedback": {
+    "successAudioId": "aud_common_success_01",
+    "retryAudioId": "aud_common_retry_01",
+    "successSfx": "SFX_SUCCESS_CHIME",
+    "retrySfx": "SFX_RETRY_SOFT",
+    "punitive": false
+  },
+  "safety": {
+    "reviewed": false,
+    "prohibitedContentPresent": false,
+    "externalUrl": false,
+    "ads": false,
+    "purchase": false
+  },
+  "progression": {
+    "completionRule": "COMPLETE_ON_SUCCESS",
+    "repeatEligible": true,
+    "unlocks": []
+  },
+  "metadata": {
+    "locale": "tr-TR",
+    "authoringVersion": 1,
+    "notes": "Kaynak ölçme etkinliğinin özgün dijital uyarlaması."
+  }
+}
