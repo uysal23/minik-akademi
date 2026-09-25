@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "1.0",
+  "id": "PRE-TRACE-DIRECTION-001",
+  "domain": "PREWRITING",
+  "curriculumId": "PRE-TRACE-03",
+  "sourceType": "ADAPTED",
+  "sourceRef": {
+    "sourceCode": "TR-01",
+    "pageStart": 22,
+    "pageEnd": 28
+  },
+  "title": "Ok Yönünde Çiz",
+  "learningLevel": "PRESCHOOL_START",
+  "activityType": "TRACE_PATH",
+  "instruction": {
+    "text": "Başlangıçtan sona doğru zikzak çizgiyi takip et.",
+    "audioId": "aud_pre_trace_direction_001_instruction",
+    "voiceProfile": "TEACHER_WARM",
+    "replayAllowed": true
+  },
+  "learningTarget": {
+    "conceptId": "PRE-TRACE-03",
+    "targetSymbol": "ZIGZAG"
+  },
+  "prerequisites": [
+    "PRE-TRACE-02"
+  ],
+  "interaction": {
+    "mode": "TRACE",
+    "retryStrategy": "HIGHLIGHT_HINT"
+  },
+  "assets": {
+    "visualIds": [],
+    "avatarUse": {
+      "enabled": true,
+      "role": "GUIDE",
+      "pose": "point_right"
+    }
+  },
+  "audio": {
+    "extraAudioIds": []
+  },
+  "animation": {
+    "entry": "FADE_IN",
+    "success": "SOFT_GLOW",
+    "retry": "HIGHLIGHT_HINT",
+    "reducedMotionFallback": "FADE_IN"
+  },
+  "feedback": {
+    "successAudioId": "aud_common_success_01",
+    "retryAudioId": "aud_common_retry_01",
+    "successSfx": "SFX_SUCCESS_CHIME",
+    "retrySfx": "SFX_RETRY_SOFT",
+    "punitive": false
+  },
+  "safety": {
+    "reviewed": false,
+    "prohibitedContentPresent": false,
+    "externalUrl": false,
+    "ads": false,
+    "purchase": false
+  },
+  "progression": {
+    "completionRule": "COMPLETE_ON_SUCCESS",
+    "repeatEligible": true,
+    "unlocks": [
+      "PRE-TRACE-04"
+    ]
+  },
+  "metadata": {
+    "locale": "tr-TR",
+    "authoringVersion": 1,
+    "notes": "TR-01 ok yönünde kesik çizgi tamamlama çalışmalarının dijital uyarlaması."
+  }
+}
