@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-09-25 — Content Schema & Validation V1.0
+
+- CONTENT_SCHEMA_V1.md completed and locked.
+- Machine-readable JSON Schema added as content/activity_schema.json.
+- Locked curriculum manifest added as content/curriculum_manifest.json.
+- Manifest includes source-backed, adapted and extension nodes with prerequisite relationships, source/page traceability, unlocked-letter constraints and math number-range constraints.
+- Standard activity types, offline audio/visual IDs, teacher voice profiles, animation profiles, feedback rules, avatar use, progression and safety fields locked.
+- Python content validator added under tools/content-validator/.
+- Validator checks schema, unique IDs, curriculum prerequisite cycles, source/page constraints, locked letter ranges, math number ranges, forbidden remote/runtime keys and safety fields.
+- Release mode requires safety review and local audio/visual assets.
+- GitHub Actions content-validation workflow added.
+- Android application development has not started.
+
 ## 2026-09-25 — Experience Systems V1.0
 
 - AVATAR_SYSTEM_V1.md locked with 12+ original human child avatars and a fixed reusable pose set.
