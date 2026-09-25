@@ -47,6 +47,7 @@ dependencies {
     implementation(project(":feature:child-home"))
     implementation(project(":feature:learning-path"))
     implementation(project(":feature:tracing"))
+    implementation(project(":feature:literacy"))
     implementation(project(":feature:parent-gate"))
     implementation(project(":feature:parent-dashboard"))
     implementation(project(":feature:settings"))
