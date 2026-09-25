@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "1.0",
+  "id": "ACT-MAT-LEN-01",
+  "domain": "MATHEMATICS",
+  "curriculumId": "MAT-LEN-01",
+  "sourceType": "ADAPTED",
+  "sourceRef": {
+    "sourceCode": "MA-03",
+    "pageStart": 10,
+    "pageEnd": 14
+  },
+  "title": "Uzun / kısa karşılaştırma",
+  "learningLevel": "GRADE_1",
+  "activityType": "COMPARE_LENGTH",
+  "instruction": {
+    "text": "Daha uzun olanı seç.",
+    "audioId": "aud_act_mat_len_01_instruction",
+    "voiceProfile": "TEACHER_MATH",
+    "replayAllowed": true
+  },
+  "learningTarget": {
+    "conceptId": "MAT-LEN-01",
+    "targetSymbol": "────────   ────"
+  },
+  "prerequisites": [
+    "MAT-NUM-02"
+  ],
+  "interaction": {
+    "mode": "TAP",
+    "retryStrategy": "HIGHLIGHT_HINT",
+    "options": [
+      {
+        "id": "opt_1",
+        "label": "soldaki",
+        "value": "soldaki",
+        "correct": true
+      },
+      {
+        "id": "opt_2",
+        "label": "sağdaki",
+        "value": "sağdaki",
+        "correct": false
+      },
+      {
+        "id": "opt_3",
+        "label": "eşit",
+        "value": "eşit",
+        "correct": false
+      }
+    ]
+  },
+  "assets": {
+    "visualIds": [],
+    "avatarUse": {
+      "enabled": true,
+      "role": "GUIDE",
+      "pose": "thinking"
+    }
+  },
+  "audio": {
+    "extraAudioIds": []
+  },
+  "animation": {
+    "entry": "FADE_IN",
+    "success": "SOFT_GLOW",
+    "retry": "HIGHLIGHT_HINT",
+    "reducedMotionFallback": "FADE_IN"
+  },
+  "feedback": {
+    "successAudioId": "aud_common_success_01",
+    "retryAudioId": "aud_common_retry_01",
+    "successSfx": "SFX_SUCCESS_CHIME",
+    "retrySfx": "SFX_RETRY_SOFT",
+    "punitive": false
+  },
+  "safety": {
+    "reviewed": false,
+    "prohibitedContentPresent": false,
+    "externalUrl": false,
+    "ads": false,
+    "purchase": false
+  },
+  "progression": {
+    "completionRule": "COMPLETE_ON_SUCCESS",
+    "repeatEligible": true,
+    "unlocks": []
+  },
+  "metadata": {
+    "locale": "tr-TR",
+    "authoringVersion": 1,
+    "notes": "Kaynak ölçme etkinliğinin özgün dijital uyarlaması."
+  }
+}
