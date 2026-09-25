@@ -40,13 +40,29 @@ jobs:
         with:
           packages: platform-tools
 
-      - name: Inspect Android SDK
+      - name: Install Android 17 compile SDK
+        shell: bash
         run: |
-          echo "ANDROID_HOME=$ANDROID_HOME"
+          set -euo pipefail
+          SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          PLATFORM_PACKAGE="$($SDKMANAGER --list --channel=3 | awk '/platforms;android-37([.;[:space:]]|$)/ {print $1; exit}')"
+          if [ -z "$PLATFORM_PACKAGE" ]; then
+            echo "Android API 37 platform package was not found in sdkmanager channels."
+            $SDKMANAGER --list --channel=3 | grep -E 'platforms;android-37|build-tools;3[67]' || true
+            exit 1
+          fi
+
+          echo "Installing $PLATFORM_PACKAGE"
+          yes | $SDKMANAGER --channel=3 "$PLATFORM_PACKAGE" "build-tools;36.0.0"
+
+          if [ -d "$ANDROID_HOME/platforms/android-37.0" ] && [ ! -e "$ANDROID_HOME/platforms/android-37" ]; then
+            ln -s "$ANDROID_HOME/platforms/android-37.0" "$ANDROID_HOME/platforms/android-37"
+          fi
+
           echo "Installed platforms:"
-          ls -1 "$ANDROID_HOME/platforms" || true
+          ls -1 "$ANDROID_HOME/platforms"
           echo "Installed build-tools:"
-          ls -1 "$ANDROID_HOME/build-tools" || true
+          ls -1 "$ANDROID_HOME/build-tools"
 
       - name: Set up Gradle 9.6
         uses: gradle/actions/setup-gradle@v4
