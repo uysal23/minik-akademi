@@ -14,9 +14,12 @@ object AppRoute {
     const val HOME = "home"
     const val LEARNING_PATH = "learning_path"
     const val LEARNING_PATH_PATTERN = "learning_path/{category}"
+    const val TRACING_HOME = "tracing_home"
+    const val TRACING_ACTIVITY_PATTERN = "tracing_activity/{activityId}"
     const val PARENT_GATE = "parent_gate"
     const val PARENT_DASHBOARD = "parent_dashboard"
     const val PARENT_SETTINGS = "parent_settings"
 
     fun learningPath(category: String): String = "$LEARNING_PATH/$category"
+    fun tracingActivity(activityId: String): String = "tracing_activity/$activityId"
 }
