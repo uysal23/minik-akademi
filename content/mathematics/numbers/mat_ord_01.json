@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "1.0",
+  "id": "ACT-MAT-ORD-01",
+  "domain": "MATHEMATICS",
+  "curriculumId": "MAT-ORD-01",
+  "sourceType": "ADAPTED",
+  "sourceRef": {
+    "sourceCode": "MA-02",
+    "pageStart": 72,
+    "pageEnd": 74
+  },
+  "title": "Sıra bildiren sayılar",
+  "learningLevel": "GRADE_1",
+  "activityType": "ORDER_ITEMS",
+  "instruction": {
+    "text": "Üçüncü sırayı seç.",
+    "audioId": "aud_act_mat_ord_01_instruction",
+    "voiceProfile": "TEACHER_MATH",
+    "replayAllowed": true
+  },
+  "learningTarget": {
+    "conceptId": "MAT-ORD-01",
+    "targetSymbol": "1. 2. 3. 4. 5.",
+    "numberRange": {
+      "min": 1,
+      "max": 10
+    }
+  },
+  "prerequisites": [
+    "MAT-NUM-02"
+  ],
+  "interaction": {
+    "mode": "ORDER",
+    "retryStrategy": "HIGHLIGHT_HINT",
+    "options": [
+      {
+        "id": "opt_1",
+        "label": "1.",
+        "value": "1.",
+        "correct": false
+      },
+      {
+        "id": "opt_2",
+        "label": "3.",
+        "value": "3.",
+        "correct": true
+      },
+      {
+        "id": "opt_3",
+        "label": "5.",
+        "value": "5.",
+        "correct": false
+      }
+    ]
+  },
+  "assets": {
+    "visualIds": [],
+    "avatarUse": {
+      "enabled": true,
+      "role": "GUIDE",
+      "pose": "thinking"
+    }
+  },
+  "audio": {
+    "extraAudioIds": []
+  },
+  "animation": {
+    "entry": "FADE_IN",
+    "success": "SOFT_GLOW",
+    "retry": "HIGHLIGHT_HINT",
+    "reducedMotionFallback": "FADE_IN"
+  },
+  "feedback": {
+    "successAudioId": "aud_common_success_01",
+    "retryAudioId": "aud_common_retry_01",
+    "successSfx": "SFX_SUCCESS_CHIME",
+    "retrySfx": "SFX_RETRY_SOFT",
+    "punitive": false
+  },
+  "safety": {
+    "reviewed": false,
+    "prohibitedContentPresent": false,
+    "externalUrl": false,
+    "ads": false,
+    "purchase": false
+  },
+  "progression": {
+    "completionRule": "COMPLETE_ON_SUCCESS",
+    "repeatEligible": true,
+    "unlocks": []
+  },
+  "metadata": {
+    "locale": "tr-TR",
+    "authoringVersion": 1,
+    "notes": "Kaynak matematik etkinliğinin özgün dijital uyarlaması."
+  }
+}
