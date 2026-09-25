@@ -1,0 +1,691 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://minik-akademi.local/schemas/activity-v1.json",
+  "title": "Minik Akademi Activity V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "id",
+    "domain",
+    "curriculumId",
+    "sourceType",
+    "sourceRef",
+    "title",
+    "learningLevel",
+    "activityType",
+    "instruction",
+    "learningTarget",
+    "prerequisites",
+    "interaction",
+    "assets",
+    "audio",
+    "animation",
+    "feedback",
+    "safety",
+    "progression",
+    "metadata"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Z0-9][A-Z0-9._-]{2,63}$"
+    },
+    "domain": {
+      "enum": [
+        "PREWRITING",
+        "LITERACY",
+        "MATHEMATICS",
+        "MINI_GAME"
+      ]
+    },
+    "curriculumId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 80
+    },
+    "sourceType": {
+      "enum": [
+        "SOURCE",
+        "ADAPTED",
+        "EXTENSION"
+      ]
+    },
+    "sourceRef": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "sourceCode",
+            "pageStart",
+            "pageEnd"
+          ],
+          "properties": {
+            "sourceCode": {
+              "enum": [
+                "TR-01",
+                "TR-02",
+                "TR-03",
+                "MA-01",
+                "MA-02",
+                "MA-03"
+              ]
+            },
+            "pageStart": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "pageEnd": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "sourceActivity": {
+              "type": "string",
+              "maxLength": 120
+            }
+          }
+        }
+      ]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+    },
+    "learningLevel": {
+      "enum": [
+        "PRESCHOOL_START",
+        "PRESCHOOL_ADVANCED",
+        "GRADE_1"
+      ]
+    },
+    "activityType": {
+      "enum": [
+        "TRACE_PATH",
+        "TRACE_SHAPE",
+        "TRACE_LETTER",
+        "TRACE_NUMBER",
+        "FIND_DIFFERENCE",
+        "LETTER_INTRO",
+        "FIND_LETTER",
+        "FIND_SOUND_OBJECT",
+        "FIND_TARGET_SYMBOL",
+        "BUILD_SYLLABLE",
+        "BUILD_WORD",
+        "WORD_IMAGE_MATCH",
+        "STORY_LISTEN",
+        "STORY_QUESTION",
+        "NUMBER_INTRO",
+        "COUNT_OBJECTS",
+        "NUMBER_OBJECT_MATCH",
+        "POSITION_SELECT",
+        "COMPARE_QUANTITY",
+        "COMPARE_LENGTH",
+        "COMPARE_MASS",
+        "MEASURE_NONSTANDARD",
+        "RHYTHMIC_COUNT",
+        "PATTERN_COMPLETE",
+        "ORDER_ITEMS",
+        "MAZE_TARGET_SYMBOL",
+        "TAP_CHOICE",
+        "MULTI_SELECT",
+        "DRAG_DROP",
+        "MATCH_PAIR",
+        "BUILD_SEQUENCE",
+        "ADD_OBJECTS",
+        "SUBTRACT_OBJECTS",
+        "GROUP_OBJECTS"
+      ]
+    },
+    "instruction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text",
+        "audioId",
+        "voiceProfile",
+        "replayAllowed"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 180
+        },
+        "audioId": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._-]{2,127}$"
+        },
+        "voiceProfile": {
+          "enum": [
+            "TEACHER_WARM",
+            "TEACHER_PHONICS",
+            "TEACHER_MATH",
+            "TEACHER_STORY",
+            "TEACHER_ENCOURAGE"
+          ]
+        },
+        "replayAllowed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "learningTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "conceptId"
+      ],
+      "properties": {
+        "conceptId": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 80
+        },
+        "targetSymbol": {
+          "type": "string",
+          "maxLength": 20
+        },
+        "allowedLetters": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2
+          },
+          "uniqueItems": true
+        },
+        "numberRange": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "min",
+            "max"
+          ],
+          "properties": {
+            "min": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "max": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "quantity": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "relation": {
+          "enum": [
+            "UNDER",
+            "OVER",
+            "AROUND",
+            "BETWEEN",
+            "FRONT",
+            "BEHIND",
+            "NEAR",
+            "FAR",
+            "HIGH",
+            "LOW",
+            "INSIDE",
+            "OUTSIDE",
+            "RIGHT",
+            "LEFT",
+            "EQUAL",
+            "MORE",
+            "LESS",
+            "LONGER",
+            "SHORTER",
+            "HEAVIER",
+            "LIGHTER"
+          ]
+        }
+      }
+    },
+    "prerequisites": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 80
+      },
+      "uniqueItems": true
+    },
+    "interaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "retryStrategy"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "TAP",
+            "MULTI_TAP",
+            "DRAG",
+            "TRACE",
+            "MATCH",
+            "ORDER",
+            "LISTEN",
+            "PASSIVE_INTRO"
+          ]
+        },
+        "retryStrategy": {
+          "enum": [
+            "REPEAT_PROMPT",
+            "HIGHLIGHT_HINT",
+            "REDUCE_OPTIONS",
+            "EASIER_VARIANT",
+            "NONE"
+          ]
+        },
+        "targetCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "options": {
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9._-]{1,63}$"
+              },
+              "label": {
+                "type": "string",
+                "maxLength": 80
+              },
+              "assetId": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9._-]{1,127}$"
+              },
+              "audioId": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9._-]{1,127}$"
+              },
+              "value": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "maxLength": 80
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ]
+              },
+              "correct": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      }
+    },
+    "assets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "visualIds",
+        "avatarUse"
+      ],
+      "properties": {
+        "visualIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._-]{1,127}$"
+          },
+          "uniqueItems": true,
+          "maxItems": 40
+        },
+        "backgroundId": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-z0-9][a-z0-9._-]{1,127}$"
+        },
+        "avatarUse": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "enabled",
+            "role",
+            "pose"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "role": {
+              "enum": [
+                "GUIDE",
+                "PARTICIPANT",
+                "TARGET",
+                "NONE"
+              ]
+            },
+            "pose": {
+              "enum": [
+                "idle",
+                "smile",
+                "wave",
+                "listen",
+                "point_left",
+                "point_right",
+                "point_up",
+                "point_down",
+                "thinking",
+                "walk_left",
+                "walk_right",
+                "hold_object",
+                "celebrate",
+                "clap",
+                "sit",
+                "surprised_soft"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "audio": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "extraAudioIds"
+      ],
+      "properties": {
+        "extraAudioIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._-]{2,127}$"
+          },
+          "uniqueItems": true,
+          "maxItems": 30
+        }
+      }
+    },
+    "animation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entry",
+        "success",
+        "retry",
+        "reducedMotionFallback"
+      ],
+      "properties": {
+        "entry": {
+          "enum": [
+            "SLIDE_LEFT",
+            "SLIDE_RIGHT",
+            "SLIDE_UP",
+            "SOFT_DROP",
+            "POP_IN",
+            "FADE_IN",
+            "NONE"
+          ]
+        },
+        "success": {
+          "enum": [
+            "BOUNCE_ONCE",
+            "SOFT_GLOW",
+            "SMALL_STARS",
+            "NONE"
+          ]
+        },
+        "retry": {
+          "enum": [
+            "SOFT_SHAKE",
+            "HIGHLIGHT_HINT",
+            "NONE"
+          ]
+        },
+        "reducedMotionFallback": {
+          "enum": [
+            "FADE_IN",
+            "NONE"
+          ]
+        }
+      }
+    },
+    "feedback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "successAudioId",
+        "retryAudioId",
+        "successSfx",
+        "retrySfx",
+        "punitive"
+      ],
+      "properties": {
+        "successAudioId": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._-]{2,127}$"
+        },
+        "retryAudioId": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._-]{2,127}$"
+        },
+        "successSfx": {
+          "enum": [
+            "SFX_SOFT_POP",
+            "SFX_GENTLE_TAP",
+            "SFX_SUCCESS_CHIME",
+            "SFX_STAR_SPARKLE",
+            "SFX_SLIDE_SOFT",
+            "SFX_COMPLETE"
+          ]
+        },
+        "retrySfx": {
+          "enum": [
+            "SFX_RETRY_SOFT",
+            "SFX_GENTLE_TAP"
+          ]
+        },
+        "punitive": {
+          "const": false
+        }
+      }
+    },
+    "safety": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reviewed",
+        "prohibitedContentPresent",
+        "externalUrl",
+        "ads",
+        "purchase"
+      ],
+      "properties": {
+        "reviewed": {
+          "type": "boolean"
+        },
+        "prohibitedContentPresent": {
+          "const": false
+        },
+        "externalUrl": {
+          "const": false
+        },
+        "ads": {
+          "const": false
+        },
+        "purchase": {
+          "const": false
+        }
+      }
+    },
+    "progression": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "completionRule",
+        "repeatEligible",
+        "unlocks"
+      ],
+      "properties": {
+        "completionRule": {
+          "enum": [
+            "COMPLETE_ON_SUCCESS",
+            "COMPLETE_ON_ATTEMPT",
+            "COMPLETE_ON_LISTEN"
+          ]
+        },
+        "repeatEligible": {
+          "type": "boolean"
+        },
+        "unlocks": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 80
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "locale",
+        "authoringVersion"
+      ],
+      "properties": {
+        "locale": {
+          "const": "tr-TR"
+        },
+        "authoringVersion": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 500
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "sourceType": {
+            "enum": [
+              "SOURCE",
+              "ADAPTED"
+            ]
+          }
+        },
+        "required": [
+          "sourceType"
+        ]
+      },
+      "then": {
+        "properties": {
+          "sourceRef": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "sourceType": {
+            "const": "EXTENSION"
+          }
+        },
+        "required": [
+          "sourceType"
+        ]
+      },
+      "then": {
+        "properties": {
+          "curriculumId": {
+            "pattern": "^EXT-"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "activityType": {
+            "enum": [
+              "TRACE_LETTER",
+              "FIND_LETTER",
+              "FIND_TARGET_SYMBOL",
+              "LETTER_INTRO"
+            ]
+          }
+        },
+        "required": [
+          "activityType"
+        ]
+      },
+      "then": {
+        "properties": {
+          "learningTarget": {
+            "required": [
+              "conceptId",
+              "targetSymbol"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "activityType": {
+            "enum": [
+              "COUNT_OBJECTS",
+              "NUMBER_INTRO",
+              "NUMBER_OBJECT_MATCH",
+              "COMPARE_QUANTITY",
+              "RHYTHMIC_COUNT"
+            ]
+          }
+        },
+        "required": [
+          "activityType"
+        ]
+      },
+      "then": {
+        "properties": {
+          "learningTarget": {
+            "required": [
+              "conceptId",
+              "numberRange"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}
