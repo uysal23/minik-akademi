@@ -22,6 +22,8 @@ object AppRoute {
     const val MATHEMATICS_HOME = "mathematics_home"
     const val MATHEMATICS_CATEGORY_PATTERN = "mathematics_category/{sequenceId}"
     const val MATHEMATICS_ACTIVITY_PATTERN = "mathematics_activity/{activityId}"
+    const val MINI_GAMES_HOME = "mini_games_home"
+    const val MINI_GAME_PATTERN = "mini_game/{gameId}"
     const val PARENT_GATE = "parent_gate"
     const val PARENT_DASHBOARD = "parent_dashboard"
     const val PARENT_SETTINGS = "parent_settings"
@@ -32,4 +34,5 @@ object AppRoute {
     fun literacyActivity(activityId: String): String = "literacy_activity/$activityId"
     fun mathematicsCategory(sequenceId: String): String = "mathematics_category/$sequenceId"
     fun mathematicsActivity(activityId: String): String = "mathematics_activity/$activityId"
+    fun miniGame(gameId: String): String = "mini_game/$gameId"
 }
