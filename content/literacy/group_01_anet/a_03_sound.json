@@ -1,0 +1,109 @@
+{
+  "schemaVersion": "1.0",
+  "id": "LIT-A-SOUND-001",
+  "domain": "LITERACY",
+  "curriculumId": "LIT-G1-A",
+  "sourceType": "ADAPTED",
+  "sourceRef": {
+    "sourceCode": "TR-02",
+    "pageStart": 14,
+    "pageEnd": 17
+  },
+  "title": "a Sesini Bul",
+  "learningLevel": "GRADE_1",
+  "activityType": "FIND_SOUND_OBJECT",
+  "instruction": {
+    "text": "İsminde a sesi olan varlıkları seç.",
+    "audioId": "aud_lit_a_sound_001_instruction",
+    "voiceProfile": "TEACHER_PHONICS",
+    "replayAllowed": true
+  },
+  "learningTarget": {
+    "conceptId": "LIT-G1-A",
+    "targetSymbol": "a",
+    "allowedLetters": [
+      "a"
+    ]
+  },
+  "prerequisites": [
+    "LIT-A-FIND-001"
+  ],
+  "interaction": {
+    "mode": "MULTI_TAP",
+    "retryStrategy": "HIGHLIGHT_HINT",
+    "options": [
+      {
+        "id": "obj_1",
+        "label": "armut",
+        "value": "armut",
+        "correct": true
+      },
+      {
+        "id": "obj_2",
+        "label": "araba",
+        "value": "araba",
+        "correct": true
+      },
+      {
+        "id": "obj_3",
+        "label": "masa",
+        "value": "masa",
+        "correct": true
+      },
+      {
+        "id": "obj_4",
+        "label": "limon",
+        "value": "limon",
+        "correct": false
+      },
+      {
+        "id": "obj_5",
+        "label": "inek",
+        "value": "inek",
+        "correct": false
+      }
+    ]
+  },
+  "assets": {
+    "visualIds": [],
+    "avatarUse": {
+      "enabled": true,
+      "role": "GUIDE",
+      "pose": "point_right"
+    }
+  },
+  "audio": {
+    "extraAudioIds": []
+  },
+  "animation": {
+    "entry": "SLIDE_RIGHT",
+    "success": "SOFT_GLOW",
+    "retry": "HIGHLIGHT_HINT",
+    "reducedMotionFallback": "FADE_IN"
+  },
+  "feedback": {
+    "successAudioId": "aud_common_success_01",
+    "retryAudioId": "aud_common_retry_01",
+    "successSfx": "SFX_SUCCESS_CHIME",
+    "retrySfx": "SFX_RETRY_SOFT",
+    "punitive": false
+  },
+  "safety": {
+    "reviewed": false,
+    "prohibitedContentPresent": false,
+    "externalUrl": false,
+    "ads": false,
+    "purchase": false
+  },
+  "progression": {
+    "completionRule": "COMPLETE_ON_SUCCESS",
+    "repeatEligible": true,
+    "unlocks": [
+      "LIT-A-TRACE-001"
+    ]
+  },
+  "metadata": {
+    "locale": "tr-TR",
+    "authoringVersion": 1
+  }
+}
