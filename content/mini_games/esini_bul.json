@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "1.0",
+  "id": "GAME-MATH-MATCH-001",
+  "domain": "MATHEMATICS",
+  "curriculumId": "MAT-EQ-02",
+  "sourceType": "ADAPTED",
+  "sourceRef": {
+    "sourceCode": "MA-01",
+    "pageStart": 47,
+    "pageEnd": 47
+  },
+  "title": "Eşini Bul",
+  "learningLevel": "GRADE_1",
+  "activityType": "MATCH_PAIR",
+  "instruction": {
+    "text": "Aynı olan iki şekli bul.",
+    "audioId": "aud_game_math_match_001_instruction",
+    "voiceProfile": "TEACHER_MATH",
+    "replayAllowed": true
+  },
+  "learningTarget": {
+    "conceptId": "MAT-EQ-02",
+    "targetSymbol": "üçgen"
+  },
+  "prerequisites": [
+    "MAT-EQ-02"
+  ],
+  "interaction": {
+    "mode": "MATCH",
+    "retryStrategy": "HIGHLIGHT_HINT",
+    "options": [
+      {
+        "id": "opt_1",
+        "label": "▲",
+        "value": "triangle_a",
+        "correct": true
+      },
+      {
+        "id": "opt_2",
+        "label": "●",
+        "value": "circle",
+        "correct": false
+      },
+      {
+        "id": "opt_3",
+        "label": "■",
+        "value": "square",
+        "correct": false
+      },
+      {
+        "id": "opt_4",
+        "label": "▲",
+        "value": "triangle_b",
+        "correct": true
+      }
+    ]
+  },
+  "assets": {
+    "visualIds": [],
+    "avatarUse": {
+      "enabled": true,
+      "role": "GUIDE",
+      "pose": "happy"
+    }
+  },
+  "audio": {
+    "extraAudioIds": []
+  },
+  "animation": {
+    "entry": "POP_IN",
+    "success": "SMALL_STARS",
+    "retry": "HIGHLIGHT_HINT",
+    "reducedMotionFallback": "FADE_IN"
+  },
+  "feedback": {
+    "successAudioId": "aud_common_success_01",
+    "retryAudioId": "aud_common_retry_01",
+    "successSfx": "SFX_SUCCESS_CHIME",
+    "retrySfx": "SFX_RETRY_SOFT",
+    "punitive": false
+  },
+  "safety": {
+    "reviewed": false,
+    "prohibitedContentPresent": false,
+    "externalUrl": false,
+    "ads": false,
+    "purchase": false
+  },
+  "progression": {
+    "completionRule": "COMPLETE_ON_SUCCESS",
+    "repeatEligible": true,
+    "unlocks": []
+  },
+  "metadata": {
+    "locale": "tr-TR",
+    "authoringVersion": 1,
+    "notes": "Build Step 10 pedagojik mini oyun; bağımlılık döngüsü, puan baskısı veya rastgele ödül içermez."
+  }
+}
