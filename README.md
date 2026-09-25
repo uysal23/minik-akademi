@@ -10,7 +10,8 @@
 - Build Adımı 3 — Müfredat ve kaynak eşleme: **LOCKED V1.0**
 - Build Adımı 4 — Avatar / görsel / animasyon / ses / ebeveyn / admin / tema / safety: **LOCKED V1.0**
 - Build Adımı 5 — İçerik şemaları ve doğrulama: **LOCKED V1.0**
-- Build Adımı 6 — Android uygulama iskeleti ve navigasyon: **NOT STARTED**
+- Build Adımı 6 — Android uygulama iskeleti ve navigasyon: **LOCKED V1.0**
+- Build Adımı 7 — Çizgi / ön-yazı çalışmaları: **NOT STARTED**
 
 > Bu repository kilitli build sırasına göre geliştirilecektir. Bir aşama tamamlanmadan sonraki aşamaya geçilmez.
 
@@ -31,6 +32,7 @@
 - [docs/THEME_ACCESSIBILITY_V1.md](docs/THEME_ACCESSIBILITY_V1.md)
 - [docs/CHILD_SAFETY_RULES.md](docs/CHILD_SAFETY_RULES.md)
 - [docs/CONTENT_SCHEMA_V1.md](docs/CONTENT_SCHEMA_V1.md)
+- [app/README.md](app/README.md) — Android App Shell V1.0
 
 ## Makine Tarafından Doğrulanan İçerik
 
@@ -51,4 +53,4 @@ Release validation:
 python tools/content-validator/validate_content.py --mode release
 ```
 
-Android/Kotlin geliştirmesi henüz başlamamıştır.
+Android uygulama iskeleti derlenebilir durumdadır. Eğitim motorları Build Adımı 7 ve sonrasında eklenir.
