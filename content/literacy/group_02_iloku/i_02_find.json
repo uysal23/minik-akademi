@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "1.0",
+  "id": "LIT-I-FIND-001",
+  "domain": "LITERACY",
+  "curriculumId": "LIT-G2-I",
+  "sourceType": "ADAPTED",
+  "sourceRef": {
+    "sourceCode": "TR-03",
+    "pageStart": 11,
+    "pageEnd": 12
+  },
+  "title": "İ ve i Harflerini Bul",
+  "learningLevel": "GRADE_1",
+  "activityType": "FIND_LETTER",
+  "instruction": {
+    "text": "İ ve i harflerinin hepsini bul.",
+    "audioId": "aud_lit_i_find_001_instruction",
+    "voiceProfile": "TEACHER_PHONICS",
+    "replayAllowed": true
+  },
+  "learningTarget": {
+    "conceptId": "LIT-G2-I",
+    "targetSymbol": "i",
+    "allowedLetters": [
+      "a",
+      "n",
+      "e",
+      "t",
+      "i"
+    ]
+  },
+  "prerequisites": [
+    "LIT-I-INTRO-001"
+  ],
+  "interaction": {
+    "mode": "MULTI_TAP",
+    "retryStrategy": "HIGHLIGHT_HINT",
+    "options": [
+      {
+        "id": "opt_1",
+        "label": "İ",
+        "value": "İ",
+        "correct": true
+      },
+      {
+        "id": "opt_2",
+        "label": "E",
+        "value": "E",
+        "correct": false
+      },
+      {
+        "id": "opt_3",
+        "label": "i",
+        "value": "i",
+        "correct": true
+      },
+      {
+        "id": "opt_4",
+        "label": "T",
+        "value": "T",
+        "correct": false
+      },
+      {
+        "id": "opt_5",
+        "label": "K",
+        "value": "K",
+        "correct": false
+      },
+      {
+        "id": "opt_6",
+        "label": "İ",
+        "value": "İ",
+        "correct": true
+      }
+    ]
+  },
+  "assets": {
+    "visualIds": [],
+    "avatarUse": {
+      "enabled": true,
+      "role": "GUIDE",
+      "pose": "point_right"
+    }
+  },
+  "audio": {
+    "extraAudioIds": []
+  },
+  "animation": {
+    "entry": "SLIDE_RIGHT",
+    "success": "SOFT_GLOW",
+    "retry": "HIGHLIGHT_HINT",
+    "reducedMotionFallback": "FADE_IN"
+  },
+  "feedback": {
+    "successAudioId": "aud_common_success_01",
+    "retryAudioId": "aud_common_retry_01",
+    "successSfx": "SFX_SUCCESS_CHIME",
+    "retrySfx": "SFX_RETRY_SOFT",
+    "punitive": false
+  },
+  "safety": {
+    "reviewed": false,
+    "prohibitedContentPresent": false,
+    "externalUrl": false,
+    "ads": false,
+    "purchase": false
+  },
+  "progression": {
+    "completionRule": "COMPLETE_ON_SUCCESS",
+    "repeatEligible": true,
+    "unlocks": [
+      "LIT-I-SOUND-001"
+    ]
+  },
+  "metadata": {
+    "locale": "tr-TR",
+    "authoringVersion": 1
+  }
+}
