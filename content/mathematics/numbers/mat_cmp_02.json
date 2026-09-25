@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "1.0",
+  "id": "ACT-MAT-CMP-02",
+  "domain": "MATHEMATICS",
+  "curriculumId": "MAT-CMP-02",
+  "sourceType": "ADAPTED",
+  "sourceRef": {
+    "sourceCode": "MA-02",
+    "pageStart": 76,
+    "pageEnd": 81
+  },
+  "title": "Daha çok / daha az",
+  "learningLevel": "GRADE_1",
+  "activityType": "COMPARE_QUANTITY",
+  "instruction": {
+    "text": "Hangi grupta daha çok nesne var?",
+    "audioId": "aud_act_mat_cmp_02_instruction",
+    "voiceProfile": "TEACHER_MATH",
+    "replayAllowed": true
+  },
+  "learningTarget": {
+    "conceptId": "MAT-CMP-02",
+    "targetSymbol": "●●●●●●   ●●●●",
+    "numberRange": {
+      "min": 0,
+      "max": 20
+    }
+  },
+  "prerequisites": [
+    "MAT-CMP-01"
+  ],
+  "interaction": {
+    "mode": "TAP",
+    "retryStrategy": "HIGHLIGHT_HINT",
+    "options": [
+      {
+        "id": "opt_1",
+        "label": "solda",
+        "value": "solda",
+        "correct": true
+      },
+      {
+        "id": "opt_2",
+        "label": "sağda",
+        "value": "sağda",
+        "correct": false
+      },
+      {
+        "id": "opt_3",
+        "label": "eşit",
+        "value": "eşit",
+        "correct": false
+      }
+    ]
+  },
+  "assets": {
+    "visualIds": [],
+    "avatarUse": {
+      "enabled": true,
+      "role": "GUIDE",
+      "pose": "thinking"
+    }
+  },
+  "audio": {
+    "extraAudioIds": []
+  },
+  "animation": {
+    "entry": "FADE_IN",
+    "success": "SOFT_GLOW",
+    "retry": "HIGHLIGHT_HINT",
+    "reducedMotionFallback": "FADE_IN"
+  },
+  "feedback": {
+    "successAudioId": "aud_common_success_01",
+    "retryAudioId": "aud_common_retry_01",
+    "successSfx": "SFX_SUCCESS_CHIME",
+    "retrySfx": "SFX_RETRY_SOFT",
+    "punitive": false
+  },
+  "safety": {
+    "reviewed": false,
+    "prohibitedContentPresent": false,
+    "externalUrl": false,
+    "ads": false,
+    "purchase": false
+  },
+  "progression": {
+    "completionRule": "COMPLETE_ON_SUCCESS",
+    "repeatEligible": true,
+    "unlocks": []
+  },
+  "metadata": {
+    "locale": "tr-TR",
+    "authoringVersion": 1,
+    "notes": "Kaynak matematik etkinliğinin özgün dijital uyarlaması."
+  }
+}
