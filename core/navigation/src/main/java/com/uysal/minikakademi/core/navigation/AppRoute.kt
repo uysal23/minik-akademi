@@ -16,10 +16,15 @@ object AppRoute {
     const val LEARNING_PATH_PATTERN = "learning_path/{category}"
     const val TRACING_HOME = "tracing_home"
     const val TRACING_ACTIVITY_PATTERN = "tracing_activity/{activityId}"
+    const val LITERACY_HOME = "literacy_home"
+    const val LITERACY_LETTER_PATTERN = "literacy_letter/{curriculumId}"
+    const val LITERACY_ACTIVITY_PATTERN = "literacy_activity/{activityId}"
     const val PARENT_GATE = "parent_gate"
     const val PARENT_DASHBOARD = "parent_dashboard"
     const val PARENT_SETTINGS = "parent_settings"
 
     fun learningPath(category: String): String = "$LEARNING_PATH/$category"
     fun tracingActivity(activityId: String): String = "tracing_activity/$activityId"
+    fun literacyLetter(curriculumId: String): String = "literacy_letter/$curriculumId"
+    fun literacyActivity(activityId: String): String = "literacy_activity/$activityId"
 }
