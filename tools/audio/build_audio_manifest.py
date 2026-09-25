@@ -33,11 +33,11 @@ for number, word in NUMBER_WORDS.items():
     })
 
 PROFILE_PRESETS = {
-    "TEACHER_WARM": {"preset": "warm", "durationScale": 1.04},
-    "TEACHER_PHONICS": {"preset": "phonetic", "durationScale": 1.16},
-    "TEACHER_MATH": {"preset": "numbers", "durationScale": 1.06},
-    "TEACHER_STORY": {"preset": "explanation", "durationScale": 1.05},
-    "TEACHER_ENCOURAGE": {"preset": "empathy", "durationScale": 0.98},
+    "TEACHER_WARM": {"preset": "warm_voice_agent", "durationScale": 1.04},
+    "TEACHER_PHONICS": {"preset": "phonetic_normalization", "durationScale": 1.16},
+    "TEACHER_MATH": {"preset": "numeric_normalization", "durationScale": 1.06},
+    "TEACHER_STORY": {"preset": "explanations_long_form", "durationScale": 1.05},
+    "TEACHER_ENCOURAGE": {"preset": "restrained_emotion", "durationScale": 0.98},
 }
 
 
