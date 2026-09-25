@@ -1,0 +1,173 @@
+name: Generate Offline Audio
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/generate-offline-audio.yml"
+      - "audio/GENERATE_AUDIO.trigger"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: offline-audio-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  generate-offline-audio:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 355
+
+    env:
+      ANTALIA_COMMIT: 20f9bfeaaefefb3ef723c292fe2bb0306e08823d
+      BIGVGAN_COMMIT: 7d2b454564a6c7d014227f635b7423881f14bdac
+      MODEL_ID: cloud0day3/antalia-1
+      HF_HOME: ${{ github.workspace }}/.cache/huggingface
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Cache Hugging Face model files
+        uses: actions/cache@v4
+        with:
+          path: .cache/huggingface
+          key: antalia1-hf-${{ runner.os }}-v1
+
+      - name: Install system audio tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg git patch
+
+      - name: Install CPU PyTorch
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install             --index-url https://download.pytorch.org/whl/cpu             torch==2.8.0 torchaudio==2.8.0
+
+      - name: Install Antalia 1 inference stack
+        run: |
+          git clone https://github.com/0daycloud/antalia vendor/antalia
+          git -C vendor/antalia checkout "${ANTALIA_COMMIT}"
+          python -m pip install -e vendor/antalia
+          python -m pip install             librosa scipy tqdm nnAudio ninja auraloss matplotlib tensorboard
+
+      - name: Prepare pinned BigVGAN vocoder source
+        run: |
+          git clone https://github.com/NVIDIA/BigVGAN "${RUNNER_TEMP}/bigvgan"
+          git -C "${RUNNER_TEMP}/bigvgan" checkout "${BIGVGAN_COMMIT}"
+          patch -d "${RUNNER_TEMP}/bigvgan" -p4             < vendor/antalia/scripts/patches/bigvgan-huggingface-hub-1.patch
+
+      - name: Download Antalia prosody presets
+        env:
+          MODEL_DIR: ${{ runner.temp }}/antalia-model
+        run: |
+          mkdir -p "${MODEL_DIR}"
+          python - <<'PY'
+          import os
+          from huggingface_hub import hf_hub_download
+
+          target = hf_hub_download(
+              repo_id="cloud0day3/antalia-1",
+              filename="prosody-presets.json",
+              local_dir=os.environ["MODEL_DIR"],
+          )
+          print(target)
+          PY
+
+      - name: Build speech prompt manifest
+        run: |
+          python tools/audio/build_audio_manifest.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("audio/manifest/audio_manifest.json").read_text(encoding="utf-8"))
+          print("Speech prompt count:", len(data["items"]))
+          profiles = {}
+          for item in data["items"]:
+              profiles[item["voiceProfile"]] = profiles.get(item["voiceProfile"], 0) + 1
+          print("Profiles:", profiles)
+          PY
+
+      - name: Generate original soft SFX
+        run: |
+          python tools/audio/generate_sfx.py
+
+      - name: Generate teacher speech with Antalia 1
+        env:
+          BIGVGAN_ROOT: ${{ runner.temp }}/bigvgan
+          MODEL_DIR: ${{ runner.temp }}/antalia-model
+        run: |
+          python tools/audio/generate_teacher_audio.py             --manifest audio/manifest/audio_manifest.json             --antalia-root vendor/antalia             --prosody-presets "${MODEL_DIR}/prosody-presets.json"             --output-dir audio/generated/speech             --report audio/manifest/generation_report.json             --steps 16             --allow-partial
+
+      - name: Summarize generated audio
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          report = json.loads(Path("audio/manifest/generation_report.json").read_text(encoding="utf-8"))
+          print(json.dumps({
+              "requested": report["requested"],
+              "generated": report["generated"],
+              "skipped": report["skipped"],
+              "failed": report["failed"],
+          }, indent=2))
+          print("Speech OGG:", len(list(Path("audio/generated/speech").glob("*.ogg"))))
+          print("SFX OGG:", len(list(Path("audio/generated/sfx").glob("*.ogg"))))
+          PY
+
+      - name: Upload generated audio artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: minik-akademi-offline-audio
+          path: |
+            audio/manifest/audio_manifest.json
+            audio/manifest/generation_report.json
+            audio/generated/**/*.ogg
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Commit generated audio into repository
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add audio/manifest/audio_manifest.json
+          git add audio/manifest/generation_report.json
+          git add audio/generated
+
+          if git diff --cached --quiet; then
+            echo "No generated audio changes to commit."
+            exit 0
+          fi
+
+          git commit -m "audio: generate offline teacher speech and soft SFX [skip ci]"
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      - name: Check generation completeness
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          report = json.loads(Path("audio/manifest/generation_report.json").read_text(encoding="utf-8"))
+          failed = report["failed"]
+          if failed:
+              print("Some speech clips failed. Successful clips were preserved and committed.")
+              for item in report["failures"]:
+                  print("-", item["audioId"], item["error"])
+              raise SystemExit(2)
+          print("All requested teacher speech clips were generated successfully.")
+          PY
