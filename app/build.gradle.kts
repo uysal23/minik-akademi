@@ -29,6 +29,8 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    sourceSets["main"].assets.srcDir(rootProject.file("content"))
 }
 
 
@@ -44,6 +46,7 @@ dependencies {
     implementation(project(":feature:avatar-selection"))
     implementation(project(":feature:child-home"))
     implementation(project(":feature:learning-path"))
+    implementation(project(":feature:tracing"))
     implementation(project(":feature:parent-gate"))
     implementation(project(":feature:parent-dashboard"))
     implementation(project(":feature:settings"))
