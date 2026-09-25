@@ -20,7 +20,7 @@
   },
   "learningTarget": {
     "conceptId": "MAT-EQ-04",
-    "targetSymbol": "İki görseli eş yapmak için çıkarılacak nesneyi seç."
+    "targetSymbol": "farklı_nesne"
   },
   "prerequisites": [
     "MAT-EQ-03"
