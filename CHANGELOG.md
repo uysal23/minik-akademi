@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-09-25 — Mathematics V1.0
+
+- Source-mapped mathematics feature module completed and locked.
+- 63 mathematics activity JSON files are active: 13 spatial/equal-object, 36 number/quantity, 11 measurement/mass, and 3 explicit EXTENSION activities.
+- Spatial relations, equal objects/shapes, digit tracing 0–9, counting, tens/ones, ordinal positions, quantity comparison, rhythmic counting, patterns, length, non-standard measurement, and mass comparison are implemented.
+- Addition, subtraction, and multiplication/grouping remain explicitly classified as EXTENSION because the supplied mathematics PDFs do not provide standalone systematic teaching sequences for those operations.
+- Selected child avatar is carried into mathematics home, category, and activity screens.
+- Mathematics completion persists locally through Preferences DataStore and is surfaced in the parent dashboard.
+- Temporary authoring placeholders were removed.
+- Content Validation run 36190586885 completed successfully.
+- Android Build run 36190716305 completed successfully, including `:app:assembleDebug` and debug APK artifact upload.
+- Real object artwork, final avatar artwork, female teacher audio, and SFX remain deferred to Build Step 11 without changing locked curriculum/activity IDs.
+
 ## 2026-09-25 — Pre-Writing / Tracing V1.0
 
 - Interactive tracing feature module added and locked.
