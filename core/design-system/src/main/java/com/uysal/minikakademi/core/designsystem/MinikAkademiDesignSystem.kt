@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -90,16 +91,18 @@ fun MinikAkademiTheme(
         }
     }
 
+    val baseTypography = Typography()
     val typography = if (largeUi) {
         Typography(
-            headlineLarge = MaterialTheme.typography.headlineLarge.copy(fontSize = 36.sp),
-            headlineMedium = MaterialTheme.typography.headlineMedium.copy(fontSize = 30.sp),
-            titleLarge = MaterialTheme.typography.titleLarge.copy(fontSize = 26.sp),
-            bodyLarge = MaterialTheme.typography.bodyLarge.copy(fontSize = 20.sp),
-            labelLarge = MaterialTheme.typography.labelLarge.copy(fontSize = 18.sp)
+            headlineLarge = baseTypography.headlineLarge.copy(fontSize = 36.sp),
+            headlineMedium = baseTypography.headlineMedium.copy(fontSize = 30.sp),
+            titleLarge = baseTypography.titleLarge.copy(fontSize = 26.sp),
+            titleMedium = baseTypography.titleMedium.copy(fontSize = 22.sp),
+            bodyLarge = baseTypography.bodyLarge.copy(fontSize = 20.sp),
+            labelLarge = baseTypography.labelLarge.copy(fontSize = 18.sp)
         )
     } else {
-        Typography()
+        baseTypography
     }
 
     MaterialTheme(
@@ -185,9 +188,9 @@ fun AvatarPlaceholder(
     val number = avatarId.substringAfterLast("_").padStart(2, '0')
     Box(
         modifier = modifier
+            .size(size)
             .background(MaterialTheme.colorScheme.secondary.copy(alpha = 0.26f), CircleShape)
-            .border(3.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.45f), CircleShape)
-            .padding(size / 4),
+            .border(3.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.45f), CircleShape),
         contentAlignment = Alignment.Center
     ) {
         Text(
