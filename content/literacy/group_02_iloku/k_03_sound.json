@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "1.0",
+  "id": "LIT-K-SOUND-001",
+  "domain": "LITERACY",
+  "curriculumId": "LIT-G2-K",
+  "sourceType": "ADAPTED",
+  "sourceRef": {
+    "sourceCode": "TR-03",
+    "pageStart": 68,
+    "pageEnd": 71
+  },
+  "title": "k Sesini Bul",
+  "learningLevel": "GRADE_1",
+  "activityType": "FIND_SOUND_OBJECT",
+  "instruction": {
+    "text": "İsminde k sesi olan varlıkları seç.",
+    "audioId": "aud_lit_k_sound_001_instruction",
+    "voiceProfile": "TEACHER_PHONICS",
+    "replayAllowed": true
+  },
+  "learningTarget": {
+    "conceptId": "LIT-G2-K",
+    "targetSymbol": "k",
+    "allowedLetters": [
+      "a",
+      "n",
+      "e",
+      "t",
+      "i",
+      "l",
+      "o",
+      "k"
+    ]
+  },
+  "prerequisites": [
+    "LIT-K-FIND-001"
+  ],
+  "interaction": {
+    "mode": "MULTI_TAP",
+    "retryStrategy": "HIGHLIGHT_HINT",
+    "options": [
+      {
+        "id": "obj_1",
+        "label": "inek",
+        "value": "inek",
+        "correct": true
+      },
+      {
+        "id": "obj_2",
+        "label": "kayık",
+        "value": "kayık",
+        "correct": true
+      },
+      {
+        "id": "obj_3",
+        "label": "kelebek",
+        "value": "kelebek",
+        "correct": true
+      },
+      {
+        "id": "obj_4",
+        "label": "limon",
+        "value": "limon",
+        "correct": false
+      },
+      {
+        "id": "obj_5",
+        "label": "masa",
+        "value": "masa",
+        "correct": false
+      }
+    ]
+  },
+  "assets": {
+    "visualIds": [],
+    "avatarUse": {
+      "enabled": true,
+      "role": "GUIDE",
+      "pose": "point_right"
+    }
+  },
+  "audio": {
+    "extraAudioIds": []
+  },
+  "animation": {
+    "entry": "SLIDE_RIGHT",
+    "success": "SOFT_GLOW",
+    "retry": "HIGHLIGHT_HINT",
+    "reducedMotionFallback": "FADE_IN"
+  },
+  "feedback": {
+    "successAudioId": "aud_common_success_01",
+    "retryAudioId": "aud_common_retry_01",
+    "successSfx": "SFX_SUCCESS_CHIME",
+    "retrySfx": "SFX_RETRY_SOFT",
+    "punitive": false
+  },
+  "safety": {
+    "reviewed": false,
+    "prohibitedContentPresent": false,
+    "externalUrl": false,
+    "ads": false,
+    "purchase": false
+  },
+  "progression": {
+    "completionRule": "COMPLETE_ON_SUCCESS",
+    "repeatEligible": true,
+    "unlocks": [
+      "LIT-K-TRACE-001"
+    ]
+  },
+  "metadata": {
+    "locale": "tr-TR",
+    "authoringVersion": 1
+  }
+}
