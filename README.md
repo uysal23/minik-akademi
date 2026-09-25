@@ -12,7 +12,7 @@
 - Build Adımı 5 — İçerik şemaları ve doğrulama: **LOCKED V1.0**
 - Build Adımı 6 — Android uygulama iskeleti ve navigasyon: **LOCKED V1.0**
 - Build Adımı 7 — Çizgi / ön-yazı çalışmaları: **LOCKED V1.0**
-- Build Adımı 8 — Türkçe okuma-yazma modülü: **NOT STARTED**
+- Build Adımı 8 — Türkçe okuma-yazma modülü: **LOCKED V1.0**\n- Build Adımı 9 — Matematik modülü: **NOT STARTED**
 
 > Bu repository kilitli build sırasına göre geliştirilecektir. Bir aşama tamamlanmadan sonraki aşamaya geçilmez.
 
@@ -55,4 +55,4 @@ Release validation:
 python tools/content-validator/validate_content.py --mode release
 ```
 
-Android uygulama iskeleti ve çizgi/ön-yazı motoru derlenebilir durumdadır. Sıradaki aşama Türkçe okuma-yazma modülüdür.
+Android uygulama iskeleti, çizgi/ön-yazı motoru ve Türkçe okuma-yazma modülü derlenebilir durumdadır. Sıradaki aşama Matematik modülüdür.
