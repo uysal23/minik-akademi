@@ -11,7 +11,8 @@
 - Build Adımı 4 — Avatar / görsel / animasyon / ses / ebeveyn / admin / tema / safety: **LOCKED V1.0**
 - Build Adımı 5 — İçerik şemaları ve doğrulama: **LOCKED V1.0**
 - Build Adımı 6 — Android uygulama iskeleti ve navigasyon: **LOCKED V1.0**
-- Build Adımı 7 — Çizgi / ön-yazı çalışmaları: **LOCKED V1.0**\n- Build Adımı 8 — Türkçe okuma-yazma modülü: **NOT STARTED**
+- Build Adımı 7 — Çizgi / ön-yazı çalışmaları: **LOCKED V1.0**
+- Build Adımı 8 — Türkçe okuma-yazma modülü: **NOT STARTED**
 
 > Bu repository kilitli build sırasına göre geliştirilecektir. Bir aşama tamamlanmadan sonraki aşamaya geçilmez.
 
@@ -33,6 +34,7 @@
 - [docs/CHILD_SAFETY_RULES.md](docs/CHILD_SAFETY_RULES.md)
 - [docs/CONTENT_SCHEMA_V1.md](docs/CONTENT_SCHEMA_V1.md)
 - [app/README.md](app/README.md) — Android App Shell V1.0
+- [feature/tracing/README.md](feature/tracing/README.md) — Pre-Writing / Tracing V1.0
 
 ## Makine Tarafından Doğrulanan İçerik
 
