@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "1.0",
+  "id": "LIT-L-WORD-001",
+  "domain": "LITERACY",
+  "curriculumId": "LIT-G2-L",
+  "sourceType": "ADAPTED",
+  "sourceRef": {
+    "sourceCode": "TR-03",
+    "pageStart": 38,
+    "pageEnd": 40
+  },
+  "title": "lale Kelimesini Oluştur",
+  "learningLevel": "GRADE_1",
+  "activityType": "BUILD_WORD",
+  "instruction": {
+    "text": "Harfleri doğru sırayla seç ve kelimeyi oluştur.",
+    "audioId": "aud_lit_l_word_001_instruction",
+    "voiceProfile": "TEACHER_PHONICS",
+    "replayAllowed": true
+  },
+  "learningTarget": {
+    "conceptId": "LIT-G2-L",
+    "targetSymbol": "lale",
+    "allowedLetters": [
+      "a",
+      "n",
+      "e",
+      "t",
+      "i",
+      "l"
+    ]
+  },
+  "prerequisites": [
+    "LIT-L-SYLLABLE-001"
+  ],
+  "interaction": {
+    "mode": "ORDER",
+    "retryStrategy": "HIGHLIGHT_HINT"
+  },
+  "assets": {
+    "visualIds": [],
+    "avatarUse": {
+      "enabled": true,
+      "role": "GUIDE",
+      "pose": "point_right"
+    }
+  },
+  "audio": {
+    "extraAudioIds": []
+  },
+  "animation": {
+    "entry": "SLIDE_RIGHT",
+    "success": "SOFT_GLOW",
+    "retry": "HIGHLIGHT_HINT",
+    "reducedMotionFallback": "FADE_IN"
+  },
+  "feedback": {
+    "successAudioId": "aud_common_success_01",
+    "retryAudioId": "aud_common_retry_01",
+    "successSfx": "SFX_SUCCESS_CHIME",
+    "retrySfx": "SFX_RETRY_SOFT",
+    "punitive": false
+  },
+  "safety": {
+    "reviewed": false,
+    "prohibitedContentPresent": false,
+    "externalUrl": false,
+    "ads": false,
+    "purchase": false
+  },
+  "progression": {
+    "completionRule": "COMPLETE_ON_SUCCESS",
+    "repeatEligible": true,
+    "unlocks": []
+  },
+  "metadata": {
+    "locale": "tr-TR",
+    "authoringVersion": 1
+  }
+}
