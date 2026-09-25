@@ -18,6 +18,7 @@ import com.uysal.minikakademi.feature.childprofile.ChildProfileScreen
 import com.uysal.minikakademi.feature.learningpath.LearningPathScreen
 import com.uysal.minikakademi.feature.onboarding.LearningLevelScreen
 import com.uysal.minikakademi.feature.onboarding.ParentPinSetupScreen
+import com.uysal.minikakademi.feature.onboarding.ParentStartGateScreen
 import com.uysal.minikakademi.feature.onboarding.SetupSummaryScreen
 import com.uysal.minikakademi.feature.onboarding.SoundSetupScreen
 import com.uysal.minikakademi.feature.onboarding.ThemeSetupScreen
@@ -53,6 +54,12 @@ fun MinikAkademiNavHost(
 
         composable(AppRoute.WELCOME) {
             WelcomeScreen {
+                navController.navigate(AppRoute.PARENT_START_GATE)
+            }
+        }
+
+        composable(AppRoute.PARENT_START_GATE) {
+            ParentStartGateScreen {
                 navController.navigate(AppRoute.CHILD_PROFILE)
             }
         }
