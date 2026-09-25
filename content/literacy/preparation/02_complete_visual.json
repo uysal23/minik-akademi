@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "1.0",
+  "id": "PRE-TRACE-SHAPE-001",
+  "domain": "PREWRITING",
+  "curriculumId": "PRE-TRACE-02",
+  "sourceType": "ADAPTED",
+  "sourceRef": {
+    "sourceCode": "TR-01",
+    "pageStart": 14,
+    "pageEnd": 15
+  },
+  "title": "Şekli Tamamla",
+  "learningLevel": "PRESCHOOL_START",
+  "activityType": "TRACE_SHAPE",
+  "instruction": {
+    "text": "Noktalı spiral çizginin üzerinden giderek şekli tamamla.",
+    "audioId": "aud_pre_trace_shape_001_instruction",
+    "voiceProfile": "TEACHER_WARM",
+    "replayAllowed": true
+  },
+  "learningTarget": {
+    "conceptId": "PRE-TRACE-02",
+    "targetSymbol": "SPIRAL"
+  },
+  "prerequisites": [
+    "PRE-TRACE-01"
+  ],
+  "interaction": {
+    "mode": "TRACE",
+    "retryStrategy": "HIGHLIGHT_HINT"
+  },
+  "assets": {
+    "visualIds": [],
+    "avatarUse": {
+      "enabled": true,
+      "role": "GUIDE",
+      "pose": "point_right"
+    }
+  },
+  "audio": {
+    "extraAudioIds": []
+  },
+  "animation": {
+    "entry": "FADE_IN",
+    "success": "SOFT_GLOW",
+    "retry": "HIGHLIGHT_HINT",
+    "reducedMotionFallback": "FADE_IN"
+  },
+  "feedback": {
+    "successAudioId": "aud_common_success_01",
+    "retryAudioId": "aud_common_retry_01",
+    "successSfx": "SFX_SUCCESS_CHIME",
+    "retrySfx": "SFX_RETRY_SOFT",
+    "punitive": false
+  },
+  "safety": {
+    "reviewed": false,
+    "prohibitedContentPresent": false,
+    "externalUrl": false,
+    "ads": false,
+    "purchase": false
+  },
+  "progression": {
+    "completionRule": "COMPLETE_ON_SUCCESS",
+    "repeatEligible": true,
+    "unlocks": [
+      "PRE-TRACE-03"
+    ]
+  },
+  "metadata": {
+    "locale": "tr-TR",
+    "authoringVersion": 1,
+    "notes": "TR-01 salyangoz/görsel tamamlama mantığının özgün dijital uyarlaması."
+  }
+}
