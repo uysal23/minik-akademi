@@ -1,0 +1,53 @@
+name: Android Build
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "**/*.kt"
+      - "**/*.kts"
+      - "gradle/**"
+      - "app/**"
+      - "core/**"
+      - "feature/**"
+      - ".github/workflows/android-build.yml"
+  pull_request:
+    paths:
+      - "**/*.kt"
+      - "**/*.kts"
+      - "gradle/**"
+      - "app/**"
+      - "core/**"
+      - "feature/**"
+      - ".github/workflows/android-build.yml"
+
+jobs:
+  assemble-debug:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK 37
+        run: sdkmanager "platform-tools" "platforms;android-37" "build-tools;36.0.0"
+
+      - name: Set up Gradle 9.6
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "9.6.0"
+
+      - name: Gradle configuration check
+        run: gradle --no-daemon help
+
+      - name: Build debug APK
+        run: gradle --no-daemon :app:assembleDebug
