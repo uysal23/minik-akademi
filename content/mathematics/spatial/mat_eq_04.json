@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "1.0",
+  "id": "ACT-MAT-EQ-04",
+  "domain": "MATHEMATICS",
+  "curriculumId": "MAT-EQ-04",
+  "sourceType": "ADAPTED",
+  "sourceRef": {
+    "sourceCode": "MA-01",
+    "pageStart": 49,
+    "pageEnd": 49
+  },
+  "title": "İki görseli eş hâle getirme",
+  "learningLevel": "GRADE_1",
+  "activityType": "MATCH_PAIR",
+  "instruction": {
+    "text": "İki görseli eş yapmak için çıkarılacak nesneyi seç.",
+    "audioId": "aud_act_mat_eq_04_instruction",
+    "voiceProfile": "TEACHER_MATH",
+    "replayAllowed": true
+  },
+  "learningTarget": {
+    "conceptId": "MAT-EQ-04",
+    "targetSymbol": "İki görseli eş yapmak için çıkarılacak nesneyi seç."
+  },
+  "prerequisites": [
+    "MAT-EQ-03"
+  ],
+  "interaction": {
+    "mode": "MATCH",
+    "retryStrategy": "HIGHLIGHT_HINT",
+    "options": [
+      {
+        "id": "opt_1",
+        "label": "top",
+        "value": "top",
+        "correct": true
+      },
+      {
+        "id": "opt_2",
+        "label": "kitap",
+        "value": "kitap",
+        "correct": false
+      },
+      {
+        "id": "opt_3",
+        "label": "kalem",
+        "value": "kalem",
+        "correct": false
+      }
+    ]
+  },
+  "assets": {
+    "visualIds": [],
+    "avatarUse": {
+      "enabled": true,
+      "role": "GUIDE",
+      "pose": "thinking"
+    }
+  },
+  "audio": {
+    "extraAudioIds": []
+  },
+  "animation": {
+    "entry": "FADE_IN",
+    "success": "SOFT_GLOW",
+    "retry": "HIGHLIGHT_HINT",
+    "reducedMotionFallback": "FADE_IN"
+  },
+  "feedback": {
+    "successAudioId": "aud_common_success_01",
+    "retryAudioId": "aud_common_retry_01",
+    "successSfx": "SFX_SUCCESS_CHIME",
+    "retrySfx": "SFX_RETRY_SOFT",
+    "punitive": false
+  },
+  "safety": {
+    "reviewed": false,
+    "prohibitedContentPresent": false,
+    "externalUrl": false,
+    "ads": false,
+    "purchase": false
+  },
+  "progression": {
+    "completionRule": "COMPLETE_ON_SUCCESS",
+    "repeatEligible": true,
+    "unlocks": []
+  },
+  "metadata": {
+    "locale": "tr-TR",
+    "authoringVersion": 1,
+    "notes": "Kaynak kavramının özgün dijital uyarlaması."
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "1.0",
+  "id": "ACT-MAT-SP-02",
+  "domain": "MATHEMATICS",
+  "curriculumId": "MAT-SP-02",
+  "sourceType": "ADAPTED",
+  "sourceRef": {
+    "sourceCode": "MA-01",
+    "pageStart": 16,
+    "pageEnd": 19
+  },
+  "title": "Etrafında",
+  "learningLevel": "GRADE_1",
+  "activityType": "POSITION_SELECT",
+  "instruction": {
+    "text": "Kuşlar ağacın neresinde?",
+    "audioId": "aud_act_mat_sp_02_instruction",
+    "voiceProfile": "TEACHER_MATH",
+    "replayAllowed": true
+  },
+  "learningTarget": {
+    "conceptId": "MAT-SP-02",
+    "targetSymbol": "Kuşlar ağacın neresinde?"
+  },
+  "prerequisites": [
+    "MAT-SP-01"
+  ],
+  "interaction": {
+    "mode": "TAP",
+    "retryStrategy": "HIGHLIGHT_HINT",
+    "options": [
+      {
+        "id": "opt_1",
+        "label": "etrafında",
+        "value": "etrafında",
+        "correct": true
+      },
+      {
+        "id": "opt_2",
+        "label": "altında",
+        "value": "altında",
+        "correct": false
+      },
+      {
+        "id": "opt_3",
+        "label": "içinde",
+        "value": "içinde",
+        "correct": false
+      }
+    ]
+  },
+  "assets": {
+    "visualIds": [],
+    "avatarUse": {
+      "enabled": true,
+      "role": "GUIDE",
+      "pose": "thinking"
+    }
+  },
+  "audio": {
+    "extraAudioIds": []
+  },
+  "animation": {
+    "entry": "FADE_IN",
+    "success": "SOFT_GLOW",
+    "retry": "HIGHLIGHT_HINT",
+    "reducedMotionFallback": "FADE_IN"
+  },
+  "feedback": {
+    "successAudioId": "aud_common_success_01",
+    "retryAudioId": "aud_common_retry_01",
+    "successSfx": "SFX_SUCCESS_CHIME",
+    "retrySfx": "SFX_RETRY_SOFT",
+    "punitive": false
+  },
+  "safety": {
+    "reviewed": false,
+    "prohibitedContentPresent": false,
+    "externalUrl": false,
+    "ads": false,
+    "purchase": false
+  },
+  "progression": {
+    "completionRule": "COMPLETE_ON_SUCCESS",
+    "repeatEligible": true,
+    "unlocks": []
+  },
+  "metadata": {
+    "locale": "tr-TR",
+    "authoringVersion": 1,
+    "notes": "Kaynak kavramının özgün dijital uyarlaması."
+  }
+}
