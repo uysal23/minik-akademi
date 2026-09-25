@@ -129,9 +129,9 @@ def main() -> None:
     if args.max_items > 0:
         items = items[: args.max_items]
 
-    antalia_root = Path(args.antalia_root)
-    presets = Path(args.prosody_presets)
-    output_root = Path(args.output_dir)
+    antalia_root = Path(args.antalia_root).resolve()
+    presets = Path(args.prosody_presets).resolve()
+    output_root = Path(args.output_dir).resolve()
 
     results: list[dict] = []
     failures: list[dict] = []
