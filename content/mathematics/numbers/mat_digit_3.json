@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "1.0",
+  "id": "ACT-MAT-DIGIT-3",
+  "domain": "MATHEMATICS",
+  "curriculumId": "MAT-DIGIT-3",
+  "sourceType": "ADAPTED",
+  "sourceRef": {
+    "sourceCode": "MA-02",
+    "pageStart": 20,
+    "pageEnd": 25
+  },
+  "title": "3 rakamı",
+  "learningLevel": "GRADE_1",
+  "activityType": "TRACE_NUMBER",
+  "instruction": {
+    "text": "3 rakamını yazılış yönüne uygun olarak parmağınla izle.",
+    "audioId": "aud_act_mat_digit_3_instruction",
+    "voiceProfile": "TEACHER_MATH",
+    "replayAllowed": true
+  },
+  "learningTarget": {
+    "conceptId": "MAT-DIGIT-3",
+    "targetSymbol": "3",
+    "numberRange": {
+      "min": 0,
+      "max": 3
+    }
+  },
+  "prerequisites": [
+    "MAT-DIGIT-2"
+  ],
+  "interaction": {
+    "mode": "TRACE",
+    "retryStrategy": "HIGHLIGHT_HINT"
+  },
+  "assets": {
+    "visualIds": [],
+    "avatarUse": {
+      "enabled": true,
+      "role": "GUIDE",
+      "pose": "thinking"
+    }
+  },
+  "audio": {
+    "extraAudioIds": []
+  },
+  "animation": {
+    "entry": "FADE_IN",
+    "success": "SOFT_GLOW",
+    "retry": "HIGHLIGHT_HINT",
+    "reducedMotionFallback": "FADE_IN"
+  },
+  "feedback": {
+    "successAudioId": "aud_common_success_01",
+    "retryAudioId": "aud_common_retry_01",
+    "successSfx": "SFX_SUCCESS_CHIME",
+    "retrySfx": "SFX_RETRY_SOFT",
+    "punitive": false
+  },
+  "safety": {
+    "reviewed": false,
+    "prohibitedContentPresent": false,
+    "externalUrl": false,
+    "ads": false,
+    "purchase": false
+  },
+  "progression": {
+    "completionRule": "COMPLETE_ON_SUCCESS",
+    "repeatEligible": true,
+    "unlocks": []
+  },
+  "metadata": {
+    "locale": "tr-TR",
+    "authoringVersion": 1,
+    "notes": "Kaynak rakam yazma çalışmalarının özgün dijital uyarlaması."
+  }
+}
