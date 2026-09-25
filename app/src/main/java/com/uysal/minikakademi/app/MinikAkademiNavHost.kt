@@ -16,6 +16,9 @@ import com.uysal.minikakademi.feature.avatarselection.AvatarSelectionScreen
 import com.uysal.minikakademi.feature.childhome.ChildHomeScreen
 import com.uysal.minikakademi.feature.childprofile.ChildProfileScreen
 import com.uysal.minikakademi.feature.learningpath.LearningPathScreen
+import com.uysal.minikakademi.feature.literacy.LetterLessonScreen
+import com.uysal.minikakademi.feature.literacy.LiteracyActivityScreen
+import com.uysal.minikakademi.feature.literacy.LiteracyHomeScreen
 import com.uysal.minikakademi.feature.onboarding.LearningLevelScreen
 import com.uysal.minikakademi.feature.onboarding.ParentPinSetupScreen
 import com.uysal.minikakademi.feature.onboarding.ParentStartGateScreen
@@ -153,7 +156,7 @@ fun MinikAkademiNavHost(
                     navController.navigate(AppRoute.TRACING_HOME)
                 },
                 onOpenLiteracy = {
-                    navController.navigate(AppRoute.learningPath("literacy"))
+                    navController.navigate(AppRoute.LITERACY_HOME)
                 },
                 onOpenMath = {
                     navController.navigate(AppRoute.learningPath("math"))
@@ -196,6 +199,44 @@ fun MinikAkademiNavHost(
                 onComplete = {
                     scope.launch {
                         repository.markTracingActivityComplete(activityId)
+                    }
+                }
+            )
+        }
+
+        composable(AppRoute.LITERACY_HOME) {
+            LiteracyHomeScreen(
+                avatarId = settings.avatarId,
+                completedActivityIds = settings.completedLiteracyActivities,
+                onOpenLetter = { curriculumId ->
+                    navController.navigate(AppRoute.literacyLetter(curriculumId))
+                },
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(AppRoute.LITERACY_LETTER_PATTERN) { backStackEntry ->
+            val curriculumId = backStackEntry.arguments?.getString("curriculumId").orEmpty()
+            LetterLessonScreen(
+                curriculumId = curriculumId,
+                avatarId = settings.avatarId,
+                completedActivityIds = settings.completedLiteracyActivities,
+                onOpenActivity = { activityId ->
+                    navController.navigate(AppRoute.literacyActivity(activityId))
+                },
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(AppRoute.LITERACY_ACTIVITY_PATTERN) { backStackEntry ->
+            val activityId = backStackEntry.arguments?.getString("activityId").orEmpty()
+            LiteracyActivityScreen(
+                activityId = activityId,
+                avatarId = settings.avatarId,
+                onBack = { navController.popBackStack() },
+                onComplete = {
+                    scope.launch {
+                        repository.markLiteracyActivityComplete(activityId)
                     }
                 }
             )
