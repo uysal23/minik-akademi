@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.uysal.minikakademi.core.model.AppSettings
 import com.uysal.minikakademi.core.model.AvatarCatalog
@@ -37,6 +38,7 @@ class AppPreferencesRepository(private val context: Context) {
         val leftHanded = booleanPreferencesKey("left_handed")
         val dailyGoalMinutes = intPreferencesKey("daily_goal_minutes")
         val parentPinHash = stringPreferencesKey("parent_pin_hash")
+        val completedTracingActivities = stringSetPreferencesKey("completed_tracing_activities")
     }
 
     val settings: Flow<AppSettings> = context.minikAkademiDataStore.data.map { prefs ->
@@ -57,7 +59,8 @@ class AppPreferencesRepository(private val context: Context) {
             largeUi = prefs[Keys.largeUi] ?: false,
             highContrast = prefs[Keys.highContrast] ?: false,
             leftHanded = prefs[Keys.leftHanded] ?: false,
-            dailyGoalMinutes = prefs[Keys.dailyGoalMinutes] ?: 10
+            dailyGoalMinutes = prefs[Keys.dailyGoalMinutes] ?: 10,
+            completedTracingActivities = prefs[Keys.completedTracingActivities] ?: emptySet()
         )
     }
 
@@ -76,6 +79,11 @@ class AppPreferencesRepository(private val context: Context) {
 
     suspend fun setDailyGoalMinutes(value: Int) = edit {
         it[Keys.dailyGoalMinutes] = value.coerceIn(5, 30)
+    }
+
+    suspend fun markTracingActivityComplete(activityId: String) = edit { prefs ->
+        val current = prefs[Keys.completedTracingActivities] ?: emptySet()
+        prefs[Keys.completedTracingActivities] = current + activityId
     }
 
     suspend fun setParentPin(pin: String) = edit {
