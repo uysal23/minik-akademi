@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "1.0",
+  "id": "ACT-MAT-PAT-01",
+  "domain": "MATHEMATICS",
+  "curriculumId": "MAT-PAT-01",
+  "sourceType": "ADAPTED",
+  "sourceRef": {
+    "sourceCode": "MA-02",
+    "pageStart": 103,
+    "pageEnd": 104
+  },
+  "title": "Örüntü kuralını fark etme",
+  "learningLevel": "GRADE_1",
+  "activityType": "PATTERN_COMPLETE",
+  "instruction": {
+    "text": "Örüntüde sıradaki öğeyi seç.",
+    "audioId": "aud_act_mat_pat_01_instruction",
+    "voiceProfile": "TEACHER_MATH",
+    "replayAllowed": true
+  },
+  "learningTarget": {
+    "conceptId": "MAT-PAT-01",
+    "targetSymbol": "sarı, sarı, mor, sarı, sarı, mor, ?"
+  },
+  "prerequisites": [
+    "MAT-NUM-02"
+  ],
+  "interaction": {
+    "mode": "TAP",
+    "retryStrategy": "HIGHLIGHT_HINT",
+    "options": [
+      {
+        "id": "opt_1",
+        "label": "sarı",
+        "value": "sarı",
+        "correct": true
+      },
+      {
+        "id": "opt_2",
+        "label": "mor",
+        "value": "mor",
+        "correct": false
+      },
+      {
+        "id": "opt_3",
+        "label": "mavi",
+        "value": "mavi",
+        "correct": false
+      }
+    ]
+  },
+  "assets": {
+    "visualIds": [],
+    "avatarUse": {
+      "enabled": true,
+      "role": "GUIDE",
+      "pose": "thinking"
+    }
+  },
+  "audio": {
+    "extraAudioIds": []
+  },
+  "animation": {
+    "entry": "FADE_IN",
+    "success": "SOFT_GLOW",
+    "retry": "HIGHLIGHT_HINT",
+    "reducedMotionFallback": "FADE_IN"
+  },
+  "feedback": {
+    "successAudioId": "aud_common_success_01",
+    "retryAudioId": "aud_common_retry_01",
+    "successSfx": "SFX_SUCCESS_CHIME",
+    "retrySfx": "SFX_RETRY_SOFT",
+    "punitive": false
+  },
+  "safety": {
+    "reviewed": false,
+    "prohibitedContentPresent": false,
+    "externalUrl": false,
+    "ads": false,
+    "purchase": false
+  },
+  "progression": {
+    "completionRule": "COMPLETE_ON_SUCCESS",
+    "repeatEligible": true,
+    "unlocks": []
+  },
+  "metadata": {
+    "locale": "tr-TR",
+    "authoringVersion": 1,
+    "notes": "Kaynak matematik etkinliğinin özgün dijital uyarlaması."
+  }
+}
