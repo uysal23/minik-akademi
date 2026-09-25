@@ -3,6 +3,7 @@ package com.uysal.minikakademi.feature.onboarding
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -34,6 +35,21 @@ fun WelcomeScreen(onStart: () -> Unit) {
                 style = MaterialTheme.typography.bodyLarge
             )
             KidPrimaryButton(text = "Kuruluma Başla", onClick = onStart)
+        }
+    }
+}
+
+
+@Composable
+fun ParentStartGateScreen(onContinue: () -> Unit) {
+    KidScreen {
+        Column(verticalArrangement = Arrangement.spacedBy(18.dp)) {
+            Text("Yetişkin Kurulumu", style = MaterialTheme.typography.headlineMedium)
+            Text(
+                "Bu ilk kurulum bölümü bir yetişkin tarafından tamamlanmalıdır.",
+                style = MaterialTheme.typography.bodyLarge
+            )
+            KidPrimaryButton(text = "Yetişkin Olarak Devam Et", onClick = onContinue)
         }
     }
 }
@@ -80,7 +96,8 @@ fun SoundSetupScreen(
                     onClick = { onSelected(rate) }
                 )
             }
-            KidPrimaryButton(text = "Örneği Dinle", onClick = onPreview)
+            KidPrimaryButton(text = "Örneği Dinle", onClick = onPreview, enabled = false)
+            Text("Örnek kadın öğretmen sesi, offline ses paketi bağlandığında etkinleşecek.")
             KidPrimaryButton(text = "Devam Et", onClick = onContinue)
         }
     }
@@ -191,7 +208,7 @@ private fun SelectableCard(
             text = title,
             modifier = Modifier
                 .fillMaxWidth()
-                .then(Modifier),
+                .padding(16.dp),
             style = MaterialTheme.typography.titleMedium
         )
     }
@@ -201,7 +218,9 @@ private fun SelectableCard(
 private fun SummaryRow(label: String, value: String) {
     Card {
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Text(label, style = MaterialTheme.typography.labelLarge)
