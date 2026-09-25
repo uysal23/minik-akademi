@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-09-25 — Experience Systems V1.0
+
+- AVATAR_SYSTEM_V1.md locked with 12+ original human child avatars and a fixed reusable pose set.
+- VISUAL_STYLE_GUIDE.md locked with source-inspired but original child-friendly educational cartoon rules.
+- ANIMATION_RULES.md locked with slide/pop/fade entry behavior, gentle feedback, counting timing and reduced-motion behavior.
+- AUDIO_STYLE_GUIDE.md locked as fully offline: no device TTS, no cloud TTS at runtime, no system notification sounds.
+- Female teacher/narrator voice profiles locked: TEACHER_WARM, TEACHER_PHONICS, TEACHER_MATH, TEACHER_STORY, TEACHER_ENCOURAGE.
+- Original procedural SFX profiles locked: SOFT_POP, GENTLE_TAP, SUCCESS_CHIME, STAR_SPARKLE, SLIDE_SOFT, RETRY_SOFT, COMPLETE.
+- Build-time open/free Turkish TTS strategy documented; Antalia 1 selected as primary candidate subject to release-time license validation and required attribution.
+- PARENT_SYSTEM_V1.md, ADMIN_PANEL_V1.md, THEME_ACCESSIBILITY_V1.md and CHILD_SAFETY_RULES.md locked.
+- Android application development has not started.
+
 ## 2026-09-25 — Curriculum & Source Mapping V1.0
 
 - CURRICULUM_LOCK_V1.md completed and locked from the six uploaded source PDFs.
