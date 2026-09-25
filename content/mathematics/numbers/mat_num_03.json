@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "1.0",
+  "id": "ACT-MAT-NUM-03",
+  "domain": "MATHEMATICS",
+  "curriculumId": "MAT-NUM-03",
+  "sourceType": "ADAPTED",
+  "sourceRef": {
+    "sourceCode": "MA-02",
+    "pageStart": 64,
+    "pageEnd": 64
+  },
+  "title": "Verilen sayı kadar nesne oluşturma",
+  "learningLevel": "GRADE_1",
+  "activityType": "COUNT_OBJECTS",
+  "instruction": {
+    "text": "12 tane nesneyi say ve doğru sayıyı seç.",
+    "audioId": "aud_act_mat_num_03_instruction",
+    "voiceProfile": "TEACHER_MATH",
+    "replayAllowed": true
+  },
+  "learningTarget": {
+    "conceptId": "MAT-NUM-03",
+    "targetSymbol": "12",
+    "numberRange": {
+      "min": 0,
+      "max": 20
+    }
+  },
+  "prerequisites": [
+    "MAT-NUM-02"
+  ],
+  "interaction": {
+    "mode": "TAP",
+    "retryStrategy": "HIGHLIGHT_HINT",
+    "options": [
+      {
+        "id": "opt_1",
+        "label": "10",
+        "value": "10",
+        "correct": false
+      },
+      {
+        "id": "opt_2",
+        "label": "12",
+        "value": "12",
+        "correct": true
+      },
+      {
+        "id": "opt_3",
+        "label": "14",
+        "value": "14",
+        "correct": false
+      }
+    ]
+  },
+  "assets": {
+    "visualIds": [],
+    "avatarUse": {
+      "enabled": true,
+      "role": "GUIDE",
+      "pose": "thinking"
+    }
+  },
+  "audio": {
+    "extraAudioIds": []
+  },
+  "animation": {
+    "entry": "FADE_IN",
+    "success": "SOFT_GLOW",
+    "retry": "HIGHLIGHT_HINT",
+    "reducedMotionFallback": "FADE_IN"
+  },
+  "feedback": {
+    "successAudioId": "aud_common_success_01",
+    "retryAudioId": "aud_common_retry_01",
+    "successSfx": "SFX_SUCCESS_CHIME",
+    "retrySfx": "SFX_RETRY_SOFT",
+    "punitive": false
+  },
+  "safety": {
+    "reviewed": false,
+    "prohibitedContentPresent": false,
+    "externalUrl": false,
+    "ads": false,
+    "purchase": false
+  },
+  "progression": {
+    "completionRule": "COMPLETE_ON_SUCCESS",
+    "repeatEligible": true,
+    "unlocks": []
+  },
+  "metadata": {
+    "locale": "tr-TR",
+    "authoringVersion": 1,
+    "notes": "Kaynak matematik etkinliğinin özgün dijital uyarlaması."
+  }
+}
