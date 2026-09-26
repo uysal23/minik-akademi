@@ -41,6 +41,7 @@ import com.uysal.minikakademi.core.designsystem.AvatarPlaceholder
 import com.uysal.minikakademi.core.designsystem.KidCard
 import com.uysal.minikakademi.core.designsystem.KidPrimaryButton
 import com.uysal.minikakademi.core.designsystem.KidScreen
+import com.uysal.minikakademi.core.designsystem.LearningObjectArt
 import kotlin.math.sqrt
 import org.json.JSONObject
 
@@ -434,6 +435,7 @@ fun LiteracyActivityScreen(
                     )
                     "FIND_LETTER", "FIND_SOUND_OBJECT" -> MultiSelectGame(
                         options = config.options,
+                        showObjectArt = config.activityType == "FIND_SOUND_OBJECT",
                         onRetry = ::playRetryAudio,
                         onComplete = ::completeOnce
                     )
@@ -503,6 +505,7 @@ private fun LetterIntroGame(
 @Composable
 private fun MultiSelectGame(
     options: List<LiteracyOption>,
+    showObjectArt: Boolean,
     onRetry: () -> Unit,
     onComplete: () -> Unit
 ) {
@@ -537,7 +540,10 @@ private fun MultiSelectGame(
                             onRetry()
                         }
                     },
-                    modifier = Modifier.size(width = 118.dp, height = 78.dp),
+                    modifier = Modifier.size(
+                        width = 118.dp,
+                        height = if (showObjectArt) 132.dp else 78.dp
+                    ),
                     shape = RoundedCornerShape(20.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = if (isSelected) {
@@ -548,11 +554,25 @@ private fun MultiSelectGame(
                     )
                 ) {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text(
-                            text = if (isSelected) "✓ " + option.label else option.label,
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold
-                        )
+                        if (showObjectArt) {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.spacedBy(4.dp)
+                            ) {
+                                LearningObjectArt(label = option.label, size = 70.dp)
+                                Text(
+                                    text = if (isSelected) "✓ " + option.label else option.label,
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+                        } else {
+                            Text(
+                                text = if (isSelected) "✓ " + option.label else option.label,
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
                     }
                 }
             }
