@@ -43,6 +43,7 @@ import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
+import kotlinx.coroutines.delay
 import org.json.JSONObject
 
 data class TracingActivityConfig(
@@ -201,9 +202,20 @@ fun TracingActivityScreen(
         onDispose { audioPlayer.close() }
     }
 
-    LaunchedEffect(config.id, narrationEnabled, speechRate) {
+    LaunchedEffect(config.id, narrationEnabled, sfxEnabled, speechRate) {
+        if (sfxEnabled) {
+            audioPlayer.playSfx("sfx_slide_soft")
+            delay(220)
+        }
         if (narrationEnabled) {
             audioPlayer.playSpeech(config.instructionAudioId, speechRate)
+        }
+    }
+
+    LaunchedEffect(completed, sfxEnabled) {
+        if (completed && sfxEnabled) {
+            delay(900)
+            audioPlayer.playSfx("sfx_star_sparkle")
         }
     }
 
@@ -234,7 +246,10 @@ fun TracingActivityScreen(
                 }
                 if (narrationEnabled) {
                     androidx.compose.material3.Button(
-                        onClick = { audioPlayer.playSpeech(config.instructionAudioId, speechRate) }
+                        onClick = {
+                            if (sfxEnabled) audioPlayer.playSfx("sfx_gentle_tap")
+                            audioPlayer.playSpeech(config.instructionAudioId, speechRate)
+                        }
                     ) {
                         Text("🔊 Dinle")
                     }
