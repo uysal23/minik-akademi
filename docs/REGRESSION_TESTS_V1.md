@@ -1,6 +1,6 @@
 # Minik Akademi — Regresyon Testleri V1
 
-**Status:** VERIFYING  
+**Status:** LOCKED  
 **Version:** 1.0  
 **Build Step:** 14
 
@@ -93,3 +93,37 @@ Adım 14 yalnızca şu koşullarda LOCKED olabilir:
 9. Release build başlatılmamış olmalı.
 
 Tüm koşullar doğrulandıktan sonra belge **LOCKED V1.0** yapılacaktır.
+
+## Doğrulama Sonucu — 2026-09-26
+
+Final kabul koşusu:
+
+- **Regression Tests #11** — run `36251160389` — **PASS**
+- Locked contracts and validators — **PASS**
+- Kotlin tests and debug regression build — **PASS**
+- Persistence and full UI regression — **PASS**
+- 17 / 17 UI kanıt ekranı — **PASS**
+- UI evidence artifact: `minik-akademi-step14-regression-ui-evidence`
+- UI evidence artifact ID: `10909565688`
+- UI evidence SHA-256: `a6520af58163a90b16b3714f9e60254dd0a3c0d616df0a2110d3bf016fd8e57f`
+- Instrumentation reports artifact ID: `10909231153`
+- Debug regression artifact ID: `10908977135`
+- Release APK / bundle / signing işlemi — **BAŞLATILMADI**
+
+### Adım 14 sırasında giderilen eksiklikler
+
+1. İlk teknik PASS koşusunda Android emülatörüne ait **Pixel Launcher isn't responding** sistem diyaloğunun 17 kanıt ekranını örttüğü tespit edildi. Bu koşu kabul edilmedi.
+2. Sistem diyaloğu gizleme / daha temiz emulator hedefi eklendi.
+3. Odak penceresini doğrulamak için eklenen ilk guard'ın Android `executeShellCommand` davranışı nedeniyle güvenilir olmadığı tespit edildi; bu guard kaldırıldı.
+4. Son temiz koşuda persistence testi, full UI regression ve exact 17-screen evidence validation birlikte PASS oldu.
+5. Final 17 ekran gözle incelendi; launcher/ANR/system dialog örtüşmesi görülmedi.
+6. Seçili avatar sürekliliği, çocuk güvenliği dili, offline davranış, Türkçe/matematik/çizgi/mini oyun navigasyonu ve EXTENSION ayrımı korunmuş durumda.
+7. Build Adımları 1–13'ün protected runtime tree SHA'ları ve kilit belge SHA'ları değişmedi.
+
+## Nihai Karar
+
+Kabul kapısındaki 9 koşulun tamamı karşılandı. Build Adımı 14 tamamlandı.
+
+---
+
+**LOCKED — Regresyon Testleri V1.0**
