@@ -62,6 +62,18 @@ def wait_text(value: str, timeout: float = 20.0) -> ET.Element:
     raise RuntimeError(f"Timed out waiting for UI text {value!r}: {last}")
 
 
+def scroll_until_text(value: str, max_swipes: int = 6) -> ET.Element:
+    for attempt in range(max_swipes + 1):
+        try:
+            return find_text(value)
+        except Exception:
+            if attempt == max_swipes:
+                break
+            adb("shell", "input", "swipe", "540", "1650", "540", "500", "550")
+            time.sleep(0.7)
+    raise RuntimeError(f"UI text not reachable after scrolling: {value}")
+
+
 def center(bounds: str) -> tuple[int, int]:
     values = [int(x) for x in re.findall(r"\d+", bounds)]
     if len(values) != 4:
@@ -262,8 +274,12 @@ def main() -> None:
     tap_text("Ayarlar")
     assert_text("Konuşma Hızı")
     assert_text("Tema")
-    assert_text("Erişilebilirlik")
-    assert_text("Günlük Hedef")
+    scroll_until_text("Erişilebilirlik")
+    print("ASSERT OK: Erişilebilirlik (reachable by scrolling)")
+    scroll_until_text("Günlük Hedef")
+    print("ASSERT OK: Günlük Hedef (reachable by scrolling)")
+    scroll_until_text("Ebeveyn Paneline Dön")
+    print("ASSERT OK: Ebeveyn Paneline Dön (reachable by scrolling)")
     screenshot("10_release_parent_settings")
 
     tap_text("Ebeveyn Paneline Dön")
