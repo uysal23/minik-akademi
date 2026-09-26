@@ -12,6 +12,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import com.uysal.minikakademi.core.designsystem.KidPrimaryButton
 import com.uysal.minikakademi.core.designsystem.KidScreen
@@ -22,6 +24,8 @@ fun ChildProfileScreen(
     onContinue: (String) -> Unit
 ) {
     var name by remember(initialName) { mutableStateOf(initialName) }
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     KidScreen {
         Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
@@ -43,7 +47,11 @@ fun ChildProfileScreen(
             KidPrimaryButton(
                 text = "Devam Et",
                 enabled = name.trim().isNotEmpty(),
-                onClick = { onContinue(name.trim()) }
+                onClick = {
+                    focusManager.clearFocus(force = true)
+                    keyboardController?.hide()
+                    onContinue(name.trim())
+                }
             )
         }
     }
