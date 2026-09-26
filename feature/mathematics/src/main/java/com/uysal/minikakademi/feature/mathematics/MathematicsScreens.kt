@@ -22,6 +22,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,6 +38,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.uysal.minikakademi.core.audio.OfflineAudioPlayer
 import com.uysal.minikakademi.core.designsystem.AvatarPlaceholder
 import com.uysal.minikakademi.core.designsystem.KidCard
 import com.uysal.minikakademi.core.designsystem.KidPrimaryButton
@@ -60,6 +62,11 @@ data class MathActivityConfig(
     val title: String,
     val activityType: String,
     val instruction: String,
+    val instructionAudioId: String,
+    val successAudioId: String,
+    val retryAudioId: String,
+    val successSfx: String,
+    val retrySfx: String,
     val targetSymbol: String,
     val options: List<MathOption>
 )
@@ -157,13 +164,20 @@ private object MathematicsContentLoader {
                 }
             }
         }
+        val instruction = json.getJSONObject("instruction")
+        val feedback = json.getJSONObject("feedback")
         return MathActivityConfig(
             id = json.getString("id"),
             curriculumId = json.getString("curriculumId"),
             sourceType = json.getString("sourceType"),
             title = json.getString("title"),
             activityType = json.getString("activityType"),
-            instruction = json.getJSONObject("instruction").getString("text"),
+            instruction = instruction.getString("text"),
+            instructionAudioId = instruction.getString("audioId"),
+            successAudioId = feedback.getString("successAudioId"),
+            retryAudioId = feedback.getString("retryAudioId"),
+            successSfx = feedback.getString("successSfx").lowercase(),
+            retrySfx = feedback.getString("retrySfx").lowercase(),
             targetSymbol = json.getJSONObject("learningTarget").optString("targetSymbol", ""),
             options = options
         )
@@ -340,6 +354,9 @@ fun MathematicsCategoryScreen(
 fun MathematicsActivityScreen(
     activityId: String,
     avatarId: String,
+    narrationEnabled: Boolean,
+    sfxEnabled: Boolean,
+    speechRate: Float,
     onBack: () -> Unit,
     onComplete: () -> Unit
 ) {
@@ -359,9 +376,28 @@ fun MathematicsActivityScreen(
     }
 
     var completed by remember(activityId) { mutableStateOf(false) }
+    val audioPlayer = remember(context) { OfflineAudioPlayer(context) }
+
+    DisposableEffect(audioPlayer) {
+        onDispose { audioPlayer.close() }
+    }
+
+    LaunchedEffect(config.id, narrationEnabled, speechRate) {
+        if (narrationEnabled) {
+            audioPlayer.playSpeech(config.instructionAudioId, speechRate)
+        }
+    }
+
+    fun playRetryAudio() {
+        if (narrationEnabled) audioPlayer.playSpeech(config.retryAudioId, speechRate)
+        if (sfxEnabled) audioPlayer.playSfx(config.retrySfx)
+    }
+
     fun completeOnce() {
         if (!completed) {
             completed = true
+            if (narrationEnabled) audioPlayer.playSpeech(config.successAudioId, speechRate)
+            if (sfxEnabled) audioPlayer.playSfx(config.successSfx)
             onComplete()
         }
     }
@@ -384,6 +420,13 @@ fun MathematicsActivityScreen(
                         Text("Genişletme etkinliği", fontWeight = FontWeight.Bold)
                     }
                 }
+                if (narrationEnabled) {
+                    Button(
+                        onClick = { audioPlayer.playSpeech(config.instructionAudioId, speechRate) }
+                    ) {
+                        Text("🔊 Dinle")
+                    }
+                }
             }
 
             Box(
@@ -400,6 +443,7 @@ fun MathematicsActivityScreen(
                     "COUNT_OBJECTS" -> CountObjectsGame(
                         count = config.targetSymbol.toIntOrNull() ?: 0,
                         options = config.options,
+                        onRetry = ::playRetryAudio,
                         onComplete = ::completeOnce
                     )
                     "NUMBER_INTRO" -> NumberIntroGame(
@@ -410,17 +454,20 @@ fun MathematicsActivityScreen(
                         SequenceChoiceGame(
                             target = config.targetSymbol,
                             options = config.options,
+                            onRetry = ::playRetryAudio,
                             onComplete = ::completeOnce
                         )
                     "ADD_OBJECTS", "SUBTRACT_OBJECTS", "GROUP_OBJECTS" ->
                         ArithmeticGame(
                             expression = config.targetSymbol,
                             options = config.options,
+                            onRetry = ::playRetryAudio,
                             onComplete = ::completeOnce
                         )
                     else -> ChoiceGame(
                         target = config.targetSymbol,
                         options = config.options,
+                        onRetry = ::playRetryAudio,
                         onComplete = ::completeOnce
                     )
                 }
@@ -449,6 +496,7 @@ fun MathematicsActivityScreen(
 private fun ChoiceGame(
     target: String,
     options: List<MathOption>,
+    onRetry: () -> Unit,
     onComplete: () -> Unit
 ) {
     var message by remember { mutableStateOf("") }
@@ -480,6 +528,7 @@ private fun ChoiceGame(
                             }
                         } else {
                             message = "Bir daha bakalım."
+                            onRetry()
                         }
                     }
                 ) {
@@ -525,6 +574,7 @@ private fun NumberIntroGame(
 private fun CountObjectsGame(
     count: Int,
     options: List<MathOption>,
+    onRetry: () -> Unit,
     onComplete: () -> Unit
 ) {
     Column(
@@ -540,7 +590,7 @@ private fun CountObjectsGame(
                 Text("●", fontSize = 32.sp, color = MaterialTheme.colorScheme.primary)
             }
         }
-        ChoiceGame(target = "Kaç tane?", options = options, onComplete = onComplete)
+        ChoiceGame(target = "Kaç tane?", options = options, onRetry = onRetry, onComplete = onComplete)
     }
 }
 
@@ -548,6 +598,7 @@ private fun CountObjectsGame(
 private fun SequenceChoiceGame(
     target: String,
     options: List<MathOption>,
+    onRetry: () -> Unit,
     onComplete: () -> Unit
 ) {
     Column(
@@ -560,7 +611,7 @@ private fun SequenceChoiceGame(
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary
         )
-        ChoiceGame(target = "Boşluğa hangisi gelir?", options = options, onComplete = onComplete)
+        ChoiceGame(target = "Boşluğa hangisi gelir?", options = options, onRetry = onRetry, onComplete = onComplete)
     }
 }
 
@@ -568,6 +619,7 @@ private fun SequenceChoiceGame(
 private fun ArithmeticGame(
     expression: String,
     options: List<MathOption>,
+    onRetry: () -> Unit,
     onComplete: () -> Unit
 ) {
     val plus = Regex("""(\d+)\s*\+\s*(\d+)""").find(expression)
@@ -618,7 +670,7 @@ private fun ArithmeticGame(
             }
         }
 
-        ChoiceGame(target = "Sonuç kaç?", options = options, onComplete = onComplete)
+        ChoiceGame(target = "Sonuç kaç?", options = options, onRetry = onRetry, onComplete = onComplete)
     }
 }
 
