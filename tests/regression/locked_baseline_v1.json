@@ -1,0 +1,37 @@
+{
+  "version": "1.0",
+  "lockedThroughStep": 13,
+  "protectedTrees": {
+    "app/src/main": "5fecb193f97fe1e4f630a40908f77034dcf9c557",
+    "assets": "a07031bd0b25573fb046955b48a4e37545021396",
+    "audio": "a76f8b07e160a9c16a34fb21009352368ad9cc85",
+    "content": "58b64a85eda9661deebbe605e29b44c0ed2cc3f4",
+    "core": "0acbaecbb73cacc072c5f3c0e8135a64141fc79c",
+    "feature": "7d9609fadcacd727cd80457222bf7ae9ab051746"
+  },
+  "protectedFiles": {
+    "BUILD_PROCESS.md": "6825b933dea10bd44c912097c3e37e4476395223",
+    "app/README.md": "783bad915e9b747365164f3158918a3424de3e76",
+    "docs/ADMIN_PANEL_V1.md": "950961183c5d1c5baf2501943e5a471acfd1c267",
+    "docs/ANIMATION_RULES.md": "3ff8036010618311ba8eb692ad410ae01e38c6a3",
+    "docs/ASSET_INTEGRATION_V1.md": "2840d973e3f7127715b2c87baca30bbe4efeee57",
+    "docs/AUDIO_STYLE_GUIDE.md": "7a05cb294dd3cf5577fcc94d60348911e59b976e",
+    "docs/AUTOMATED_TESTS_V1.md": "d6b62f3e491c86bd78b10118f42f4577ac0a1796",
+    "docs/AVATAR_SYSTEM_V1.md": "44d13fd97c26c02b67c0fd14fc9df9c7efc2f132",
+    "docs/CHILD_SAFETY_RULES.md": "ed1328b274fb94cc31d6775ada97f8b746817f0e",
+    "docs/CONTENT_SCHEMA_V1.md": "15d71946c153c4a39a75682948631fe53eb764ea",
+    "docs/CURRICULUM_LOCK_V1.md": "c1b0a96f908c4549d6525a336011562d6e488eef",
+    "docs/LITERACY_MODULE_V1.md": "1c1ab77705381fe11eb14e9a213822e42a9a874a",
+    "docs/MANUAL_UI_PEDAGOGICAL_REVIEW_V1.md": "4402d1328f7c6483e68d2eda99978b2530d7609b",
+    "docs/PARENT_SYSTEM_V1.md": "eeeb24641b23f32e4b99db72de7e1031aa2d7bf6",
+    "docs/PRODUCT_SPEC_V1.md": "eee0ca5868168f58fa5827250cc0d8fb30c17265",
+    "docs/PROJECT_STRUCTURE_V1.md": "5eeefe211c4eb8155b28bf8ff004ae9bb2628382",
+    "docs/SOURCE_MAPPING.md": "3b601e7352d62a5fc1c27470f05561a1858f78c0",
+    "docs/THEME_ACCESSIBILITY_V1.md": "f6dfe23f367fe4f90d2daca8ca7155fe580eae3b",
+    "docs/UI_FLOW_V1.md": "8c21904e637b22771b5971335b169a39ff631e79",
+    "docs/VISUAL_STYLE_GUIDE.md": "2f045bb69d4ba25957c27f6508c02fe184eb56c4",
+    "feature/mathematics/README.md": "1cd76831e6c54ad32a70c724fc3eabf1a2468031",
+    "feature/mini-games/README.md": "67d66a23f7eceb6b1ac268758c954e3e069bc550",
+    "feature/tracing/README.md": "52dd3d09c6f7ef4b1ab8b5ace92725e2aa452ccd"
+  }
+}
