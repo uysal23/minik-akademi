@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-09-26 — Manual Pedagogical / UI Review V1.0
+
+- Build Step 13 completed and locked.
+- GitHub-hosted Android emulator review flow completed without requiring local user setup.
+- Final Pedagogical UI Review #25 (run 36242603661) completed successfully on commit `9935f261079c586c513de204086c7b69841b012f`.
+- 17/17 required PNG evidence screens were generated and visually reviewed.
+- Evidence artifact `minik-akademi-step13-ui-review-evidence` (artifact ID 10905809486) was verified.
+- Companion instrumentation reports artifact ID is 10906447727.
+- Android Build #123 and Automated Tests #23 both passed on the same commit.
+- Manual review confirmed child-safe language, large/reachable controls, offline UI behavior, avatar continuity, visible listening/navigation controls, locked-content wording, parent/child separation, and explicit EXTENSION mathematics separation.
+- A stale-frame evidence defect found after technically successful Run #24 was not accepted; screenshot capture was strengthened to require a new settled physical frame, then Run #25 was rerun and re-reviewed successfully.
+- Build Step 14 (regression tests) is now the next gated stage.
+
 ## 2026-09-26 — Automated Tests V1.0
 
 - Build Step 12 completed and locked.
