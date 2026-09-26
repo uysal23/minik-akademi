@@ -15,8 +15,31 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  trigger-gate:
+    name: Check production release trigger
+    runs-on: ubuntu-24.04
+    outputs:
+      should_run: ${{ steps.gate.outputs.should_run }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Read trigger state
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -Fq 'status=RUN_PRODUCTION_V1' release/production-v1.trigger; then
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "Production v1 trigger is armed."
+          else
+            echo "should_run=false" >> "$GITHUB_OUTPUT"
+            echo "Production v1 is waiting for GitHub signing secrets."
+          fi
+
   build-production:
     name: Build and verify production-signed v1.0.0
+    needs: trigger-gate
+    if: needs.trigger-gate.outputs.should_run == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 55
     env:
