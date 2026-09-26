@@ -1,5 +1,23 @@
 # Changelog
 
+## 2026-09-26 — Release APK Build / Technical Acceptance V1.0
+
+- Build Step 15 completed and locked for technical release acceptance.
+- Final APK: `MinikAkademi-0.1.0-release-ci-signed.apk`.
+- APK SHA-256: `4c7841b86d623f74baad2590dbe061df8d4e1cf591f8c1f595a2bc2a414fcba6`.
+- Package `com.uysal.minikakademi`, versionCode 1, versionName 0.1.0, minSdk 26, targetSdk 37.
+- APK Signature Scheme v2/v3 verification passed.
+- INTERNET permission is absent; offline payload contains 166 OGG files and 127 JSON files.
+- Release Candidate #12 build/sign/comprehensive acceptance job passed.
+- 11/11 API 35 release acceptance screenshots passed, including onboarding, dashboard, tracing, literacy, mathematics, mini-games, parent PIN/settings and reinstall persistence.
+- In-place reinstall preserved child data; full release-session crash/ANR sweep passed.
+- Android API 26 / Android 8.0 verification #2 (run 36259338347) passed: install, MainActivity launch, visible welcome UI and clean crash/ANR log.
+- Step 15 Final Technical Gate #1 (run 36259741949) passed and cross-verified release, acceptance and API 26 artifacts.
+- Regression Tests #23 and Automated Tests #40 passed after the Step 15 maintenance fixes.
+- A real release acceptance defect was found and corrected: Parent Settings was not vertically scrollable on the phone viewport; the screen now exposes Accessibility, Daily Goal and navigation controls by scrolling.
+- Emulator/test-harness flakes discovered during acceptance were not accepted as product PASS results; cold-start retry and portable API 26 shell verification were added.
+- Step 15 signing identity is CI-generated and valid for this tested APK. Long-term production/Play Store update continuity still requires a persistent production keystore stored outside source control in a secure deployment secret.
+
 ## 2026-09-26 — Regression Tests V1.0
 
 - Build Step 14 completed and locked.
