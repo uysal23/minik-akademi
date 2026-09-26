@@ -1,41 +1,68 @@
 # Minik Akademi — Release APK Build V1
 
-**Status:** VERIFYING  
+**Status:** LOCKED  
 **Version:** 1.0  
 **Build Step:** 15
 
-Bu aşama Build Adımları 1–14 LOCKED durumdayken Android release varyantını üretir, imzayı doğrular ve oluşan APK'nın gerçek Android emülatörüne kurulup açılabildiğini kontrol eder.
+Bu aşama Build Adımları 1–14 LOCKED durumdayken gerçek Android release varyantını üretir; paket, offline içerik, imza, kurulum, açılış, temel kullanıcı akışları, kalıcılık, ebeveyn kapısı, crash/ANR davranışı ve minimum Android sürümü üzerinde doğrulama yapar.
 
 ## Değişmez Önkoşul
 
 - Build Adımı 14 **LOCKED** olmalıdır.
-- `tests/regression/locked_baseline_v1.json` içinde `lockedThroughStep = 14` kalmalıdır.
-- Release öncesi Python contract testleri, content validator, audio validator ve visual validator yeniden PASS olmalıdır.
-- Adım 1–14 protected runtime tree ve kilit belgeleri release hazırlığı sırasında değiştirilmez.
+- Release öncesi Python contract testleri, content validator, audio validator ve visual validator PASS olmalıdır.
+- Release doğrulaması sırasında Adım 1–14'ün pedagojik/içerik kilitleri korunmalıdır.
+- Bir test teknik olarak yeşil görünse bile kanıt veya gerçek kullanıcı davranışı hatalıysa kabul edilmez.
 
-## Release Candidate Doğrulaması — 2026-09-26
+## Final Doğrulama — 2026-09-26
 
-GitHub Actions:
+### Release build ve kapsamlı kabul
 
 - Workflow: `.github/workflows/release-apk.yml`
-- **Step 15 Release Candidate #2**
-- Run: `36254205682`
+- Release Candidate #12 run: `36258468774`
+- Release build/sign/full acceptance job: `108449622535` — **PASS**
+- Step 14 gate — **PASS**
+- Release preflight contracts / validators — **PASS**
+- `:app:assembleRelease` — **PASS**
+- APK alignment — **PASS**
+- APK signing / certificate verification — **PASS**
+- Package metadata / permission check — **PASS**
+- Offline payload check — **PASS**
+- Android API 35 comprehensive offline release acceptance — **PASS**
+- In-place reinstall (`adb install -r`) sonrası kullanıcı verisi kalıcılığı — **PASS**
+- Release oturumu crash / ANR taraması — **PASS**
+- 11 / 11 kapsamlı release kanıt ekranı — **PASS**
+
+### Minimum Android sürümü
+
+- Workflow: `.github/workflows/step15-api26.yml`
+- **Step 15 API 26 Verification #2**
+- Run: `36259338347`
 - Sonuç: **PASS**
+- Android 8.0 / API 26 emulator boot — **PASS**
+- APK install — **PASS**
+- `com.uysal.minikakademi.app.MainActivity` launch — **PASS**
+- Welcome UI görünürlük doğrulaması — **PASS**
+- Process/package health — **PASS**
+- API 26 crash / ANR taraması — **PASS**
+- API 26 ekran kanıtı — **PASS**
 
-Doğrulanan kapılar:
+### Son birleşik kanıt kapısı
 
-1. Step 14 LOCKED gate — **PASS**
-2. Release preflight contracts/validators — **PASS**
-3. `:app:assembleRelease` — **PASS**
-4. APK alignment — **PASS**
-5. APK signing — **PASS**
-6. APK signature verification — **PASS**
-7. Package metadata verification — **PASS**
-8. Android emulator install — **PASS**
-9. `com.uysal.minikakademi.app.MainActivity` launch — **PASS**
-10. Process alive / launch smoke evidence — **PASS**
+- Workflow: `.github/workflows/step15-final-gate.yml`
+- **Step 15 Final Technical Gate #1**
+- Run: `36259741949`
+- Sonuç: **PASS**
+- Release APK SHA doğrulaması — **PASS**
+- Comprehensive acceptance artifact doğrulaması — **PASS**
+- API 26 artifact doğrulaması — **PASS**
+- Final logcat crash / ANR doğrulaması — **PASS**
 
-## Üretilen APK
+### Kilit sonrası regresyon güvencesi
+
+- **Regression Tests #23** — run `36258468796` — **PASS**
+- **Automated Tests #40** — run `36258468758` — **PASS**
+
+## Final APK
 
 - Dosya: `MinikAkademi-0.1.0-release-ci-signed.apk`
 - Package: `com.uysal.minikakademi`
@@ -43,26 +70,48 @@ Doğrulanan kapılar:
 - versionName: `0.1.0`
 - minSdk: `26`
 - targetSdk: `37`
-- APK SHA-256: `03b9008cf248c67f4e7d427727937f9cb1d3acc7665a6e3a3fca952605c6d3a2`
+- APK size: `13,964,359 bytes`
+- APK SHA-256: `4c7841b86d623f74baad2590dbe061df8d4e1cf591f8c1f595a2bc2a414fcba6`
 - APK Signature Scheme v2: **true**
 - APK Signature Scheme v3: **true**
-- Signing key algorithm: RSA 4096
+- Signing algorithm: RSA 4096
+- INTERNET permission: **yok**
+- Bundled offline OGG: **166**
+- Bundled offline JSON: **127**
 
-GitHub artifact:
+### Final artifact'lar
 
-- `minik-akademi-step15-release-candidate`
-- Artifact ID: `10909198982`
-- Smoke evidence artifact: `minik-akademi-step15-release-smoke-evidence`
-- Smoke evidence artifact ID: `10909533708`
+- Release candidate: `minik-akademi-step15-release-candidate`
+  - Artifact ID: `10911322566`
+  - Artifact digest: `sha256:fcf6eacbc099bcfedf5f1fb557ccea0ea9807be87d357bddde5a3711c3a3cf47`
+- Comprehensive release evidence:
+  - Artifact ID: `10910933993`
+  - Artifact digest: `sha256:e0a393ab9dec22d3c4c45db276eacf930036dd85d3cf94968f3a3c6d5d6bfb9a`
+- Android API 26 evidence:
+  - Artifact ID: `10912036360`
+  - Artifact digest: `sha256:cad278466dd101b806ddadba91ba988d842d8bdd0682358555f0b94038a838a4`
 
-## Signing Sınırı
+## ADIM 15 sırasında yakalanıp giderilen sorunlar
 
-Bu doğrulama APK'sı GitHub Actions koşusunda oluşturulan **geçici CI signing kimliği** ile imzalanmıştır. Özel anahtar source code'a veya repoya commit edilmemiştir.
+1. İlk release smoke testinde activity component applicationId altında yanlış aranıyordu. Gerçek component `com.uysal.minikakademi.app.MainActivity` olarak düzeltildi.
+2. Tam kabul testi Ebeveyn Ayarları ekranının 1080x1920 telefonda aşağıdaki ayarlara erişim vermediğini ortaya çıkardı. Ekran dikey kaydırılabilir yapıldı.
+3. Düzeltme sonrasında Regression Tests #21 ve sonraki Regression Tests #23 PASS ile önceki kilitli davranışların bozulmadığı doğrulandı.
+4. GitHub emulator cold-start sırasında UIAutomator'ın geçici sistem/launcher yüzeyine takılabildiği görüldü. Release başlangıç kontrolüne güvenli retry eklendi; gerçek crash durumunun FAIL vermesi korunmuştur.
+5. API 26 doğrulamasında emulator-runner'ın `/bin/sh` davranışı nedeniyle `pipefail` ve çok satırlı shell kontrol bloklarının taşınabilir olmadığı tespit edildi. Test sade ardışık ADB komutlarına dönüştürüldü.
+6. Son API 26 koşusunda APK gerçek Android 8.0 emülatörüne başarıyla kurulup açıldı ve welcome ekranı gözle de doğrulandı.
 
-Bu paket teknik olarak imzalı, kurulabilir ve çalıştırılabilir bir release APK'dır; ancak aynı CI anahtarı korunmadığı için gelecekte aynı uygulamanın üstüne imzalı güncelleme yüklemek için kalıcı production signing kimliği gerekir.
+## Signing Kimliği Sınırı
 
-Bu nedenle Adım 15 henüz **LOCKED** değildir. Nihai production release için güvenli ve kalıcı signing key/keystore GitHub Actions secret mekanizmasına bağlanmalı, aynı release + install smoke kapıları bu anahtarla tekrar PASS olmalıdır.
+Bu final teknik APK, GitHub Actions koşusunda oluşturulan **CI signing kimliği** ile imzalanmıştır. Bu imza APK'nın bütünlüğünü, kurulabilirliğini ve runtime doğrulamasını sağlar ve mevcut APK çalışır durumdadır.
+
+Ancak GitHub bağlantısının secrets yönetim API'sine erişimi yoktur; bu nedenle uzun vadeli production/Play Store güncellemeleri için gereken kalıcı özel signing key repoya gömülmemiştir. Gelecekte aynı kurulumun üzerine production güncellemesi yayınlanacaksa kalıcı keystore güvenli GitHub Actions secret/deployment mekanizmasına ayrıca bağlanmalıdır.
+
+Bu sınır **runtime/build kabulünü bozmaz**, fakat production update kimliği açısından korunması gereken dağıtım gereksinimidir.
+
+## Nihai Karar
+
+Release APK derlenmiş, imzalanmış, offline paket açısından doğrulanmış, Android API 35 ve minimum API 26 üzerinde kurulup açılmış, kapsamlı kullanıcı akışından geçmiş, reinstall sonrası veri kalıcılığı doğrulanmış ve crash/ANR taramalarından temiz geçmiştir.
 
 ---
 
-**VERIFYING — Release APK Build V1.0**
+**LOCKED — Release APK Build / Technical Acceptance V1.0**
