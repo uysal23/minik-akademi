@@ -9,53 +9,99 @@ class OfflineAudioPlayer(
     private val context: Context
 ) : AutoCloseable {
 
-    private var mediaPlayer: MediaPlayer? = null
+    private var speechPlayer: MediaPlayer? = null
+    private var sfxPlayer: MediaPlayer? = null
 
     fun playSpeech(audioId: String, speed: Float = 1.0f): Boolean =
-        playAsset("speech/$audioId.ogg", speed)
+        playAsset(
+            assetPath = "speech/$audioId.ogg",
+            speed = speed.coerceIn(0.80f, 1.00f),
+            speech = true
+        )
 
     fun playSfx(sfxId: String): Boolean =
-        playAsset("sfx/$sfxId.ogg", 1.0f)
+        playAsset(
+            assetPath = "sfx/$sfxId.ogg",
+            speed = 1.0f,
+            speech = false
+        )
 
-    fun stop() {
-        runCatching { mediaPlayer?.stop() }
-        runCatching { mediaPlayer?.release() }
-        mediaPlayer = null
+    fun hasSpeech(audioId: String): Boolean = assetExists("speech/$audioId.ogg")
+    fun hasSfx(sfxId: String): Boolean = assetExists("sfx/$sfxId.ogg")
+
+    fun stopSpeech() {
+        speechPlayer = release(speechPlayer)
+    }
+
+    fun stopSfx() {
+        sfxPlayer = release(sfxPlayer)
+    }
+
+    fun stopAll() {
+        stopSpeech()
+        stopSfx()
     }
 
     override fun close() {
-        stop()
+        stopAll()
     }
 
-    private fun playAsset(assetPath: String, speed: Float): Boolean {
-        stop()
+    private fun playAsset(
+        assetPath: String,
+        speed: Float,
+        speech: Boolean
+    ): Boolean {
+        if (speech) stopSpeech() else stopSfx()
+
         return runCatching {
             val afd = context.assets.openFd(assetPath)
             val player = MediaPlayer()
+
             player.setAudioAttributes(
                 AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_ASSISTANCE_ACCESSIBILITY)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                    .setUsage(
+                        if (speech) AudioAttributes.USAGE_ASSISTANCE_ACCESSIBILITY
+                        else AudioAttributes.USAGE_ASSISTANCE_SONIFICATION
+                    )
+                    .setContentType(
+                        if (speech) AudioAttributes.CONTENT_TYPE_SPEECH
+                        else AudioAttributes.CONTENT_TYPE_SONIFICATION
+                    )
                     .build()
             )
             player.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
             afd.close()
             player.prepare()
 
-            if (speed != 1.0f) {
-                player.playbackParams = PlaybackParams().setSpeed(speed.coerceIn(0.8f, 1.0f))
+            if (speech && speed != 1.0f) {
+                player.playbackParams = PlaybackParams()
+                    .setSpeed(speed)
+                    .setPitch(1.0f)
             }
 
             player.setOnCompletionListener {
                 runCatching { it.release() }
-                if (mediaPlayer === it) mediaPlayer = null
+                if (speech && speechPlayer === it) speechPlayer = null
+                if (!speech && sfxPlayer === it) sfxPlayer = null
             }
-            mediaPlayer = player
+
+            if (speech) speechPlayer = player else sfxPlayer = player
             player.start()
             true
         }.getOrElse {
-            mediaPlayer = null
+            if (speech) speechPlayer = null else sfxPlayer = null
             false
         }
+    }
+
+    private fun assetExists(assetPath: String): Boolean =
+        runCatching {
+            context.assets.openFd(assetPath).use { true }
+        }.getOrDefault(false)
+
+    private fun release(player: MediaPlayer?): MediaPlayer? {
+        runCatching { player?.stop() }
+        runCatching { player?.release() }
+        return null
     }
 }
