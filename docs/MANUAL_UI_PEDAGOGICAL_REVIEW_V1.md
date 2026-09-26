@@ -1,6 +1,6 @@
 # Minik Akademi — Manuel Pedagojik / UI İnceleme V1
 
-**Status:** VERIFYING  
+**Status:** LOCKED  
 **Version:** 1.0  
 **Build Step:** 13
 
@@ -83,4 +83,56 @@ Build Adımı 13 yalnızca şu koşullarda LOCKED olabilir:
 5. Kritik sorun varsa düzeltilip emülatör akışı yeniden çalıştırılmalı.
 6. Son Android build ve Adım 12 otomatik test kapısı bozulmamalı.
 
-Tüm kriterler tamamlandığında durum **LOCKED V1.0** yapılacaktır.
+## Doğrulama Sonucu — 2026-09-26
+
+Final doğrulama commit'i:
+
+`9935f261079c586c513de204086c7b69841b012f`
+
+GitHub Actions sonuçları:
+
+- **Pedagogical UI Review #25** — run `36242603661` — **PASS**
+- **Android Build #123** — run `36242603631` — **PASS**
+- **Automated Tests #23** — run `36242603745` — **PASS**
+- Görsel kanıt sayısı: **17 / 17**
+- Kanıt artifact: `minik-akademi-step13-ui-review-evidence`
+- Artifact ID: `10905809486`
+- Artifact SHA-256 digest: `9a0902c3c3399b151c77eb48ed2838cab5817c18ad4e760af329f8c85b4b19df`
+- Instrumentation artifact: `minik-akademi-step13-instrumentation-reports`
+- Instrumentation artifact ID: `10906447727`
+
+### Görsel İnceleme Kaydı
+
+| Kanıt | Sonuç | Gözlem |
+|---|---|---|
+| 01 Welcome | PASS | Yetişkin kurulumu net; dış bağlantı/reklam yok. |
+| 02 Adult setup gate | PASS | Çocuk deneyiminden ayrılmış yetişkin kapısı görünür. |
+| 03 Child profile | PASS | Kısa yönerge, büyük giriş ve kontrollü devam eylemi. |
+| 04 Learning level | PASS | Tek seçim amacı ve net seviye hiyerarşisi. |
+| 05 Avatar selection | PASS | 12 insan çocuk avatarı görünür; seçili avatar net; “Bu Benim” eylemi erişilebilir. |
+| 06 Offline voice speed | PASS | 0.8x / 0.9x / 1.0x seçenekleri ve offline örnek dinleme görünür. |
+| 07 Theme | PASS | Pastel/Doğa/Gökyüzü/Yüksek Kontrast seçenekleri net. |
+| 08 Parent PIN | PASS | Ebeveyn alanını çocuk alanından ayıran PIN kurulumu görünür. |
+| 09 Setup summary | PASS | Çocuk, seviye, avatar, tema ve konuşma hızı özeti tutarlı. |
+| 10 Child dashboard | PASS | Dört ana öğrenme alanı açıkça ayrılıyor; seçilen avatar korunuyor. |
+| 11 Tracing home | PASS | Olumlu yönerge, kaynak-temelli etkinlik listesi ve görünür Ana Sayfa eylemi. |
+| 12 Tracing activity | PASS | Öğrenme nesnesi, “Dinle” ve Etkinlik Listesi kontrolleri görünür. |
+| 13 Literacy home | PASS | Kilitli harf sırası korunuyor; olumlu açılma dili ve görünür Ana Sayfa eylemi. |
+| 14 Mathematics home | PASS | Kaynak-temelli kategoriler ile EXTENSION bölümü görsel/metinsel olarak ayrılıyor. |
+| 15 Mathematics category | PASS | Önkoşul/kilit dili cezalandırıcı değil; geri dönüş eylemi görünür. |
+| 16 Mathematics activity | PASS | Tek matematik amacı, “Dinle”, cevaplar ve geri dönüş kontrolü net. |
+| 17 Mini-games locked | PASS | Kilitli oyunlar “Biraz daha çalışınca açılacak.” diliyle gösteriliyor; rekabet/ödül baskısı yok. |
+
+### Run #24 Sonrası Kalite Düzeltmesi
+
+Run #24 teknik olarak PASS olmasına rağmen artifact gözle incelemesinde `05_avatar_selection.png` dosyasının bir önceki Eğitim Seviyesi karesini tekrar ettiği tespit edildi. Bu nedenle Adım 13 kilitlenmedi.
+
+Instrumentation ekran yakalama kodu, her kanıt için fiziksel ekranın önceki kareden gerçekten değişmesini ve iki ardışık yakalamada sabitlenmesini bekleyecek şekilde güçlendirildi. Run #25 sonrasında 17 PNG yeniden gözle incelendi ve avatar karesi dahil tüm kanıtların doğru ekrana ait olduğu doğrulandı.
+
+## Nihai Karar
+
+Kabul kapısındaki 6 koşulun tamamı karşılandı. Kilitli pedagojik, UI, avatar, güvenlik, offline ve içerik ayrımı kurallarında kritik ihlal görülmedi.
+
+---
+
+**LOCKED — Manuel Pedagojik / UI İnceleme V1.0**
