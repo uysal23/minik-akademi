@@ -1,5 +1,5 @@
 {
-  "version": "1.1",
+  "version": "1.2",
   "lockedThroughStep": 15,
   "protectedTrees": {
     "app/src/main": "5fecb193f97fe1e4f630a40908f77034dcf9c557",
@@ -38,6 +38,6 @@
     ".github/workflows/release-apk.yml": "a69f0b1c682f0a34df3a16e65c4fcb5f3f5ca8f6",
     ".github/workflows/step15-api26.yml": "25330d85369736c19cd12b549286fe9f603e143a",
     ".github/workflows/step15-final-gate.yml": "fc52a3b6a46e81b62535f0d23a02f8bb0907514a",
-    "tools/release/step15_release_acceptance.py": "8fb687327f543a42d9c38e78f0f3b65e5c2a9e1a"
+    "tools/release/step15_release_acceptance.py": "53a75a88f116c05ca49c93c7ffe3158578730521"
   }
 }
