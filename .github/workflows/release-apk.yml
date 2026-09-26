@@ -177,7 +177,7 @@ jobs:
           set -euo pipefail
           COUNT="$(find step15-smoke -maxdepth 1 -type f -name '*.png' | wc -l | tr -d ' ')"
           echo "Release acceptance screenshots: $COUNT"
-          test "$COUNT" -eq 8
+          test "$COUNT" -eq 10
 
           for name in             01_release_welcome             02_release_setup_summary             03_release_dashboard             04_release_persistence_relaunch             05_release_tracing             06_release_literacy             07_release_mathematics             08_release_mini_games
           do
