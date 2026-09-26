@@ -67,11 +67,18 @@ class PedagogicalUiReviewTest {
         repeat(12) {
             rule.waitForIdle()
             InstrumentationRegistry.getInstrumentation().waitForIdleSync()
-            lastFocus = runShellCommand("dumpsys window")
+            val windowDump = runShellCommand("dumpsys window")
+            lastFocus = windowDump
+                .lineSequence()
+                .filter { line ->
+                    line.contains("mCurrentFocus=") ||
+                        line.contains("mFocusedApp=") ||
+                        line.contains("mObscuringWindow=")
+                }
+                .joinToString("\n")
             if (
                 lastFocus.contains("com.uysal.minikakademi") &&
-                !lastFocus.contains("Application Not Responding", ignoreCase = true) &&
-                !lastFocus.contains("Launcher", ignoreCase = true)
+                !lastFocus.contains("Application Not Responding", ignoreCase = true)
             ) {
                 return
             }
