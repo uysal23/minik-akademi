@@ -32,6 +32,7 @@ import com.uysal.minikakademi.core.designsystem.AvatarPlaceholder
 import com.uysal.minikakademi.core.designsystem.KidCard
 import com.uysal.minikakademi.core.designsystem.KidPrimaryButton
 import com.uysal.minikakademi.core.designsystem.KidScreen
+import com.uysal.minikakademi.core.designsystem.LearningObjectArt
 import org.json.JSONObject
 
 data class MiniGameOption(
@@ -380,7 +381,7 @@ private fun CountAndChooseGame(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             repeat(count.coerceIn(0, 20)) {
-                Text("●", fontSize = 34.sp, color = MaterialTheme.colorScheme.primary)
+                LearningObjectArt(label = "elma", size = 44.dp)
             }
         }
         SingleChoiceGame(config, onRetry, onComplete)
@@ -475,7 +476,11 @@ private fun GroupTenGame(
                     },
                     modifier = Modifier.size(58.dp)
                 ) {
-                    Text(if (option.id in selected) "✓" else "●")
+                    if (option.id in selected) {
+                        Text("✓")
+                    } else {
+                        LearningObjectArt(label = "armut", size = 34.dp)
+                    }
                 }
             }
         }
