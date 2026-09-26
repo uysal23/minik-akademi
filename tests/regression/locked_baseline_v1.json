@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "lockedThroughStep": 13,
+  "lockedThroughStep": 14,
   "protectedTrees": {
     "app/src/main": "5fecb193f97fe1e4f630a40908f77034dcf9c557",
     "assets": "a07031bd0b25573fb046955b48a4e37545021396",
@@ -32,6 +32,7 @@
     "docs/VISUAL_STYLE_GUIDE.md": "2f045bb69d4ba25957c27f6508c02fe184eb56c4",
     "feature/mathematics/README.md": "1cd76831e6c54ad32a70c724fc3eabf1a2468031",
     "feature/mini-games/README.md": "67d66a23f7eceb6b1ac268758c954e3e069bc550",
-    "feature/tracing/README.md": "52dd3d09c6f7ef4b1ab8b5ace92725e2aa452ccd"
+    "feature/tracing/README.md": "52dd3d09c6f7ef4b1ab8b5ace92725e2aa452ccd",
+    "docs/REGRESSION_TESTS_V1.md": "627d6750fe292da835c3880bd0c2bbfec0adf88f"
   }
 }
