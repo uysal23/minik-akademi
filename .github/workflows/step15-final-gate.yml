@@ -1,0 +1,76 @@
+name: Step 15 Final Technical Gate
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - ".github/workflows/step15-final-gate.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  final-gate:
+    name: Verify all Step 15 release evidence
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Download final release candidate
+        uses: actions/download-artifact@v4
+        with:
+          name: minik-akademi-step15-release-candidate
+          path: release
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: 36258468774
+
+      - name: Download comprehensive acceptance evidence
+        uses: actions/download-artifact@v4
+        with:
+          name: minik-akademi-step15-release-acceptance-evidence
+          path: acceptance
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: 36258468774
+
+      - name: Download Android API 26 evidence
+        uses: actions/download-artifact@v4
+        with:
+          name: minik-akademi-step15-api26-evidence
+          path: api26
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: 36259338347
+
+      - name: Verify final APK and evidence set
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK="release/MinikAkademi-0.1.0-release-ci-signed.apk"
+          test -s "$APK"
+          test -s release/SHA256SUMS.txt
+          EXPECTED="$(awk '{print $1}' release/SHA256SUMS.txt)"
+          ACTUAL="$(sha256sum "$APK" | awk '{print $1}')"
+          test "$EXPECTED" = "$ACTUAL"
+          echo "APK SHA-256 verified: $ACTUAL"
+
+          test "$(find acceptance -maxdepth 1 -type f -name '*.png' | wc -l | tr -d ' ')" -eq 11
+          test -s acceptance/01_release_welcome.png
+          test -s acceptance/11_release_reinstall_persistence.png
+          test -s acceptance/release-logcat.txt
+          ! grep -Fq "ANR in com.uysal.minikakademi" acceptance/release-logcat.txt
+          if grep -Fq "FATAL EXCEPTION" acceptance/release-logcat.txt && grep -Fq "Process: com.uysal.minikakademi" acceptance/release-logcat.txt; then
+            exit 1
+          fi
+
+          test -s api26/12_release_api26_welcome.png
+          test -s api26/window.xml
+          test -s api26/api26-logcat.txt
+          grep -Fq "Minik Akademi" api26/window.xml
+          ! grep -Fq "ANR in com.uysal.minikakademi" api26/api26-logcat.txt
+          if grep -Fq "FATAL EXCEPTION" api26/api26-logcat.txt && grep -Fq "Process: com.uysal.minikakademi" api26/api26-logcat.txt; then
+            exit 1
+          fi
+
+          echo "STEP 15 FINAL TECHNICAL GATE: PASS"
