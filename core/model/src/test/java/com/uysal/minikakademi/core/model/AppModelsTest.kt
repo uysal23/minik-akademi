@@ -24,9 +24,9 @@ class AppModelsTest {
 
     @Test
     fun speechRates_matchLockedOfflineTempoOptions() {
-        assertEquals(0.80f, SpeechRateOption.SLOW.multiplier)
-        assertEquals(0.90f, SpeechRateOption.NORMAL.multiplier)
-        assertEquals(1.00f, SpeechRateOption.FAST.multiplier)
+        assertEquals(0.80f, SpeechRateOption.SLOW.multiplier, 0.0001f)
+        assertEquals(0.90f, SpeechRateOption.NORMAL.multiplier, 0.0001f)
+        assertEquals(1.00f, SpeechRateOption.FAST.multiplier, 0.0001f)
     }
 
     @Test
