@@ -1,0 +1,238 @@
+name: Regression Tests
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "app/**"
+      - "core/**"
+      - "feature/**"
+      - "content/**"
+      - "audio/**"
+      - "assets/**"
+      - "docs/**"
+      - "tests/**"
+      - "tools/**"
+      - "gradle/**"
+      - "*.gradle.kts"
+      - "settings.gradle.kts"
+      - "gradle.properties"
+      - "BUILD_PROCESS.md"
+      - ".github/workflows/regression-tests.yml"
+  pull_request:
+    paths:
+      - "app/**"
+      - "core/**"
+      - "feature/**"
+      - "content/**"
+      - "audio/**"
+      - "assets/**"
+      - "docs/**"
+      - "tests/**"
+      - "tools/**"
+      - "gradle/**"
+      - "*.gradle.kts"
+      - "settings.gradle.kts"
+      - "gradle.properties"
+      - "BUILD_PROCESS.md"
+      - ".github/workflows/regression-tests.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: regression-tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  locked-contracts:
+    name: Locked contracts and validators
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout full repository history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install validator dependencies
+        run: python -m pip install -r tools/content-validator/requirements.txt
+
+      - name: Run all Python regression and contract tests
+        run: python -m unittest discover -s tests -p "test_*.py" -v
+
+      - name: Validate authored content
+        run: python tools/content-validator/validate_content.py --mode authoring
+
+      - name: Validate offline audio
+        run: python tools/audio/validate_audio_assets.py
+
+      - name: Validate offline visuals
+        run: python tools/asset-validator/validate_visual_assets.py
+
+  android-regression:
+    name: Kotlin tests and debug regression build
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+
+      - name: Install Android 17 compile SDK
+        shell: bash
+        run: |
+          set -euo pipefail
+          SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          PLATFORM_PACKAGE="$($SDKMANAGER --list --channel=3 | awk '/platforms;android-37([.;[:space:]]|$)/ {print $1; exit}')"
+          test -n "$PLATFORM_PACKAGE"
+          $SDKMANAGER --channel=3 "$PLATFORM_PACKAGE" "build-tools;36.0.0"
+          if [ -d "$ANDROID_HOME/platforms/android-37.0" ] && [ ! -e "$ANDROID_HOME/platforms/android-37" ]; then
+            ln -s "$ANDROID_HOME/platforms/android-37.0" "$ANDROID_HOME/platforms/android-37"
+          fi
+
+      - name: Set up Gradle 9.6
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "9.6.0"
+
+      - name: Gradle configuration check
+        run: gradle --no-daemon help
+
+      - name: Run locked Kotlin unit tests
+        run: |
+          gradle --no-daemon \
+            :core:model:testDebugUnitTest \
+            :core:navigation:testDebugUnitTest
+
+      - name: Build debug APK for regression only
+        run: gradle --no-daemon :app:assembleDebug
+
+      - name: Upload Step 14 debug artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: minik-akademi-step14-regression-debug
+          path: app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 14
+
+  emulator-regression:
+    name: Persistence and full UI regression
+    needs: [locked-contracts, android-regression]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+
+      - name: Install Android 17 compile SDK
+        shell: bash
+        run: |
+          set -euo pipefail
+          SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          PLATFORM_PACKAGE="$($SDKMANAGER --list --channel=3 | awk '/platforms;android-37([.;[:space:]]|$)/ {print $1; exit}')"
+          test -n "$PLATFORM_PACKAGE"
+          $SDKMANAGER --channel=3 "$PLATFORM_PACKAGE" "build-tools;36.0.0"
+          if [ -d "$ANDROID_HOME/platforms/android-37.0" ] && [ ! -e "$ANDROID_HOME/platforms/android-37" ]; then
+            ln -s "$ANDROID_HOME/platforms/android-37.0" "$ANDROID_HOME/platforms/android-37"
+          fi
+
+      - name: Set up Gradle 9.6
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "9.6.0"
+
+      - name: Install emulator runtime libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libpulse0
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' \
+            | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+          ls -l /dev/kvm
+
+      - name: Run persistence and full UI regression
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          emulator-options: -no-window -no-snapshot -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
+          disable-animations: true
+          script: |
+            set -euo pipefail
+            adb shell wm size 1080x1920
+            adb shell wm density 420
+            adb shell settings put system font_scale 1.0
+
+            adb shell pm clear com.uysal.minikakademi || true
+            gradle --no-daemon :app:connectedDebugAndroidTest \
+              -Pandroid.testInstrumentationRunnerArguments.class=com.uysal.minikakademi.app.RegressionPersistenceTest
+
+            adb shell pm clear com.uysal.minikakademi || true
+            gradle --no-daemon :app:connectedDebugAndroidTest \
+              -Pandroid.testInstrumentationRunnerArguments.class=com.uysal.minikakademi.app.PedagogicalUiReviewTest
+
+            mkdir -p step14-ui-evidence
+            adb pull /sdcard/Download/minik-akademi-ui-review/. step14-ui-evidence/
+
+      - name: Verify exact locked UI evidence set
+        run: |
+          set -euo pipefail
+          COUNT="$(find step14-ui-evidence -maxdepth 1 -type f -name '*.png' | wc -l | tr -d ' ')"
+          echo "Captured regression screenshots: $COUNT"
+          test "$COUNT" -eq 17
+          for name in \
+            01_welcome 02_adult_setup_gate 03_child_profile 04_learning_level \
+            05_avatar_selection 06_offline_voice_speed 07_theme 08_parent_pin \
+            09_setup_summary 10_child_home 11_tracing_home 12_tracing_activity \
+            13_literacy_home 14_math_home 15_math_category 16_math_activity \
+            17_mini_games_locked
+          do
+            test -s "step14-ui-evidence/$name.png"
+          done
+
+      - name: Upload Step 14 UI regression evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: minik-akademi-step14-regression-ui-evidence
+          path: step14-ui-evidence/*.png
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload Step 14 instrumentation reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: minik-akademi-step14-regression-instrumentation-reports
+          path: |
+            app/build/reports/androidTests/connected/
+            app/build/outputs/androidTest-results/connected/
+          if-no-files-found: warn
+          retention-days: 30
