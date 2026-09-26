@@ -46,14 +46,24 @@ class PedagogicalUiReviewTest {
         rule.waitForIdle()
     }
 
+    private fun runShellCommand(command: String): String {
+        val output = InstrumentationRegistry.getInstrumentation()
+            .uiAutomation
+            .executeShellCommand(command)
+        return ParcelFileDescriptor.AutoCloseInputStream(output)
+            .bufferedReader()
+            .use { it.readText() }
+    }
+
     private fun shot(name: String) {
         rule.waitForIdle()
-        val uiAutomation = InstrumentationRegistry.getInstrumentation().uiAutomation
-        val command = "mkdir -p /sdcard/Download/minik-akademi-ui-review && " +
-            "screencap -p /sdcard/Download/minik-akademi-ui-review/$name.png"
-        val output = uiAutomation.executeShellCommand(command)
-        ParcelFileDescriptor.AutoCloseInputStream(output).use { stream ->
-            stream.readBytes()
+        val directory = "/sdcard/Download/minik-akademi-ui-review"
+        val file = "$directory/$name.png"
+        runShellCommand("mkdir -p $directory")
+        runShellCommand("screencap -p $file")
+        val listing = runShellCommand("ls -l $file")
+        check(listing.contains("$name.png")) {
+            "Step 13 screenshot was not created: $file"
         }
     }
 
