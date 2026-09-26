@@ -129,7 +129,7 @@ jobs:
             set -eu
             adb shell settings put global hide_error_dialogs 1 || true
             adb install -r step15-release/MinikAkademi-0.1.0-release-ci-signed.apk
-            adb shell am start -W -n com.uysal.minikakademi/.MainActivity
+            adb shell am start -W -n com.uysal.minikakademi/com.uysal.minikakademi.app.MainActivity
             sleep 2
             adb shell pm path com.uysal.minikakademi
             adb shell pidof com.uysal.minikakademi
