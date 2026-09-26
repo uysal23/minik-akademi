@@ -81,8 +81,7 @@ jobs:
             adb shell wm size 1080x1920
             adb shell wm density 420
             adb shell settings put system font_scale 1.0
-            gradle --no-daemon :app:connectedDebugAndroidTest \
-              -Pandroid.testInstrumentationRunnerArguments.class=com.uysal.minikakademi.app.PedagogicalUiReviewTest
+            gradle --no-daemon :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.uysal.minikakademi.app.PedagogicalUiReviewTest
             mkdir -p ui-review-evidence
             adb pull /sdcard/Android/data/com.uysal.minikakademi/files/ui-review/. ui-review-evidence/
 
