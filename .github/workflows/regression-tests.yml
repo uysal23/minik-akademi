@@ -186,7 +186,7 @@ jobs:
           emulator-options: -no-window -no-snapshot -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
           disable-animations: true
           script: |
-            set -euo pipefail
+            set -eu
             adb shell wm size 1080x1920
             adb shell wm density 420
             adb shell settings put system font_scale 1.0
