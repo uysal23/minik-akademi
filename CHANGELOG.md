@@ -15,6 +15,7 @@
 - The faulty focus guard introduced during remediation was removed after its shell-command limitation was identified.
 - Locked baseline now protects through Build Step 14.
 - Release APK/bundle/signing was not started; Build Step 15 remains gated.
+- Post-lock Regression Tests #15 (run 36251680063) also completed successfully after the Step 14 lock index, baseline and lock-contract updates; all three jobs passed.
 
 ## 2026-09-26 — Manual Pedagogical / UI Review V1.0
 
