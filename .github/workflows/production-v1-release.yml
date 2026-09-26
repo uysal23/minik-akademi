@@ -176,6 +176,8 @@ jobs:
           "$BUILD_TOOLS/aapt" dump permissions "$APK"             | tee production-release/APK_PERMISSIONS.txt
 
           grep -F "package: name='com.uysal.minikakademi'" production-release/APK_BADGING.txt
+          grep -F "versionCode='1'" production-release/APK_BADGING.txt
+          grep -F "versionName='1.0.0'" production-release/APK_BADGING.txt
           grep -F "sdkVersion:'26'" production-release/APK_BADGING.txt
           grep -F "targetSdkVersion:'37'" production-release/APK_BADGING.txt
 
