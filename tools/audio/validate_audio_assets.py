@@ -12,6 +12,16 @@ SFX = ROOT / "audio" / "generated" / "sfx"
 MANIFEST = ROOT / "audio" / "manifest" / "audio_manifest.json"
 REPORT = ROOT / "audio" / "manifest" / "generation_report.json"
 
+EXPECTED_SFX = {
+    "sfx_soft_pop",
+    "sfx_gentle_tap",
+    "sfx_success_chime",
+    "sfx_star_sparkle",
+    "sfx_slide_soft",
+    "sfx_retry_soft",
+    "sfx_complete",
+}
+
 
 def is_ogg(path: Path) -> bool:
     try:
@@ -63,6 +73,7 @@ def main() -> int:
         if not is_ogg(path):
             errors.append(f"missing/invalid speech OGG: {audio_id} -> {path.relative_to(ROOT)}")
 
+    required_sfx.update(EXPECTED_SFX)
     for sfx_id in sorted(required_sfx):
         path = SFX / f"{sfx_id}.ogg"
         if not is_ogg(path):
@@ -82,6 +93,10 @@ def main() -> int:
         missing_from_manifest = sorted(required_speech - manifest_ids)
         for audio_id in missing_from_manifest:
             errors.append(f"required speech id absent from audio manifest: {audio_id}")
+        for audio_id in sorted(manifest_ids):
+            path = SPEECH / f"{audio_id}.ogg"
+            if not is_ogg(path):
+                errors.append(f"manifest speech item missing/invalid OGG: {audio_id}")
 
     if not REPORT.exists():
         errors.append("generation report missing")
