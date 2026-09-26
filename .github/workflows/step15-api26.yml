@@ -1,0 +1,95 @@
+name: Step 15 API 26 Verification
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - ".github/workflows/step15-api26.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  api26:
+    name: Verify release candidate on Android API 26
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Download signed release candidate from Step 15 Run #12
+        uses: actions/download-artifact@v4
+        with:
+          name: minik-akademi-step15-release-candidate
+          path: step15-release
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: 36258468774
+
+      - name: Install emulator runtime libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libpulse0
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+          ls -l /dev/kvm
+
+      - name: Install and launch release APK offline on API 26
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 26
+          target: google_apis
+          arch: x86_64
+          profile: pixel_2
+          emulator-boot-timeout: 300
+          emulator-options: -no-window -no-snapshot -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
+          disable-animations: true
+          script: |
+            set -eu
+            mkdir -p step15-api26
+            adb shell svc wifi disable || true
+            adb shell svc data disable || true
+            adb logcat -c || true
+            adb install -r step15-release/MinikAkademi-0.1.0-release-ci-signed.apk
+            adb shell am start -W -n com.uysal.minikakademi/com.uysal.minikakademi.app.MainActivity
+
+            FOUND=0
+            i=0
+            while [ "$i" -lt 12 ]; do
+              adb shell uiautomator dump /sdcard/window.xml >/dev/null 2>&1 || true
+              adb pull /sdcard/window.xml step15-api26/window.xml >/dev/null 2>&1 || true
+              if [ -s step15-api26/window.xml ] && grep -Fq "Minik Akademi" step15-api26/window.xml; then
+                FOUND=1
+                break
+              fi
+              i=$((i+1))
+              sleep 2
+            done
+            test "$FOUND" -eq 1
+
+            adb shell pidof com.uysal.minikakademi
+            adb shell pm path com.uysal.minikakademi
+            adb exec-out screencap -p > step15-api26/12_release_api26_welcome.png
+            adb logcat -d > step15-api26/api26-logcat.txt
+
+            if grep -Fq "ANR in com.uysal.minikakademi" step15-api26/api26-logcat.txt; then
+              echo "API 26 release test detected ANR"
+              exit 1
+            fi
+            if grep -Fq "FATAL EXCEPTION" step15-api26/api26-logcat.txt && grep -Fq "Process: com.uysal.minikakademi" step15-api26/api26-logcat.txt; then
+              echo "API 26 release test detected fatal exception"
+              exit 1
+            fi
+            test -s step15-api26/12_release_api26_welcome.png
+
+      - name: Upload API 26 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: minik-akademi-step15-api26-evidence
+          path: step15-api26/
+          if-no-files-found: error
+          retention-days: 90
