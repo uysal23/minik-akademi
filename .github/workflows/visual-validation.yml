@@ -1,0 +1,28 @@
+name: Visual Validation
+
+on:
+  push:
+    paths:
+      - "core/design-system/**"
+      - "feature/literacy/**"
+      - "feature/mathematics/**"
+      - "feature/mini-games/**"
+      - "content/literacy/**"
+      - "tools/asset-validator/validate_visual_assets.py"
+      - ".github/workflows/visual-validation.yml"
+  workflow_dispatch:
+
+jobs:
+  validate-visuals:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate offline vector assets and hooks
+        run: python tools/asset-validator/validate_visual_assets.py
