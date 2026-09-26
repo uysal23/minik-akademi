@@ -9,6 +9,7 @@ import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -33,8 +34,10 @@ class PedagogicalUiReviewTest {
         rule.onNodeWithText(text).assertIsDisplayed()
     }
 
-    private fun clickText(text: String) {
-        rule.onNodeWithText(text).performClick()
+    private fun clickText(text: String, scrollTo: Boolean = false) {
+        val node = rule.onNodeWithText(text)
+        if (scrollTo) node.performScrollTo()
+        node.performClick()
         rule.waitForIdle()
     }
 
@@ -124,7 +127,7 @@ class PedagogicalUiReviewTest {
         shot("12_tracing_activity")
         clickText("Etkinlik Listesi")
         waitForText("Çiziyorum")
-        clickText("Ana Sayfa")
+        clickText("Ana Sayfa", scrollTo = true)
 
         waitForText("Merhaba, Ece")
         clickText("Harfleri Öğreniyorum")
@@ -133,7 +136,7 @@ class PedagogicalUiReviewTest {
             "Sesleri dinle, harfleri bul, yaz ve kelimeler oluştur."
         ).assertIsDisplayed()
         shot("13_literacy_home")
-        clickText("Ana Sayfa")
+        clickText("Ana Sayfa", scrollTo = true)
 
         waitForText("Merhaba, Ece")
         clickText("Matematik Öğreniyorum")
