@@ -12,6 +12,7 @@ PACKAGE = "com.uysal.minikakademi"
 COMPONENT = "com.uysal.minikakademi/com.uysal.minikakademi.app.MainActivity"
 OUT = Path("step15-smoke")
 XML = Path("/tmp/minik-akademi-window.xml")
+REMOTE_XML = "/data/local/tmp/minik-akademi-window.xml"
 
 
 def run(*args: str, check: bool = True, capture: bool = False) -> subprocess.CompletedProcess[str]:
@@ -29,9 +30,43 @@ def adb(*args: str, check: bool = True, capture: bool = False) -> subprocess.Com
 
 
 def dump_nodes() -> list[ET.Element]:
-    adb("shell", "uiautomator", "dump", "/sdcard/window.xml")
-    adb("pull", "/sdcard/window.xml", str(XML))
-    return list(ET.parse(XML).getroot().iter("node"))
+    """Read the UI hierarchy without depending on emulated shared storage.
+
+    GitHub Android emulators can transiently return a null UiAutomation root or
+    expose /sdcard late after boot. /data/local/tmp is shell-owned and stable,
+    so retry there before treating a missing hierarchy as an app failure.
+    """
+    last_error: Exception | None = None
+    for attempt in range(1, 9):
+        try:
+            adb("shell", "rm", "-f", REMOTE_XML, check=False)
+            dumped = adb(
+                "shell", "uiautomator", "dump", REMOTE_XML,
+                check=False, capture=True,
+            )
+            if dumped.returncode != 0:
+                raise RuntimeError(
+                    f"uiautomator dump failed rc={dumped.returncode}: "
+                    f"{dumped.stderr or dumped.stdout}"
+                )
+
+            cat = adb("shell", "cat", REMOTE_XML, check=False, capture=True)
+            xml_text = cat.stdout
+            if cat.returncode != 0 or "<hierarchy" not in xml_text:
+                raise RuntimeError(
+                    f"UI hierarchy unavailable rc={cat.returncode}: "
+                    f"{cat.stderr or xml_text}"
+                )
+
+            XML.write_text(xml_text, encoding="utf-8")
+            root = ET.fromstring(xml_text)
+            return list(root.iter("node"))
+        except Exception as exc:
+            last_error = exc
+            print(f"UI DUMP RETRY {attempt}/8: {exc}")
+            time.sleep(1.0)
+
+    raise RuntimeError(f"Unable to read UI hierarchy after retries: {last_error}")
 
 
 def node_text(node: ET.Element) -> str:
@@ -183,7 +218,7 @@ def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     adb("shell", "settings", "put", "global", "hide_error_dialogs", "1", check=False)
     adb("logcat", "-c", check=False)
-    adb("install", "-r", str(APK))
+    adb("install", "--no-incremental", "-r", str(APK))
 
     # Offline-first acceptance: networking is disabled before first launch and remains off.
     adb("shell", "svc", "wifi", "disable", check=False)
