@@ -192,12 +192,10 @@ jobs:
             adb shell settings put system font_scale 1.0
 
             adb shell pm clear com.uysal.minikakademi || true
-            gradle --no-daemon :app:connectedDebugAndroidTest \
-              -Pandroid.testInstrumentationRunnerArguments.class=com.uysal.minikakademi.app.RegressionPersistenceTest
+            gradle --no-daemon :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.uysal.minikakademi.app.RegressionPersistenceTest
 
             adb shell pm clear com.uysal.minikakademi || true
-            gradle --no-daemon :app:connectedDebugAndroidTest \
-              -Pandroid.testInstrumentationRunnerArguments.class=com.uysal.minikakademi.app.PedagogicalUiReviewTest
+            gradle --no-daemon :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.uysal.minikakademi.app.PedagogicalUiReviewTest
 
             mkdir -p step14-ui-evidence
             adb pull /sdcard/Download/minik-akademi-ui-review/. step14-ui-evidence/
