@@ -12,6 +12,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import java.security.MessageDigest
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -21,6 +22,8 @@ class PedagogicalUiReviewTest {
 
     @get:Rule
     val rule = createAndroidComposeRule<MainActivity>()
+
+    private var previousShotDigest: String? = null
 
     private fun waitForText(text: String, timeoutMillis: Long = 10_000) {
         rule.waitUntil(timeoutMillis) {
@@ -43,24 +46,65 @@ class PedagogicalUiReviewTest {
         rule.waitForIdle()
     }
 
-    private fun runShellCommand(command: String): String {
+    private fun runShellCommandBytes(command: String): ByteArray {
         val output = InstrumentationRegistry.getInstrumentation()
             .uiAutomation
             .executeShellCommand(command)
         return ParcelFileDescriptor.AutoCloseInputStream(output)
-            .bufferedReader()
-            .use { it.readText() }
+            .use { it.readBytes() }
     }
 
+    private fun runShellCommand(command: String): String =
+        runShellCommandBytes(command).toString(Charsets.UTF_8)
+
+    private fun sha256(bytes: ByteArray): String =
+        MessageDigest.getInstance("SHA-256")
+            .digest(bytes)
+            .joinToString("") { byte -> "%02x".format(byte) }
+
     private fun shot(name: String) {
-        rule.waitForIdle()
-        // Let the Android compositor and IME finish the final frame after navigation.
-        Thread.sleep(350)
-        rule.waitForIdle()
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
         val directory = "/sdcard/Download/minik-akademi-ui-review"
         val file = "$directory/$name.png"
         runShellCommand("mkdir -p $directory")
-        runShellCommand("screencap -p $file")
+
+        var candidateDigest: String? = null
+        var stableFrameCount = 0
+        var settledDigest: String? = null
+
+        // Compose semantics can become idle a frame before SurfaceFlinger presents the
+        // new screen. Capture until the physical frame has changed from the previous
+        // evidence image and remains identical across two consecutive captures.
+        for (attempt in 1..12) {
+            rule.waitForIdle()
+            instrumentation.waitForIdleSync()
+            Thread.sleep(if (attempt == 1) 450 else 250)
+
+            runShellCommand("screencap -p $file")
+            val bytes = runShellCommandBytes("cat $file")
+            check(bytes.isNotEmpty()) {
+                "Step 13 screenshot was empty: $file"
+            }
+
+            val digest = sha256(bytes)
+            if (digest == candidateDigest) {
+                stableFrameCount += 1
+            } else {
+                candidateDigest = digest
+                stableFrameCount = 1
+            }
+
+            if (stableFrameCount >= 2 && digest != previousShotDigest) {
+                settledDigest = digest
+                break
+            }
+        }
+
+        check(settledDigest != null) {
+            "Step 13 did not reach a new settled frame for $name"
+        }
+        previousShotDigest = settledDigest
+
         val listing = runShellCommand("ls -l $file")
         check(listing.contains("$name.png")) {
             "Step 13 screenshot was not created: $file"
