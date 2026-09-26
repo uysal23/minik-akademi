@@ -193,9 +193,7 @@ fun LiteracyHomeScreen(
 
     KidScreen {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
+            modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Row(
@@ -210,54 +208,61 @@ fun LiteracyHomeScreen(
                 }
             }
 
-            if (nodes.isEmpty()) {
-                KidCard { Text("Türkçe etkinlikleri hazırlanıyor.") }
-            } else {
-                nodes.forEach { node ->
-                    val nodeActivities = activities.filter { it.curriculumId == node.id }
-                    val complete = nodeActivities.isNotEmpty() &&
-                        nodeActivities.all { it.id in completedActivityIds }
-                    val unlocked = node.prerequisites.all { prerequisite ->
-                        val prerequisiteActivities = activities.filter { it.curriculumId == prerequisite }
-                        prerequisiteActivities.isEmpty() ||
-                            prerequisiteActivities.all { it.id in completedActivityIds }
-                    }
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                if (nodes.isEmpty()) {
+                    KidCard { Text("Türkçe etkinlikleri hazırlanıyor.") }
+                } else {
+                    nodes.forEach { node ->
+                        val nodeActivities = activities.filter { it.curriculumId == node.id }
+                        val complete = nodeActivities.isNotEmpty() &&
+                            nodeActivities.all { it.id in completedActivityIds }
+                        val unlocked = node.prerequisites.all { prerequisite ->
+                            val prerequisiteActivities = activities.filter { it.curriculumId == prerequisite }
+                            prerequisiteActivities.isEmpty() ||
+                                prerequisiteActivities.all { it.id in completedActivityIds }
+                        }
 
-                    Card(
-                        onClick = { if (unlocked) onOpenLetter(node.id) },
-                        enabled = unlocked,
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(
-                            containerColor = when {
-                                complete -> MaterialTheme.colorScheme.primaryContainer
-                                unlocked -> MaterialTheme.colorScheme.surface
-                                else -> MaterialTheme.colorScheme.surfaceVariant
-                            }
-                        )
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(14.dp)
-                        ) {
-                            val letter = nodeLetter(node.id)
-                            Text(
-                                text = letterUpper(letter) + " " + letter,
-                                fontSize = 38.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.primary
+                        Card(
+                            onClick = { if (unlocked) onOpenLetter(node.id) },
+                            enabled = unlocked,
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = CardDefaults.cardColors(
+                                containerColor = when {
+                                    complete -> MaterialTheme.colorScheme.primaryContainer
+                                    unlocked -> MaterialTheme.colorScheme.surface
+                                    else -> MaterialTheme.colorScheme.surfaceVariant
+                                }
                             )
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(node.title, style = MaterialTheme.typography.titleMedium)
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(14.dp)
+                            ) {
+                                val letter = nodeLetter(node.id)
                                 Text(
-                                    when {
-                                        complete -> "✓ Tamamlandı"
-                                        unlocked -> "Çalışmaya hazır"
-                                        else -> "Biraz daha çalışınca açılacak"
-                                    }
+                                    text = letterUpper(letter) + " " + letter,
+                                    fontSize = 38.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.primary
                                 )
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(node.title, style = MaterialTheme.typography.titleMedium)
+                                    Text(
+                                        when {
+                                            complete -> "✓ Tamamlandı"
+                                            unlocked -> "Çalışmaya hazır"
+                                            else -> "Biraz daha çalışınca açılacak"
+                                        }
+                                    )
+                                }
                             }
                         }
                     }
