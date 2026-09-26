@@ -424,6 +424,12 @@ fun LiteracyActivityScreen(
                 when (config.activityType) {
                     "LETTER_INTRO" -> LetterIntroGame(
                         symbol = config.targetSymbol,
+                        onPlayPhoneme = {
+                            if (narrationEnabled) {
+                                audioPlayer.playSpeech("aud_phoneme_${config.targetSymbol.lowercase()}", speechRate)
+                            }
+                            if (sfxEnabled) audioPlayer.playSfx("sfx_gentle_tap")
+                        },
                         onComplete = ::completeOnce
                     )
                     "FIND_LETTER", "FIND_SOUND_OBJECT" -> MultiSelectGame(
@@ -468,6 +474,7 @@ fun LiteracyActivityScreen(
 @Composable
 private fun LetterIntroGame(
     symbol: String,
+    onPlayPhoneme: () -> Unit,
     onComplete: () -> Unit
 ) {
     Column(
@@ -486,6 +493,9 @@ private fun LetterIntroGame(
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.secondary
         )
+        Button(onClick = onPlayPhoneme) {
+            Text("🔊 Harfi Dinle")
+        }
         KidPrimaryButton(text = "Hazırım", onClick = onComplete)
     }
 }
