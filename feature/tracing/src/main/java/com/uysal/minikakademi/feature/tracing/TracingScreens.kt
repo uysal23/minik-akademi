@@ -114,9 +114,7 @@ fun TracingHomeScreen(
 
     KidScreen {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
+            modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Row(
@@ -134,35 +132,42 @@ fun TracingHomeScreen(
                 }
             }
 
-            if (activities.isEmpty()) {
-                KidCard {
-                    Text("Çizgi etkinlikleri hazırlanıyor.")
-                }
-            } else {
-                activities.forEachIndexed { index, activity ->
-                    Card(
-                        onClick = { onOpenActivity(activity.id) },
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surface
-                        )
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(16.dp),
-                            verticalArrangement = Arrangement.spacedBy(4.dp)
-                        ) {
-                            Text(
-                                text = (index + 1).toString() + ". " + activity.title,
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                if (activities.isEmpty()) {
+                    KidCard {
+                        Text("Çizgi etkinlikleri hazırlanıyor.")
+                    }
+                } else {
+                    activities.forEachIndexed { index, activity ->
+                        Card(
+                            onClick = { onOpenActivity(activity.id) },
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.surface
                             )
-                            Text(activity.instruction)
-                            if (activity.id in completedActivityIds) {
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(16.dp),
+                                verticalArrangement = Arrangement.spacedBy(4.dp)
+                            ) {
                                 Text(
-                                    text = "✓ Tamamlandı",
-                                    color = MaterialTheme.colorScheme.primary,
+                                    text = (index + 1).toString() + ". " + activity.title,
+                                    style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.Bold
                                 )
+                                Text(activity.instruction)
+                                if (activity.id in completedActivityIds) {
+                                    Text(
+                                        text = "✓ Tamamlandı",
+                                        color = MaterialTheme.colorScheme.primary,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                }
                             }
                         }
                     }
