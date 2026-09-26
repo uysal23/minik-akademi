@@ -15,7 +15,8 @@
 - Build Adımı 8 — Türkçe okuma-yazma modülü: **LOCKED V1.0**
 - Build Adımı 9 — Matematik modülü: **LOCKED V1.0**
 - Build Adımı 10 — Mini oyunlar: **LOCKED V1.0**
-- Build Adımı 11 — Görsel / avatar / ses asset entegrasyonu: **NOT STARTED**
+- Build Adımı 11 — Görsel / avatar / ses asset entegrasyonu: **LOCKED V1.0**
+- Build Adımı 12 — Otomatik testler: **NOT STARTED**
 
 > Bu repository kilitli build sırasına göre geliştirilecektir. Bir aşama tamamlanmadan sonraki aşamaya geçilmez.
 
@@ -41,6 +42,7 @@
 - [docs/LITERACY_MODULE_V1.md](docs/LITERACY_MODULE_V1.md) — Türkçe Okuma-Yazma V1.0
 - [feature/mathematics/README.md](feature/mathematics/README.md) — Matematik V1.0
 - [feature/mini-games/README.md](feature/mini-games/README.md) — Mini Oyunlar V1.0
+- [docs/ASSET_INTEGRATION_V1.md](docs/ASSET_INTEGRATION_V1.md) — Görsel ve Ses Varlıkları V1.0
 
 ## Makine Tarafından Doğrulanan İçerik
 
@@ -61,4 +63,4 @@ Release validation:
 python tools/content-validator/validate_content.py --mode release
 ```
 
-Android uygulama iskeleti, çizgi/ön-yazı, Türkçe okuma-yazma, Matematik ve Mini Oyunlar modülleri derlenebilir durumdadır. Sıradaki aşama görsel, avatar ve offline ses asset entegrasyonudur.
+Android uygulama iskeleti, çizgi/ön-yazı, Türkçe okuma-yazma, Matematik, Mini Oyunlar ve görsel/ses varlık entegrasyonu tamamlanıp doğrulanmıştır. Sıradaki aşama otomatik testlerdir.
