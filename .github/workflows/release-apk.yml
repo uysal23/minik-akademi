@@ -1,0 +1,145 @@
+name: Step 15 Release Candidate
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - ".github/workflows/release-apk.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  release-candidate:
+    name: Build, sign and smoke-test release APK
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify Step 14 lock
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -F '**Status:** LOCKED' docs/REGRESSION_TESTS_V1.md
+          grep -F '| REGRESSION_TESTS_V1.md — Regresyon Testleri | 1.0 | LOCKED | 14 |' docs/LOCK_INDEX.md
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path("tests/regression/locked_baseline_v1.json").read_text(encoding="utf-8"))
+          assert data["lockedThroughStep"] == 14
+          print("Step 14 gate verified.")
+          PY
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+
+      - name: Install Android 17 compile SDK
+        shell: bash
+        run: |
+          set -euo pipefail
+          SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          PLATFORM_PACKAGE="$($SDKMANAGER --list --channel=3 | awk '/platforms;android-37([.;[:space:]]|$)/ {print $1; exit}')"
+          test -n "$PLATFORM_PACKAGE"
+          $SDKMANAGER --channel=3 "$PLATFORM_PACKAGE" "build-tools;36.0.0"
+          if [ -d "$ANDROID_HOME/platforms/android-37.0" ] && [ ! -e "$ANDROID_HOME/platforms/android-37" ]; then
+            ln -s "$ANDROID_HOME/platforms/android-37.0" "$ANDROID_HOME/platforms/android-37"
+          fi
+
+      - name: Set up Gradle 9.6
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "9.6.0"
+
+      - name: Run release preflight contracts
+        run: |
+          python -m unittest discover -s tests -p "test_*.py" -v
+          python tools/content-validator/validate_content.py --mode authoring
+          python tools/audio/validate_audio_assets.py
+          python tools/asset-validator/validate_visual_assets.py
+
+      - name: Build unsigned release APK
+        run: gradle --no-daemon :app:assembleRelease
+
+      - name: Create temporary CI signing key and sign APK
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p step15-release
+          keytool -genkeypair -noprompt             -keystore "$RUNNER_TEMP/step15-ci.jks"             -storepass android             -keypass android             -alias step15ci             -keyalg RSA             -keysize 4096             -validity 365             -dname "CN=Minik Akademi Step15 CI,O=uysal23,C=TR"
+
+          BUILD_TOOLS="$ANDROID_HOME/build-tools/36.0.0"
+          UNSIGNED="app/build/outputs/apk/release/app-release-unsigned.apk"
+          test -s "$UNSIGNED"
+          "$BUILD_TOOLS/zipalign" -p -f 4 "$UNSIGNED" step15-release/MinikAkademi-0.1.0-release-aligned.apk
+          "$BUILD_TOOLS/apksigner" sign             --ks "$RUNNER_TEMP/step15-ci.jks"             --ks-key-alias step15ci             --ks-pass pass:android             --key-pass pass:android             --out step15-release/MinikAkademi-0.1.0-release-ci-signed.apk             step15-release/MinikAkademi-0.1.0-release-aligned.apk
+          rm step15-release/MinikAkademi-0.1.0-release-aligned.apk
+
+      - name: Verify signature and package metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK="step15-release/MinikAkademi-0.1.0-release-ci-signed.apk"
+          BUILD_TOOLS="$ANDROID_HOME/build-tools/36.0.0"
+          "$BUILD_TOOLS/apksigner" verify --verbose --print-certs "$APK" | tee step15-release/apksigner-verification.txt
+          "$BUILD_TOOLS/aapt" dump badging "$APK" | tee step15-release/aapt-badging.txt
+          sha256sum "$APK" | tee step15-release/SHA256SUMS.txt
+          grep -F "package: name='com.uysal.minikakademi'" step15-release/aapt-badging.txt
+
+      - name: Upload release candidate
+        uses: actions/upload-artifact@v4
+        with:
+          name: minik-akademi-step15-release-candidate
+          path: step15-release/
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Install emulator runtime libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libpulse0
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+          ls -l /dev/kvm
+
+      - name: Install and launch signed release candidate
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: default
+          arch: x86_64
+          profile: pixel_6
+          emulator-options: -no-window -no-snapshot -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
+          disable-animations: true
+          script: |
+            set -eu
+            adb shell settings put global hide_error_dialogs 1 || true
+            adb install -r step15-release/MinikAkademi-0.1.0-release-ci-signed.apk
+            adb shell am start -W -n com.uysal.minikakademi/.MainActivity
+            sleep 2
+            adb shell pm path com.uysal.minikakademi
+            adb shell pidof com.uysal.minikakademi
+            mkdir -p step15-smoke
+            adb exec-out screencap -p > step15-smoke/release-launch.png
+
+      - name: Upload install smoke evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: minik-akademi-step15-release-smoke-evidence
+          path: step15-smoke/release-launch.png
+          if-no-files-found: error
+          retention-days: 90
