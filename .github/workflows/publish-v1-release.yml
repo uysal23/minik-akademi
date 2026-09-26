@@ -1,0 +1,58 @@
+name: Publish v1.0.0 Release
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "release/publish-v1.trigger"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish-gate:
+    name: Check physical-device approval trigger
+    runs-on: ubuntu-24.04
+    outputs:
+      should_publish: ${{ steps.gate.outputs.should_publish }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Read publish trigger
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -Fq 'status=PUBLISH_V1' release/publish-v1.trigger; then
+            echo "should_publish=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_publish=false" >> "$GITHUB_OUTPUT"
+            echo "v1.0.0 remains draft until physical-device acceptance is approved."
+          fi
+
+  publish:
+    name: Publish GitHub Release v1.0.0
+    needs: publish-gate
+    if: needs.publish-gate.outputs.should_publish == 'true'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Verify Step 15 remains locked
+        run: |
+          grep -F '**Status:** LOCKED' docs/RELEASE_BUILD_V1.md
+          grep -F '| RELEASE_BUILD_V1.md — Release APK Build / Technical Acceptance | 1.0 | LOCKED | 15 |' docs/LOCK_INDEX.md
+      - name: Publish draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release view v1.0.0 --json isDraft >/tmp/release.json
+          python - <<'PY'
+          import json
+          data=json.load(open('/tmp/release.json'))
+          assert data["isDraft"] is True, data
+          PY
+          gh release edit v1.0.0 --draft=false
+          echo "Minik Akademi v1.0.0 published."
