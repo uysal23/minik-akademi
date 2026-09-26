@@ -43,6 +43,7 @@ import com.uysal.minikakademi.core.designsystem.AvatarPlaceholder
 import com.uysal.minikakademi.core.designsystem.KidCard
 import com.uysal.minikakademi.core.designsystem.KidPrimaryButton
 import com.uysal.minikakademi.core.designsystem.KidScreen
+import com.uysal.minikakademi.core.designsystem.LearningObjectArt
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
@@ -442,6 +443,7 @@ fun MathematicsActivityScreen(
                     )
                     "COUNT_OBJECTS" -> CountObjectsGame(
                         count = config.targetSymbol.toIntOrNull() ?: 0,
+                        objectLabel = mathObjectFor(config.id),
                         options = config.options,
                         onRetry = ::playRetryAudio,
                         onComplete = ::completeOnce
@@ -584,6 +586,7 @@ private fun NumberIntroGame(
 @Composable
 private fun CountObjectsGame(
     count: Int,
+    objectLabel: String,
     options: List<MathOption>,
     onRetry: () -> Unit,
     onComplete: () -> Unit
@@ -598,7 +601,7 @@ private fun CountObjectsGame(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             repeat(count.coerceIn(0, 30)) {
-                Text("●", fontSize = 32.sp, color = MaterialTheme.colorScheme.primary)
+                LearningObjectArt(label = objectLabel, size = 44.dp)
             }
         }
         ChoiceGame(target = "Kaç tane?", options = options, onRetry = onRetry, onComplete = onComplete)
@@ -653,16 +656,16 @@ private fun ArithmeticGame(
                 val a = plus.groupValues[1].toInt()
                 val b = plus.groupValues[2].toInt()
                 Row(horizontalArrangement = Arrangement.spacedBy(22.dp)) {
-                    DotGroup(a)
+                    DotGroup(a, "elma")
                     Text("+", fontSize = 36.sp)
-                    DotGroup(b)
+                    DotGroup(b, "armut")
                 }
             }
             minus != null -> {
                 val a = minus.groupValues[1].toInt()
                 val b = minus.groupValues[2].toInt()
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    DotGroup(a)
+                    DotGroup(a, "balon")
                     Text("$b nesne ayrılıyor", style = MaterialTheme.typography.titleMedium)
                 }
             }
@@ -673,7 +676,7 @@ private fun ArithmeticGame(
                     repeat(groupCount.coerceAtMost(5)) {
                         Card {
                             Box(modifier = Modifier.padding(10.dp)) {
-                                DotGroup(perGroup)
+                                DotGroup(perGroup, "kelebek")
                             }
                         }
                     }
@@ -686,14 +689,14 @@ private fun ArithmeticGame(
 }
 
 @Composable
-private fun DotGroup(count: Int) {
+private fun DotGroup(count: Int, objectLabel: String) {
     FlowRow(
         modifier = Modifier.size(width = 110.dp, height = 90.dp),
         horizontalArrangement = Arrangement.Center,
         verticalArrangement = Arrangement.Center
     ) {
         repeat(count.coerceIn(0, 12)) {
-            Text("●", fontSize = 24.sp, color = MaterialTheme.colorScheme.secondary)
+            LearningObjectArt(label = objectLabel, size = 28.dp)
         }
     }
 }
@@ -834,4 +837,11 @@ private fun digitGuide(digit: String): List<Offset> {
         "9" -> arc(0.49f, 0.40f, 0.21f, 0.18f, -90f, 270f, 38) + line(0.68f, 0.40f, 0.46f, 0.82f, 28)
         else -> line(0.30f, 0.50f, 0.70f, 0.50f)
     }
+}
+
+
+private fun mathObjectFor(activityId: String): String {
+    val pool = listOf("elma", "armut", "balon", "kelebek", "uçurtma")
+    val index = (activityId.hashCode() and Int.MAX_VALUE) % pool.size
+    return pool[index]
 }
