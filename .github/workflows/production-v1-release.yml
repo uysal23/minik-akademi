@@ -152,11 +152,24 @@ jobs:
           test -s "$AAB_UNSIGNED"
 
           "$BUILD_TOOLS/zipalign" -p -f 4 "$APK_UNSIGNED" production-release/aligned.apk
-          "$BUILD_TOOLS/apksigner" sign             --ks "$RUNNER_TEMP/minik-akademi-production.jks"             --ks-key-alias "$KEY_ALIAS"             --ks-pass env:KEYSTORE_PASSWORD             --key-pass env:KEY_PASSWORD             --out "production-release/$APK_NAME"             production-release/aligned.apk
+
+          # keytool defaults to PKCS12 on modern JDKs. For PKCS12, the private-key
+          # password may be the same as the store password even if a distinct
+          # -keypass was originally supplied. Try the explicit key secret first,
+          # then safely retry with the already-verified store secret.
+          if ! "$BUILD_TOOLS/apksigner" sign             --ks "$RUNNER_TEMP/minik-akademi-production.jks"             --ks-key-alias "$KEY_ALIAS"             --ks-pass env:KEYSTORE_PASSWORD             --key-pass env:KEY_PASSWORD             --out "production-release/$APK_NAME"             production-release/aligned.apk
+          then
+            echo "Explicit key password was not accepted; retrying PKCS12-compatible store password."
+            "$BUILD_TOOLS/apksigner" sign             --ks "$RUNNER_TEMP/minik-akademi-production.jks"             --ks-key-alias "$KEY_ALIAS"             --ks-pass env:KEYSTORE_PASSWORD             --key-pass env:KEYSTORE_PASSWORD             --out "production-release/$APK_NAME"             production-release/aligned.apk
+          fi
           rm production-release/aligned.apk
 
           cp "$AAB_UNSIGNED" "production-release/$AAB_NAME"
-          jarsigner             -keystore "$RUNNER_TEMP/minik-akademi-production.jks"             -storepass "$KEYSTORE_PASSWORD"             -keypass "$KEY_PASSWORD"             "production-release/$AAB_NAME" "$KEY_ALIAS"
+          if ! jarsigner             -keystore "$RUNNER_TEMP/minik-akademi-production.jks"             -storepass "$KEYSTORE_PASSWORD"             -keypass "$KEY_PASSWORD"             "production-release/$AAB_NAME" "$KEY_ALIAS"
+          then
+            echo "Explicit AAB key password was not accepted; retrying PKCS12-compatible store password."
+            jarsigner             -keystore "$RUNNER_TEMP/minik-akademi-production.jks"             -storepass "$KEYSTORE_PASSWORD"             -keypass "$KEYSTORE_PASSWORD"             "production-release/$AAB_NAME" "$KEY_ALIAS"
+          fi
 
       - name: Verify production signatures and package
         shell: bash
