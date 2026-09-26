@@ -16,6 +16,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.uysal.minikakademi.core.audio.OfflineAudioPlayer
 import com.uysal.minikakademi.core.designsystem.AvatarPlaceholder
 import com.uysal.minikakademi.core.designsystem.KidCard
 import com.uysal.minikakademi.core.designsystem.KidPrimaryButton
@@ -43,6 +45,11 @@ data class MiniGameConfig(
     val title: String,
     val activityType: String,
     val instruction: String,
+    val instructionAudioId: String,
+    val successAudioId: String,
+    val retryAudioId: String,
+    val successSfx: String,
+    val retrySfx: String,
     val targetSymbol: String,
     val options: List<MiniGameOption>
 )
@@ -80,11 +87,18 @@ private object MiniGameLoader {
             }
         }
 
+        val instruction = json.getJSONObject("instruction")
+        val feedback = json.getJSONObject("feedback")
         return MiniGameConfig(
             id = json.getString("id"),
             title = json.getString("title"),
             activityType = json.getString("activityType"),
-            instruction = json.getJSONObject("instruction").getString("text"),
+            instruction = instruction.getString("text"),
+            instructionAudioId = instruction.getString("audioId"),
+            successAudioId = feedback.getString("successAudioId"),
+            retryAudioId = feedback.getString("retryAudioId"),
+            successSfx = feedback.getString("successSfx").lowercase(),
+            retrySfx = feedback.getString("retrySfx").lowercase(),
             targetSymbol = json.getJSONObject("learningTarget").optString("targetSymbol", ""),
             options = options
         )
@@ -193,6 +207,9 @@ fun MiniGamesHomeScreen(
 fun MiniGameScreen(
     gameId: String,
     avatarId: String,
+    narrationEnabled: Boolean,
+    sfxEnabled: Boolean,
+    speechRate: Float,
     onBack: () -> Unit,
     onComplete: () -> Unit
 ) {
@@ -212,9 +229,28 @@ fun MiniGameScreen(
     }
 
     var completed by remember(gameId) { mutableStateOf(false) }
+    val audioPlayer = remember(context) { OfflineAudioPlayer(context) }
+
+    DisposableEffect(audioPlayer) {
+        onDispose { audioPlayer.close() }
+    }
+
+    LaunchedEffect(config.id, narrationEnabled, speechRate) {
+        if (narrationEnabled) {
+            audioPlayer.playSpeech(config.instructionAudioId, speechRate)
+        }
+    }
+
+    fun playRetryAudio() {
+        if (narrationEnabled) audioPlayer.playSpeech(config.retryAudioId, speechRate)
+        if (sfxEnabled) audioPlayer.playSfx(config.retrySfx)
+    }
+
     fun completeOnce() {
         if (!completed) {
             completed = true
+            if (narrationEnabled) audioPlayer.playSpeech(config.successAudioId, speechRate)
+            if (sfxEnabled) audioPlayer.playSfx(config.successSfx)
             onComplete()
         }
     }
@@ -234,6 +270,13 @@ fun MiniGameScreen(
                     Text(config.title, style = MaterialTheme.typography.headlineMedium)
                     Text(config.instruction)
                 }
+                if (narrationEnabled) {
+                    Button(
+                        onClick = { audioPlayer.playSpeech(config.instructionAudioId, speechRate) }
+                    ) {
+                        Text("🔊 Dinle")
+                    }
+                }
             }
 
             Box(
@@ -243,12 +286,12 @@ fun MiniGameScreen(
                 contentAlignment = Alignment.Center
             ) {
                 when (config.id) {
-                    "GAME-LIT-HUNT-001" -> MultiFindGame(config, ::completeOnce)
-                    "GAME-MATH-COUNT-001" -> CountAndChooseGame(config, ::completeOnce)
-                    "GAME-MATH-MATCH-001" -> PairFindGame(config, ::completeOnce)
-                    "GAME-PRE-MAZE-001" -> PathChoiceGame(config, ::completeOnce)
+                    "GAME-LIT-HUNT-001" -> MultiFindGame(config, ::playRetryAudio, ::completeOnce)
+                    "GAME-MATH-COUNT-001" -> CountAndChooseGame(config, ::playRetryAudio, ::completeOnce)
+                    "GAME-MATH-MATCH-001" -> PairFindGame(config, ::playRetryAudio, ::completeOnce)
+                    "GAME-PRE-MAZE-001" -> PathChoiceGame(config, ::playRetryAudio, ::completeOnce)
                     "GAME-MATH-GROUP-001" -> GroupTenGame(config, ::completeOnce)
-                    else -> SingleChoiceGame(config, ::completeOnce)
+                    else -> SingleChoiceGame(config, ::playRetryAudio, ::completeOnce)
                 }
             }
 
@@ -274,6 +317,7 @@ fun MiniGameScreen(
 @Composable
 private fun MultiFindGame(
     config: MiniGameConfig,
+    onRetry: () -> Unit,
     onComplete: () -> Unit
 ) {
     val correctIds = remember(config.id) {
@@ -304,6 +348,7 @@ private fun MultiFindGame(
                             }
                         } else {
                             message = "Bir daha bakalım."
+                            onRetry()
                         }
                     }
                 ) {
@@ -322,6 +367,7 @@ private fun MultiFindGame(
 @Composable
 private fun CountAndChooseGame(
     config: MiniGameConfig,
+    onRetry: () -> Unit,
     onComplete: () -> Unit
 ) {
     val count = config.targetSymbol.toIntOrNull() ?: 0
@@ -337,13 +383,14 @@ private fun CountAndChooseGame(
                 Text("●", fontSize = 34.sp, color = MaterialTheme.colorScheme.primary)
             }
         }
-        SingleChoiceGame(config, onComplete)
+        SingleChoiceGame(config, onRetry, onComplete)
     }
 }
 
 @Composable
 private fun PairFindGame(
     config: MiniGameConfig,
+    onRetry: () -> Unit,
     onComplete: () -> Unit
 ) {
     val correctIds = config.options.filter { it.correct }.map { it.id }.toSet()
@@ -372,6 +419,7 @@ private fun PairFindGame(
                             }
                         } else {
                             message = "Bir daha bakalım."
+                            onRetry()
                         }
                     }
                 ) {
@@ -386,6 +434,7 @@ private fun PairFindGame(
 @Composable
 private fun PathChoiceGame(
     config: MiniGameConfig,
+    onRetry: () -> Unit,
     onComplete: () -> Unit
 ) {
     Column(
@@ -393,7 +442,7 @@ private fun PathChoiceGame(
         verticalArrangement = Arrangement.spacedBy(18.dp)
     ) {
         Text("Avatar  →  🌼", fontSize = 34.sp)
-        SingleChoiceGame(config, onComplete)
+        SingleChoiceGame(config, onRetry, onComplete)
     }
 }
 
@@ -437,6 +486,7 @@ private fun GroupTenGame(
 @Composable
 private fun SingleChoiceGame(
     config: MiniGameConfig,
+    onRetry: () -> Unit,
     onComplete: () -> Unit
 ) {
     var message by remember(config.id) { mutableStateOf("") }
@@ -468,6 +518,7 @@ private fun SingleChoiceGame(
                             }
                         } else {
                             message = "Bir daha bakalım."
+                            onRetry()
                         }
                     }
                 ) {
