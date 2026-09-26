@@ -77,6 +77,13 @@ def tap_text(value: str) -> None:
     time.sleep(0.8)
 
 
+def long_press_text(value: str, duration_ms: int = 3200) -> None:
+    node = wait_text(value)
+    x, y = center(node.attrib["bounds"])
+    adb("shell", "input", "swipe", str(x), str(y), str(x), str(y), str(duration_ms))
+    time.sleep(0.8)
+
+
 def tap_class(class_fragment: str, index: int = 0) -> None:
     matches = [
         node for node in dump_nodes()
@@ -110,6 +117,18 @@ def screenshot(name: str) -> None:
         raise RuntimeError(f"Empty screenshot: {path}")
 
 
+def assert_process_alive() -> None:
+    pid = adb("shell", "pidof", PACKAGE, capture=True).stdout.strip()
+    if not pid:
+        raise RuntimeError("Release app process is not alive")
+
+
+def clear_focused_pin() -> None:
+    for _ in range(4):
+        adb("shell", "input", "keyevent", "KEYCODE_DEL")
+        time.sleep(0.1)
+
+
 def start_app() -> None:
     adb("shell", "am", "start", "-W", "-n", COMPONENT)
     wait_text("Minik Akademi", timeout=25)
@@ -130,6 +149,9 @@ def main() -> None:
     start_app()
     assert_text("Minik Akademi'ye Hoş Geldiniz")
     screenshot("01_release_welcome")
+    tap_text("Karşılama Sesini Dinle")
+    time.sleep(0.8)
+    assert_process_alive()
 
     tap_text("Kuruluma Başla")
     assert_text("Yetişkin Kurulumu")
@@ -148,6 +170,9 @@ def main() -> None:
 
     assert_text("Konuşma Hızı")
     assert_text("Örneği Dinle")
+    tap_text("Örneği Dinle")
+    time.sleep(0.8)
+    assert_process_alive()
     tap_text("Devam Et")
 
     assert_text("Tema")
@@ -182,6 +207,9 @@ def main() -> None:
     tap_text("Yolu Takip Et")
     assert_text("Yolu Takip Et")
     assert_text("Dinle")
+    tap_text("Dinle")
+    time.sleep(0.8)
+    assert_process_alive()
     screenshot("05_release_tracing")
     tap_text("Etkinlik Listesi")
     tap_text("Ana Sayfa")
@@ -210,14 +238,47 @@ def main() -> None:
     assert_text("Biraz daha çalışınca açılacak.")
     screenshot("08_release_mini_games")
 
+    # Return to the dashboard and validate the actual release parent gate.
+    adb("shell", "input", "keyevent", "KEYCODE_BACK")
+    assert_text("Merhaba, Ece")
+    long_press_text("⚙", 3300)
+    assert_text("Ebeveyn Alanı")
+
+    # Wrong PIN must be rejected.
+    tap_class("EditText", 0)
+    adb("shell", "input", "text", "0000")
+    tap_text("Giriş")
+    assert_text("PIN eşleşmedi. Tekrar deneyin.")
+
+    # Correct PIN must open the parent dashboard and settings.
+    tap_class("EditText", 0)
+    clear_focused_pin()
+    adb("shell", "input", "text", "1234")
+    tap_text("Giriş")
+    assert_text("Ebeveyn Paneli")
+    assert_text("Ayarlar")
+    screenshot("09_release_parent_gate")
+
+    tap_text("Ayarlar")
+    assert_text("Konuşma Hızı")
+    assert_text("Tema")
+    assert_text("Erişilebilirlik")
+    assert_text("Günlük Hedef")
+    screenshot("10_release_parent_settings")
+
+    tap_text("Ebeveyn Paneline Dön")
+    assert_text("Ebeveyn Paneli")
+    tap_text("Çocuk Moduna Dön")
+    assert_text("Merhaba, Ece")
+
     package_path = adb("shell", "pm", "path", PACKAGE, capture=True).stdout.strip()
     pid = adb("shell", "pidof", PACKAGE, capture=True).stdout.strip()
     if not package_path.startswith("package:") or not pid:
         raise RuntimeError(f"Installed release is not healthy: path={package_path!r} pid={pid!r}")
 
     screenshots = sorted(OUT.glob("*.png"))
-    if len(screenshots) != 8:
-        raise RuntimeError(f"Expected 8 release evidence screenshots, found {len(screenshots)}")
+    if len(screenshots) != 10:
+        raise RuntimeError(f"Expected 10 release evidence screenshots, found {len(screenshots)}")
 
     print("STEP 15 COMPREHENSIVE RELEASE ACCEPTANCE: PASS")
 
