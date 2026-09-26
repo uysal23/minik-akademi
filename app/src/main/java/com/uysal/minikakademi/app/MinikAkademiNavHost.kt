@@ -200,6 +200,9 @@ fun MinikAkademiNavHost(
             TracingActivityScreen(
                 activityId = activityId,
                 avatarId = settings.avatarId,
+                narrationEnabled = settings.narrationEnabled,
+                sfxEnabled = settings.sfxEnabled,
+                speechRate = settings.speechRate.multiplier,
                 onBack = { navController.popBackStack() },
                 onComplete = {
                     scope.launch {
@@ -238,6 +241,9 @@ fun MinikAkademiNavHost(
             LiteracyActivityScreen(
                 activityId = activityId,
                 avatarId = settings.avatarId,
+                narrationEnabled = settings.narrationEnabled,
+                sfxEnabled = settings.sfxEnabled,
+                speechRate = settings.speechRate.multiplier,
                 onBack = { navController.popBackStack() },
                 onComplete = {
                     scope.launch {
@@ -276,6 +282,9 @@ fun MinikAkademiNavHost(
             MathematicsActivityScreen(
                 activityId = activityId,
                 avatarId = settings.avatarId,
+                narrationEnabled = settings.narrationEnabled,
+                sfxEnabled = settings.sfxEnabled,
+                speechRate = settings.speechRate.multiplier,
                 onBack = { navController.popBackStack() },
                 onComplete = {
                     scope.launch {
@@ -304,6 +313,9 @@ fun MinikAkademiNavHost(
             MiniGameScreen(
                 gameId = gameId,
                 avatarId = settings.avatarId,
+                narrationEnabled = settings.narrationEnabled,
+                sfxEnabled = settings.sfxEnabled,
+                speechRate = settings.speechRate.multiplier,
                 onBack = { navController.popBackStack() },
                 onComplete = {
                     scope.launch {
