@@ -11,6 +11,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: step15-release-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   release-candidate:
     name: Build, sign and fully test release APK
@@ -184,35 +188,6 @@ jobs:
             test -s "step15-smoke/$name.png"
           done
 
-      - name: Verify minimum Android API 26 compatibility
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 26
-          target: default
-          arch: x86_64
-          profile: pixel_2
-          emulator-options: -no-window -no-snapshot -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
-          disable-animations: true
-          script: |
-            set -eu
-            adb shell svc wifi disable || true
-            adb shell svc data disable || true
-            adb install -r step15-release/MinikAkademi-0.1.0-release-ci-signed.apk
-            adb shell am start -W -n com.uysal.minikakademi/com.uysal.minikakademi.app.MainActivity
-            sleep 2
-            adb shell pidof com.uysal.minikakademi
-            adb shell uiautomator dump /sdcard/window.xml
-            adb pull /sdcard/window.xml step15-smoke/api26-window.xml
-            grep -F "Minik Akademi" step15-smoke/api26-window.xml
-            adb exec-out screencap -p > step15-smoke/12_release_api26_welcome.png
-
-      - name: Verify API 26 smoke evidence
-        shell: bash
-        run: |
-          set -euo pipefail
-          test -s step15-smoke/12_release_api26_welcome.png
-          test -s step15-smoke/api26-window.xml
-
       - name: Upload comprehensive release evidence
         uses: actions/upload-artifact@v4
         with:
@@ -220,3 +195,83 @@ jobs:
           path: step15-smoke/
           if-no-files-found: error
           retention-days: 90
+
+  api26-compatibility:
+    name: Verify Android API 26 minimum compatibility
+    needs: release-candidate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Download signed release candidate
+        uses: actions/download-artifact@v4
+        with:
+          name: minik-akademi-step15-release-candidate
+          path: step15-release
+
+      - name: Install emulator runtime libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libpulse0
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+          ls -l /dev/kvm
+
+      - name: Install and launch on Android API 26 offline
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 26
+          target: google_apis
+          arch: x86_64
+          profile: pixel_2
+          emulator-boot-timeout: 300
+          emulator-options: -no-window -no-snapshot -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
+          disable-animations: true
+          script: |
+            set -euo pipefail
+            mkdir -p step15-api26
+            adb shell svc wifi disable || true
+            adb shell svc data disable || true
+            adb logcat -c || true
+            adb install -r step15-release/MinikAkademi-0.1.0-release-ci-signed.apk
+            adb shell am start -W -n com.uysal.minikakademi/com.uysal.minikakademi.app.MainActivity
+            sleep 3
+            adb shell pidof com.uysal.minikakademi
+            adb shell pm path com.uysal.minikakademi
+            adb shell uiautomator dump /sdcard/window.xml
+            adb pull /sdcard/window.xml step15-api26/window.xml
+            grep -F "Minik Akademi" step15-api26/window.xml
+            adb exec-out screencap -p > step15-api26/12_release_api26_welcome.png
+            adb logcat -d > step15-api26/api26-logcat.txt
+            if grep -Fq "ANR in com.uysal.minikakademi" step15-api26/api26-logcat.txt; then
+              echo "API 26 release test detected ANR"
+              exit 1
+            fi
+            if grep -Fq "FATAL EXCEPTION" step15-api26/api26-logcat.txt && grep -Fq "Process: com.uysal.minikakademi" step15-api26/api26-logcat.txt; then
+              echo "API 26 release test detected fatal exception"
+              exit 1
+            fi
+            test -s step15-api26/12_release_api26_welcome.png
+
+      - name: Upload API 26 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: minik-akademi-step15-api26-evidence
+          path: step15-api26/
+          if-no-files-found: error
+          retention-days: 90
+
+  step15-final-gate:
+    name: Step 15 final technical gate
+    needs:
+      - release-candidate
+      - api26-compatibility
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Confirm all Step 15 technical gates passed
+        run: |
+          echo "Release build, comprehensive offline acceptance, reinstall persistence, crash/ANR sweep, and Android API 26 compatibility all passed."
+
