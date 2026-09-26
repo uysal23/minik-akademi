@@ -62,7 +62,26 @@ class PedagogicalUiReviewTest {
             .digest(bytes)
             .joinToString("") { byte -> "%02x".format(byte) }
 
+    private fun waitForAppFocusedWindow(name: String) {
+        var lastFocus = ""
+        repeat(12) {
+            rule.waitForIdle()
+            InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+            lastFocus = runShellCommand("dumpsys window | grep -E 'mCurrentFocus|mFocusedApp' || true")
+            if (
+                lastFocus.contains("com.uysal.minikakademi") &&
+                !lastFocus.contains("Application Not Responding", ignoreCase = true) &&
+                !lastFocus.contains("Launcher", ignoreCase = true)
+            ) {
+                return
+            }
+            Thread.sleep(250)
+        }
+        error("Step 14 evidence frame $name is obscured by a non-app/system window: $lastFocus")
+    }
+
     private fun shot(name: String) {
+        waitForAppFocusedWindow(name)
         val instrumentation = InstrumentationRegistry.getInstrumentation()
         val directory = "/sdcard/Download/minik-akademi-ui-review"
         val file = "$directory/$name.png"
