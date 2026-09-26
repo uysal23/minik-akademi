@@ -231,7 +231,7 @@ jobs:
           emulator-options: -no-window -no-snapshot -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
           disable-animations: true
           script: |
-            set -euo pipefail
+            set -eu
             mkdir -p step15-api26
             adb shell svc wifi disable || true
             adb shell svc data disable || true
