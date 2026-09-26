@@ -5,6 +5,7 @@ on:
     branches: [ "main" ]
     paths:
       - ".github/workflows/release-apk.yml"
+      - "tools/release/**"
   workflow_dispatch:
 
 permissions:
@@ -12,9 +13,10 @@ permissions:
 
 jobs:
   release-candidate:
-    name: Build, sign and smoke-test release APK
+    name: Build, sign and fully test release APK
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    timeout-minutes: 50
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -32,6 +34,14 @@ jobs:
           assert data["lockedThroughStep"] == 14
           print("Step 14 gate verified.")
           PY
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install validator dependencies
+        run: python -m pip install -r tools/content-validator/requirements.txt
 
       - name: Set up Java 17
         uses: actions/setup-java@v5
@@ -76,13 +86,17 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p step15-release
+
           keytool -genkeypair -noprompt             -keystore "$RUNNER_TEMP/step15-ci.jks"             -storepass android             -keypass android             -alias step15ci             -keyalg RSA             -keysize 4096             -validity 365             -dname "CN=Minik Akademi Step15 CI,O=uysal23,C=TR"
 
           BUILD_TOOLS="$ANDROID_HOME/build-tools/36.0.0"
           UNSIGNED="app/build/outputs/apk/release/app-release-unsigned.apk"
           test -s "$UNSIGNED"
-          "$BUILD_TOOLS/zipalign" -p -f 4 "$UNSIGNED" step15-release/MinikAkademi-0.1.0-release-aligned.apk
+
+          "$BUILD_TOOLS/zipalign" -p -f 4             "$UNSIGNED"             step15-release/MinikAkademi-0.1.0-release-aligned.apk
+
           "$BUILD_TOOLS/apksigner" sign             --ks "$RUNNER_TEMP/step15-ci.jks"             --ks-key-alias step15ci             --ks-pass pass:android             --key-pass pass:android             --out step15-release/MinikAkademi-0.1.0-release-ci-signed.apk             step15-release/MinikAkademi-0.1.0-release-aligned.apk
+
           rm step15-release/MinikAkademi-0.1.0-release-aligned.apk
 
       - name: Verify signature, package, permissions and offline payload
@@ -92,9 +106,9 @@ jobs:
           APK="step15-release/MinikAkademi-0.1.0-release-ci-signed.apk"
           BUILD_TOOLS="$ANDROID_HOME/build-tools/36.0.0"
 
-          "$BUILD_TOOLS/apksigner" verify --verbose --print-certs "$APK" | tee step15-release/apksigner-verification.txt
-          "$BUILD_TOOLS/aapt" dump badging "$APK" | tee step15-release/aapt-badging.txt
-          "$BUILD_TOOLS/aapt" dump permissions "$APK" | tee step15-release/aapt-permissions.txt
+          "$BUILD_TOOLS/apksigner" verify --verbose --print-certs "$APK"             | tee step15-release/apksigner-verification.txt
+          "$BUILD_TOOLS/aapt" dump badging "$APK"             | tee step15-release/aapt-badging.txt
+          "$BUILD_TOOLS/aapt" dump permissions "$APK"             | tee step15-release/aapt-permissions.txt
           sha256sum "$APK" | tee step15-release/SHA256SUMS.txt
 
           grep -F "package: name='com.uysal.minikakademi'" step15-release/aapt-badging.txt
@@ -106,8 +120,24 @@ jobs:
             exit 1
           fi
 
-          unzip -l "$APK" > step15-release/apk-contents.txt
-          OGG_COUNT="$(awk '{print $4}' step15-release/apk-contents.txt | grep -E '\\.ogg
+          python - <<'PY'
+          from pathlib import Path
+          import zipfile
+
+          apk = Path("step15-release/MinikAkademi-0.1.0-release-ci-signed.apk")
+          with zipfile.ZipFile(apk) as zf:
+              names = zf.namelist()
+          ogg = sum(name.endswith(".ogg") for name in names)
+          json_files = sum(name.endswith(".json") for name in names)
+          Path("step15-release/offline-payload-check.txt").write_text(
+              f"Bundled OGG files: {ogg}\nBundled JSON files: {json_files}\n",
+              encoding="utf-8",
+          )
+          assert ogg >= 150, ogg
+          assert json_files >= 50, json_files
+          print(f"Offline payload verified: {ogg} OGG, {json_files} JSON")
+          PY
+
       - name: Upload release candidate
         uses: actions/upload-artifact@v4
         with:
@@ -123,7 +153,7 @@ jobs:
 
       - name: Enable KVM
         run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"'             | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
           ls -l /dev/kvm
@@ -139,187 +169,16 @@ jobs:
           disable-animations: true
           script: |
             set -eu
-            APK="step15-release/MinikAkademi-0.1.0-release-ci-signed.apk"
-            COMPONENT="com.uysal.minikakademi/com.uysal.minikakademi.app.MainActivity"
+            python tools/release/step15_release_acceptance.py               step15-release/MinikAkademi-0.1.0-release-ci-signed.apk
 
-            mkdir -p step15-smoke
-            adb shell settings put global hide_error_dialogs 1 || true
-            adb install -r "$APK"
-
-            # The app is offline-first. Disable device networking before the first launch
-            # and keep it disabled throughout the complete acceptance flow.
-            adb shell svc wifi disable || true
-            adb shell svc data disable || true
-
-            cat > /tmp/step15_ui.py <<'PY'
-            import sys
-            import time
-            import xml.etree.ElementTree as ET
-            import re
-            import subprocess
-
-            XML = "/tmp/window.xml"
-
-            def dump():
-                subprocess.run(["adb","shell","uiautomator","dump","/sdcard/window.xml"], check=True, stdout=subprocess.DEVNULL)
-                subprocess.run(["adb","pull","/sdcard/window.xml",XML], check=True, stdout=subprocess.DEVNULL)
-
-            def nodes():
-                dump()
-                return list(ET.parse(XML).getroot().iter("node"))
-
-            def matches_text(n, value):
-                text = (n.attrib.get("text") or "")
-                desc = (n.attrib.get("content-desc") or "")
-                return value in text or value in desc
-
-            def center(bounds):
-                nums = list(map(int, re.findall(r"\d+", bounds)))
-                if len(nums) != 4:
-                    raise RuntimeError(f"Bad bounds: {bounds}")
-                return (nums[0]+nums[2])//2, (nums[1]+nums[3])//2
-
-            def find_text(value):
-                for n in nodes():
-                    if matches_text(n, value):
-                        return n
-                raise RuntimeError(f"Text not found: {value}")
-
-            def wait_text(value, timeout=15):
-                end=time.time()+timeout
-                last=None
-                while time.time()<end:
-                    try:
-                        return find_text(value)
-                    except Exception as exc:
-                        last=exc
-                        time.sleep(.5)
-                raise RuntimeError(f"Timed out waiting for {value}: {last}")
-
-            cmd=sys.argv[1]
-            if cmd=="assert":
-                wait_text(sys.argv[2])
-                print(f"ASSERT OK: {sys.argv[2]}")
-            elif cmd=="tap":
-                n=wait_text(sys.argv[2])
-                x,y=center(n.attrib["bounds"])
-                subprocess.run(["adb","shell","input","tap",str(x),str(y)],check=True)
-                time.sleep(.7)
-            elif cmd=="tapclass":
-                klass=sys.argv[2]
-                index=int(sys.argv[3])
-                candidates=[n for n in nodes() if klass in (n.attrib.get("class") or "") and n.attrib.get("enabled")=="true"]
-                if index>=len(candidates):
-                    raise RuntimeError(f"Class {klass} index {index} not found; found {len(candidates)}")
-                x,y=center(candidates[index].attrib["bounds"])
-                subprocess.run(["adb","shell","input","tap",str(x),str(y)],check=True)
-                time.sleep(.4)
-            else:
-                raise RuntimeError(f"Unknown command: {cmd}")
-            PY
-
-            ui() { python /tmp/step15_ui.py "$@"; }
-            shot() { adb exec-out screencap -p > "step15-smoke/$1.png"; test -s "step15-smoke/$1.png"; }
-
-            adb shell am start -W -n "$COMPONENT"
-            ui assert "Minik Akademi'ye Hoş Geldiniz"
-            shot 01_release_welcome
-
-            ui tap "Kuruluma Başla"
-            ui assert "Yetişkin Kurulumu"
-            ui tap "Yetişkin Olarak Devam Et"
-
-            ui assert "Çocuk Profili"
-            ui tapclass EditText 0
-            adb shell input text Ece
-            ui tap "Devam Et"
-
-            ui assert "Eğitim Seviyesi"
-            ui tap "Devam Et"
-
-            ui assert "Avatarını Seç"
-            ui tap "Bu Benim"
-
-            ui assert "Konuşma Hızı"
-            ui assert "Örneği Dinle"
-            ui tap "Devam Et"
-
-            ui assert "Tema"
-            ui tap "Devam Et"
-
-            ui assert "Ebeveyn PIN'i"
-            ui tapclass EditText 0
-            adb shell input text 1234
-            ui tapclass EditText 1
-            adb shell input text 1234
-            ui tap "Devam Et"
-
-            ui assert "Kurulum Özeti"
-            ui assert "Ece"
-            shot 02_release_setup_summary
-            ui tap "Çocuk Modunu Başlat"
-
-            ui assert "Merhaba, Ece"
-            ui assert "Çiziyorum"
-            ui assert "Harfleri Öğreniyorum"
-            ui assert "Matematik Öğreniyorum"
-            ui assert "Oyun Zamanı"
-            shot 03_release_dashboard
-
-            # Force-stop and relaunch while still offline. The completed setup/profile
-            # must persist and the app must return to the child dashboard.
-            adb shell am force-stop com.uysal.minikakademi
-            adb shell am start -W -n "$COMPONENT"
-            ui assert "Merhaba, Ece"
-            ui assert "Çiziyorum"
-            shot 04_release_persistence_relaunch
-
-            ui tap "Çiziyorum"
-            ui assert "Parmağınla çizgileri takip et. Acele etmene gerek yok."
-            ui tap "Yolu Takip Et"
-            ui assert "Yolu Takip Et"
-            ui assert "Dinle"
-            shot 05_release_tracing
-            ui tap "Etkinlik Listesi"
-            ui tap "Ana Sayfa"
-
-            ui assert "Merhaba, Ece"
-            ui tap "Harfleri Öğreniyorum"
-            ui assert "Sesleri dinle, harfleri bul, yaz ve kelimeler oluştur."
-            shot 06_release_literacy
-            ui tap "Ana Sayfa"
-
-            ui assert "Merhaba, Ece"
-            ui tap "Matematik Öğreniyorum"
-            ui assert "Nesnelerle düşün, say, karşılaştır ve çöz."
-            ui tap "Yer ve Yön"
-            ui assert "Yer ve Yön"
-            ui tap "Altında / üstünde"
-            ui assert "Top masanın neresinde?"
-            shot 07_release_mathematics
-            ui tap "Etkinlik Listesine Dön"
-            ui tap "Matematik Menüsüne Dön"
-            ui tap "Ana Sayfa"
-
-            ui assert "Merhaba, Ece"
-            ui tap "Oyun Zamanı"
-            ui assert "Öğrendiklerini kısa oyunlarla tekrar et."
-            ui assert "Biraz daha çalışınca açılacak."
-            shot 08_release_mini_games
-
-            # Verify that the installed package and process remain healthy at the end
-            # of a complete offline user journey.
-            adb shell pm path com.uysal.minikakademi
-            adb shell pidof com.uysal.minikakademi
-            adb shell dumpsys package com.uysal.minikakademi | grep -E 'versionCode|versionName' | head
-
-      - name: Verify and upload comprehensive release evidence
+      - name: Verify comprehensive release evidence
         shell: bash
         run: |
           set -euo pipefail
           COUNT="$(find step15-smoke -maxdepth 1 -type f -name '*.png' | wc -l | tr -d ' ')"
           echo "Release acceptance screenshots: $COUNT"
           test "$COUNT" -eq 8
+
           for name in             01_release_welcome             02_release_setup_summary             03_release_dashboard             04_release_persistence_relaunch             05_release_tracing             06_release_literacy             07_release_mathematics             08_release_mini_games
           do
             test -s "step15-smoke/$name.png"
@@ -330,107 +189,5 @@ jobs:
         with:
           name: minik-akademi-step15-release-acceptance-evidence
           path: step15-smoke/*.png
-          if-no-files-found: error
-          retention-days: 90
- | wc -l | tr -d ' ')"
-          JSON_COUNT="$(awk '{print $4}' step15-release/apk-contents.txt | grep -E '\\.json
-      - name: Upload release candidate
-        uses: actions/upload-artifact@v4
-        with:
-          name: minik-akademi-step15-release-candidate
-          path: step15-release/
-          if-no-files-found: error
-          retention-days: 90
-
-      - name: Install emulator runtime libraries
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libpulse0
-
-      - name: Enable KVM
-        run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-          sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm
-          ls -l /dev/kvm
-
-      - name: Install and launch signed release candidate
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 35
-          target: default
-          arch: x86_64
-          profile: pixel_6
-          emulator-options: -no-window -no-snapshot -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
-          disable-animations: true
-          script: |
-            set -eu
-            adb shell settings put global hide_error_dialogs 1 || true
-            adb install -r step15-release/MinikAkademi-0.1.0-release-ci-signed.apk
-            adb shell am start -W -n com.uysal.minikakademi/com.uysal.minikakademi.app.MainActivity
-            sleep 2
-            adb shell pm path com.uysal.minikakademi
-            adb shell pidof com.uysal.minikakademi
-            mkdir -p step15-smoke
-            adb exec-out screencap -p > step15-smoke/release-launch.png
-
-      - name: Upload install smoke evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: minik-akademi-step15-release-smoke-evidence
-          path: step15-smoke/release-launch.png
-          if-no-files-found: error
-          retention-days: 90
- | wc -l | tr -d ' ')"
-          echo "Bundled OGG files: $OGG_COUNT" | tee step15-release/offline-payload-check.txt
-          echo "Bundled JSON files: $JSON_COUNT" | tee -a step15-release/offline-payload-check.txt
-          test "$OGG_COUNT" -ge 150
-          test "$JSON_COUNT" -ge 50
-
-      - name: Upload release candidate
-        uses: actions/upload-artifact@v4
-        with:
-          name: minik-akademi-step15-release-candidate
-          path: step15-release/
-          if-no-files-found: error
-          retention-days: 90
-
-      - name: Install emulator runtime libraries
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libpulse0
-
-      - name: Enable KVM
-        run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-          sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm
-          ls -l /dev/kvm
-
-      - name: Install and launch signed release candidate
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 35
-          target: default
-          arch: x86_64
-          profile: pixel_6
-          emulator-options: -no-window -no-snapshot -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
-          disable-animations: true
-          script: |
-            set -eu
-            adb shell settings put global hide_error_dialogs 1 || true
-            adb install -r step15-release/MinikAkademi-0.1.0-release-ci-signed.apk
-            adb shell am start -W -n com.uysal.minikakademi/com.uysal.minikakademi.app.MainActivity
-            sleep 2
-            adb shell pm path com.uysal.minikakademi
-            adb shell pidof com.uysal.minikakademi
-            mkdir -p step15-smoke
-            adb exec-out screencap -p > step15-smoke/release-launch.png
-
-      - name: Upload install smoke evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: minik-akademi-step15-release-smoke-evidence
-          path: step15-smoke/release-launch.png
           if-no-files-found: error
           retention-days: 90
