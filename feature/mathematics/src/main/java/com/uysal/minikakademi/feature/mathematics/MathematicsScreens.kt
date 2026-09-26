@@ -448,6 +448,13 @@ fun MathematicsActivityScreen(
                     )
                     "NUMBER_INTRO" -> NumberIntroGame(
                         target = config.targetSymbol,
+                        onPlayNumber = {
+                            val number = config.targetSymbol.toIntOrNull()
+                            if (number != null && number in 0..20 && narrationEnabled) {
+                                audioPlayer.playSpeech("aud_number_${number.toString().padStart(2, '0')}", speechRate)
+                            }
+                            if (sfxEnabled) audioPlayer.playSfx("sfx_gentle_tap")
+                        },
                         onComplete = ::completeOnce
                     )
                     "RHYTHMIC_COUNT", "PATTERN_COMPLETE", "BUILD_SEQUENCE" ->
@@ -543,6 +550,7 @@ private fun ChoiceGame(
 @Composable
 private fun NumberIntroGame(
     target: String,
+    onPlayNumber: () -> Unit,
     onComplete: () -> Unit
 ) {
     val number = target.toIntOrNull()
@@ -565,6 +573,9 @@ private fun NumberIntroGame(
                     Text("●", fontSize = 26.sp, color = MaterialTheme.colorScheme.secondary)
                 }
             }
+        }
+        Button(onClick = onPlayNumber) {
+            Text("🔊 Sayıyı Dinle")
         }
         KidPrimaryButton(text = "Anladım", onClick = onComplete)
     }
