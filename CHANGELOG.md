@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-09-26 — Asset Integration V1.0
+
+- Build Step 11 completed and locked.
+- 159 Turkish teacher/narrator OGG clips were generated offline with 0 failures and committed under `audio/generated/speech/`.
+- Seven original procedural animation/interaction SFX were generated and connected: soft pop, gentle tap, success chime, star sparkle, slide soft, retry soft and complete.
+- `core:audio` and `OfflineAudioPlayer` were added; runtime Android/system/cloud TTS is not used.
+- Activity instruction, success and retry audio IDs are connected in tracing, literacy, mathematics and mini-games.
+- Parent narration/SFX preferences and 0.80x / 0.90x / 1.00x speech-rate settings are respected.
+- Letter phoneme clips, 0–20 number clips, onboarding welcome audio and speech-rate preview audio are connected.
+- Placeholder A01/A02 avatar rendering was replaced with 12 original offline vector child identities and a 16-pose renderer.
+- Original learning-object pictograms were connected to literacy sound-awareness, mathematics counting/operations and mini-games.
+- Generate Offline Audio run 36198942500 completed successfully: 159/159 speech, 7 SFX, 0 failed.
+- Audio Validation run 36223818177 completed successfully.
+- Visual Validation run 36223854933 completed successfully: 12 avatars, 16 poses, 25 literacy object pictograms.
+- Android Build run 36223801498 completed successfully, including `:app:assembleDebug` and debug APK artifact upload.
+
 ## 2026-09-26 — Mini Games V1.0
 
 - Build Step 10 completed and locked.
