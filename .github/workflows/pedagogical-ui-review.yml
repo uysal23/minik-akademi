@@ -13,6 +13,10 @@ on:
       - ".github/workflows/pedagogical-ui-review.yml"
   workflow_dispatch:
 
+concurrency:
+  group: pedagogical-ui-review-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   emulator-review:
     name: GitHub emulator evidence capture
