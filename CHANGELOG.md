@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-09-26 — Automated Tests V1.0
+
+- Build Step 12 completed and locked.
+- GitHub-only automated test workflow added under `.github/workflows/automated-tests.yml`; no local PC/Codex execution is required.
+- Added 20 Python automated tests covering locked content counts, curriculum mapping, child-safety flags, EXTENSION separation, Android offline permission rules, runtime TTS/network bans, navigation wiring, DataStore progress persistence, PIN hashing, and audio/visual hooks.
+- Added content-validator contract tests for valid content, unknown curriculum IDs, punitive feedback, external URLs, locked number/letter violations, release safety review, missing offline audio/visual assets, duplicate IDs, and malformed JSON.
+- Added 6 Kotlin/JUnit tests: 4 core model tests and 2 navigation tests.
+- Existing Content Validation, Audio Validation and Visual Validation are rerun inside the Step 12 automated gate.
+- Automated Tests run 36224514555 completed successfully.
+- Python tests: 20/20 PASS.
+- Kotlin/JUnit tests: PASS.
+- Gradle configuration and `:app:assembleDebug`: PASS.
+- JUnit reports uploaded as `automated-test-reports`.
+- Tested debug APK uploaded as `minik-akademi-step12-tested-debug`.
+- Build Step 13 remains NOT STARTED.
+
 ## 2026-09-26 — Asset Integration V1.0
 
 - Build Step 11 completed and locked.
