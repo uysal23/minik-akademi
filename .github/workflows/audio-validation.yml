@@ -1,0 +1,25 @@
+name: Audio Validation
+
+on:
+  push:
+    paths:
+      - "audio/**"
+      - "content/**"
+      - "tools/audio/validate_audio_assets.py"
+      - ".github/workflows/audio-validation.yml"
+  workflow_dispatch:
+
+jobs:
+  validate-audio:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate offline speech and SFX coverage
+        run: python tools/audio/validate_audio_assets.py
