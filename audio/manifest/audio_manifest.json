@@ -1,0 +1,1428 @@
+{
+  "schemaVersion": "1.0",
+  "provider": "Antalia 1",
+  "model": "cloud0day3/antalia-1",
+  "runtimeMode": "OFFLINE_PACKAGED_AUDIO",
+  "syntheticDisclosureRequired": true,
+  "profiles": {
+    "TEACHER_WARM": {
+      "preset": "warm_voice_agent",
+      "durationScale": 1.04
+    },
+    "TEACHER_PHONICS": {
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16
+    },
+    "TEACHER_MATH": {
+      "preset": "numeric_normalization",
+      "durationScale": 1.06
+    },
+    "TEACHER_STORY": {
+      "preset": "explanations_long_form",
+      "durationScale": 1.05
+    },
+    "TEACHER_ENCOURAGE": {
+      "preset": "restrained_emotion",
+      "durationScale": 0.98
+    }
+  },
+  "items": [
+    {
+      "audioId": "aud_act_ext_add_01_instruction",
+      "text": "3 nesneye 2 nesne daha ekle. Toplamı seç.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/extensions/ext_add_01.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_ext_add_01_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_ext_mul_01_instruction",
+      "text": "3 grupta 2'şer nesne var. Toplamı seç.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/extensions/ext_mul_01.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_ext_mul_01_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_ext_sub_01_instruction",
+      "text": "5 nesneden 2 nesneyi ayır. Kalanı seç.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/extensions/ext_sub_01.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_ext_sub_01_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_assess_01_instruction",
+      "text": "İkişer ritmik saymayı tamamla.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_assess_01.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_assess_01_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_back_01_instruction",
+      "text": "20'den geriye birer saymayı tamamla.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_back_01.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_back_01_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_back_02_instruction",
+      "text": "20'den geriye ikişer saymayı tamamla.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_back_02.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_back_02_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_cmp_01_instruction",
+      "text": "İki grubun çokluğunu karşılaştır.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_cmp_01.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_cmp_01_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_cmp_02_instruction",
+      "text": "Hangi grupta daha çok nesne var?",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_cmp_02.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_cmp_02_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_count_adapt_instruction",
+      "text": "Yeni nesneleri say ve doğru sayıyı seç.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_count_adapt.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_count_adapt_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_digit_0_instruction",
+      "text": "0 rakamını yazılış yönüne uygun olarak parmağınla izle.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_digit_0.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_digit_0_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_digit_1_instruction",
+      "text": "1 rakamını yazılış yönüne uygun olarak parmağınla izle.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_digit_1.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_digit_1_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_digit_2_instruction",
+      "text": "2 rakamını yazılış yönüne uygun olarak parmağınla izle.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_digit_2.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_digit_2_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_digit_3_instruction",
+      "text": "3 rakamını yazılış yönüne uygun olarak parmağınla izle.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_digit_3.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_digit_3_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_digit_4_instruction",
+      "text": "4 rakamını yazılış yönüne uygun olarak parmağınla izle.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_digit_4.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_digit_4_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_digit_5_instruction",
+      "text": "5 rakamını yazılış yönüne uygun olarak parmağınla izle.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_digit_5.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_digit_5_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_digit_6_instruction",
+      "text": "6 rakamını yazılış yönüne uygun olarak parmağınla izle.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_digit_6.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_digit_6_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_digit_7_instruction",
+      "text": "7 rakamını yazılış yönüne uygun olarak parmağınla izle.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_digit_7.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_digit_7_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_digit_8_instruction",
+      "text": "8 rakamını yazılış yönüne uygun olarak parmağınla izle.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_digit_8.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_digit_8_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_digit_9_instruction",
+      "text": "9 rakamını yazılış yönüne uygun olarak parmağınla izle.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_digit_9.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_digit_9_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_eq_01_instruction",
+      "text": "Aynı aracı bul.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/spatial/mat_eq_01.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_eq_01_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_eq_02_instruction",
+      "text": "Aynı şekli bul.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/spatial/mat_eq_02.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_eq_02_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_eq_03_instruction",
+      "text": "Eş nesneyi seç.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/spatial/mat_eq_03.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_eq_03_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_eq_04_instruction",
+      "text": "İki görseli eş yapmak için çıkarılacak nesneyi seç.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/spatial/mat_eq_04.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_eq_04_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_len_01_instruction",
+      "text": "Daha uzun olanı seç.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/measurement/mat_len_01.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_len_01_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_len_02_instruction",
+      "text": "Sınıfın uzunluğu için uygun ölçme aracını seç.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/measurement/mat_len_02.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_len_02_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_len_03_instruction",
+      "text": "Silginin boyu için uygun ölçme aracını seç.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/measurement/mat_len_03.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_len_03_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_len_04_instruction",
+      "text": "Masa 5 karış, kalemlik 2 karış. Hangisi daha uzundur?",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/measurement/mat_len_04.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_len_04_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_len_05_instruction",
+      "text": "Tahmin 6 karış, ölçüm 5 karış. Fark kaçtır?",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/measurement/mat_len_05.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_len_05_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_mass_01_instruction",
+      "text": "Kitap ve silgiyi karşılaştır.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/measurement/mat_mass_01.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_mass_01_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_mass_02_instruction",
+      "text": "Terazinin iki tarafı aynı seviyede. Sonuç nedir?",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/measurement/mat_mass_02.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_mass_02_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_mass_03_instruction",
+      "text": "En ağır olanı seç.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/measurement/mat_mass_03.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_mass_03_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_mass_04_instruction",
+      "text": "Ağırdan hafife doğru sıralamayı seç.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/measurement/mat_mass_04.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_mass_04_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_mass_05_instruction",
+      "text": "Daha ağır nesneyi seç.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/measurement/mat_mass_05.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_mass_05_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_measure_adapt_instruction",
+      "text": "Masa için uygun ölçme sonucunu seç.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/measurement/mat_measure_adapt.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_measure_adapt_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_num_01_instruction",
+      "text": "19 sayısının 1 ve 9 rakamlarından oluştuğunu incele.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_num_01.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_num_01_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_num_02_instruction",
+      "text": "Nesneleri say ve doğru sayıyı seç.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_num_02.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_num_02_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_num_03_instruction",
+      "text": "12 tane nesneyi say ve doğru sayıyı seç.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_num_03.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_num_03_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_ord_01_instruction",
+      "text": "Üçüncü sırayı seç.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_ord_01.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_ord_01_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_pat_01_instruction",
+      "text": "Örüntüde sıradaki öğeyi seç.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_pat_01.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_pat_01_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_pat_02_instruction",
+      "text": "Örüntüyü tamamla.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_pat_02.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_pat_02_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_pat_03_instruction",
+      "text": "Örüntü kuralını sürdür.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_pat_03.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_pat_03_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_pat_04_instruction",
+      "text": "Örüntü yolunu tamamla.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_pat_04.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_pat_04_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_rev_01_instruction",
+      "text": "10'dan büyük olan sayıyı seç.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_rev_01.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_rev_01_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_rev_02_instruction",
+      "text": "Soldan üçüncü sırayı seç.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_rev_02.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_rev_02_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_skip_01_instruction",
+      "text": "Birer ritmik saymayı tamamla.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_skip_01.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_skip_01_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_skip_02_instruction",
+      "text": "İkişer ritmik saymayı tamamla.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_skip_02.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_skip_02_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_skip_05_instruction",
+      "text": "Beşer ritmik saymayı tamamla.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_skip_05.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_skip_05_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_skip_10_instruction",
+      "text": "Onar ritmik saymayı tamamla.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_skip_10.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_skip_10_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_sp_01_instruction",
+      "text": "Top masanın neresinde?",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/spatial/mat_sp_01.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_sp_01_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_sp_02_instruction",
+      "text": "Kuşlar ağacın neresinde?",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/spatial/mat_sp_02.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_sp_02_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_sp_03_instruction",
+      "text": "Top iki çocuğun neresinde?",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/spatial/mat_sp_03.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_sp_03_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_sp_04_instruction",
+      "text": "Araba kamyonun neresinde?",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/spatial/mat_sp_04.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_sp_04_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_sp_05_instruction",
+      "text": "Sincap çocuğa göre nerededir?",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/spatial/mat_sp_05.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_sp_05_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_sp_06_instruction",
+      "text": "Pembe balon yeşil balona göre nerededir?",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/spatial/mat_sp_06.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_sp_06_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_sp_07_instruction",
+      "text": "Muz tabağın neresindedir?",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/spatial/mat_sp_07.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_sp_07_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_sp_08_instruction",
+      "text": "Yasemin çocuğun neresindedir?",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/spatial/mat_sp_08.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_sp_08_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_sp_adapt_instruction",
+      "text": "Avatarı sandalyenin neresine yerleştir?",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/spatial/mat_sp_adapt.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_sp_adapt_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_tens_01_instruction",
+      "text": "10 birlik kaç onluk eder?",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_tens_01.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_tens_01_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_tens_02_instruction",
+      "text": "18 sayısını onluk ve birliklerine ayır.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_tens_02.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_tens_02_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_tens_03_instruction",
+      "text": "1 onluk 5 birlik hangi sayıdır?",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_tens_03.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_tens_03_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_tens_04_instruction",
+      "text": "17 sayısını onluk ve birlik olarak göster.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_tens_04.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_tens_04_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_tens_05_instruction",
+      "text": "1 onluk 3 birlik hangi sayıdır?",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_tens_05.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_tens_05_instruction.ogg"
+    },
+    {
+      "audioId": "aud_act_mat_tens_06_instruction",
+      "text": "16 sayısını seç.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mathematics/numbers/mat_tens_06.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_act_mat_tens_06_instruction.ogg"
+    },
+    {
+      "audioId": "aud_common_ready_01",
+      "text": "Hazırsan başlayalım.",
+      "voiceProfile": "TEACHER_WARM",
+      "preset": "warm_voice_agent",
+      "durationScale": 1.04,
+      "output": "audio/generated/speech/aud_common_ready_01.ogg"
+    },
+    {
+      "audioId": "aud_common_retry_01",
+      "text": "Bir daha bakalım.",
+      "voiceProfile": "TEACHER_ENCOURAGE",
+      "preset": "restrained_emotion",
+      "durationScale": 0.98,
+      "output": "audio/generated/speech/aud_common_retry_01.ogg"
+    },
+    {
+      "audioId": "aud_common_success_01",
+      "text": "Harika!",
+      "voiceProfile": "TEACHER_ENCOURAGE",
+      "preset": "restrained_emotion",
+      "durationScale": 0.98,
+      "output": "audio/generated/speech/aud_common_success_01.ogg"
+    },
+    {
+      "audioId": "aud_common_welcome_01",
+      "text": "Minik Akademi'ye hoş geldin.",
+      "voiceProfile": "TEACHER_WARM",
+      "preset": "warm_voice_agent",
+      "durationScale": 1.04,
+      "output": "audio/generated/speech/aud_common_welcome_01.ogg"
+    },
+    {
+      "audioId": "aud_game_lit_hunt_001_instruction",
+      "text": "u harflerinin hepsini bul.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/mini_games/harf_avi.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_game_lit_hunt_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_game_math_count_001_instruction",
+      "text": "Nesneleri say ve doğru sayıyı seç.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mini_games/say_ve_sec.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_game_math_count_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_game_math_group_001_instruction",
+      "text": "10 nesnenin tamamını seç ve bir onluk oluştur.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mini_games/gruplama.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_game_math_group_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_game_math_match_001_instruction",
+      "text": "Aynı olan iki şekli bul.",
+      "voiceProfile": "TEACHER_MATH",
+      "source": "content/mini_games/esini_bul.json",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_game_math_match_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_game_pre_maze_001_instruction",
+      "text": "Avatarı doğru yolu seçerek hedefe ulaştır.",
+      "voiceProfile": "TEACHER_WARM",
+      "source": "content/mini_games/yol_bulma.json",
+      "preset": "warm_voice_agent",
+      "durationScale": 1.04,
+      "output": "audio/generated/speech/aud_game_pre_maze_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_a_find_001_instruction",
+      "text": "A ve a harflerinin hepsini bul.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_01_anet/a_02_find.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_a_find_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_a_intro_001_instruction",
+      "text": "a sesini ve A - a harflerini tanı.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_01_anet/a_01_intro.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_a_intro_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_a_sound_001_instruction",
+      "text": "İsminde a sesi olan varlıkları seç.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_01_anet/a_03_sound.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_a_sound_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_a_trace_001_instruction",
+      "text": "a harfinin üzerinden parmağınla geç.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_01_anet/a_04_trace.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_a_trace_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_e_find_001_instruction",
+      "text": "E ve e harflerinin hepsini bul.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_01_anet/e_02_find.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_e_find_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_e_intro_001_instruction",
+      "text": "e sesini ve E - e harflerini tanı.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_01_anet/e_01_intro.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_e_intro_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_e_sound_001_instruction",
+      "text": "İsminde e sesi olan varlıkları seç.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_01_anet/e_03_sound.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_e_sound_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_e_syllable_001_instruction",
+      "text": "Harfleri doğru sırayla seç ve en hecesini oluştur.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_01_anet/e_05_syllable.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_e_syllable_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_e_trace_001_instruction",
+      "text": "e harfinin üzerinden parmağınla geç.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_01_anet/e_04_trace.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_e_trace_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_e_word_001_instruction",
+      "text": "Harfleri doğru sırayla seç ve kelimeyi oluştur.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_01_anet/e_06_word.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_e_word_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_i_find_001_instruction",
+      "text": "İ ve i harflerinin hepsini bul.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/i_02_find.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_i_find_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_i_intro_001_instruction",
+      "text": "i sesini ve İ - i harflerini tanı.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/i_01_intro.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_i_intro_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_i_sound_001_instruction",
+      "text": "İsminde i sesi olan varlıkları seç.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/i_03_sound.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_i_sound_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_i_syllable_001_instruction",
+      "text": "Harfleri doğru sırayla seç ve in hecesini oluştur.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/i_05_syllable.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_i_syllable_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_i_trace_001_instruction",
+      "text": "i harfinin üzerinden parmağınla geç.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/i_04_trace.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_i_trace_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_i_word_001_instruction",
+      "text": "Harfleri doğru sırayla seç ve kelimeyi oluştur.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/i_06_word.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_i_word_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_k_find_001_instruction",
+      "text": "K ve k harflerinin hepsini bul.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/k_02_find.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_k_find_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_k_intro_001_instruction",
+      "text": "k sesini ve K - k harflerini tanı.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/k_01_intro.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_k_intro_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_k_sound_001_instruction",
+      "text": "İsminde k sesi olan varlıkları seç.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/k_03_sound.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_k_sound_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_k_syllable_001_instruction",
+      "text": "Harfleri doğru sırayla seç ve ak hecesini oluştur.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/k_05_syllable.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_k_syllable_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_k_trace_001_instruction",
+      "text": "k harfinin üzerinden parmağınla geç.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/k_04_trace.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_k_trace_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_k_word_001_instruction",
+      "text": "Harfleri doğru sırayla seç ve kelimeyi oluştur.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/k_06_word.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_k_word_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_l_find_001_instruction",
+      "text": "L ve l harflerinin hepsini bul.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/l_02_find.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_l_find_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_l_intro_001_instruction",
+      "text": "l sesini ve L - l harflerini tanı.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/l_01_intro.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_l_intro_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_l_sound_001_instruction",
+      "text": "İsminde l sesi olan varlıkları seç.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/l_03_sound.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_l_sound_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_l_syllable_001_instruction",
+      "text": "Harfleri doğru sırayla seç ve al hecesini oluştur.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/l_05_syllable.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_l_syllable_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_l_trace_001_instruction",
+      "text": "l harfinin üzerinden parmağınla geç.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/l_04_trace.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_l_trace_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_l_word_001_instruction",
+      "text": "Harfleri doğru sırayla seç ve kelimeyi oluştur.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/l_06_word.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_l_word_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_n_find_001_instruction",
+      "text": "N ve n harflerinin hepsini bul.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_01_anet/n_02_find.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_n_find_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_n_intro_001_instruction",
+      "text": "n sesini ve N - n harflerini tanı.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_01_anet/n_01_intro.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_n_intro_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_n_sound_001_instruction",
+      "text": "İsminde n sesi olan varlıkları seç.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_01_anet/n_03_sound.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_n_sound_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_n_syllable_001_instruction",
+      "text": "Harfleri doğru sırayla seç ve an hecesini oluştur.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_01_anet/n_05_syllable.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_n_syllable_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_n_trace_001_instruction",
+      "text": "n harfinin üzerinden parmağınla geç.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_01_anet/n_04_trace.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_n_trace_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_n_word_001_instruction",
+      "text": "Harfleri doğru sırayla seç ve kelimeyi oluştur.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_01_anet/n_06_word.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_n_word_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_o_find_001_instruction",
+      "text": "O ve o harflerinin hepsini bul.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/o_02_find.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_o_find_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_o_intro_001_instruction",
+      "text": "o sesini ve O - o harflerini tanı.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/o_01_intro.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_o_intro_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_o_sound_001_instruction",
+      "text": "İsminde o sesi olan varlıkları seç.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/o_03_sound.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_o_sound_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_o_syllable_001_instruction",
+      "text": "Harfleri doğru sırayla seç ve on hecesini oluştur.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/o_05_syllable.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_o_syllable_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_o_trace_001_instruction",
+      "text": "o harfinin üzerinden parmağınla geç.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/o_04_trace.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_o_trace_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_o_word_001_instruction",
+      "text": "Harfleri doğru sırayla seç ve kelimeyi oluştur.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/o_06_word.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_o_word_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_t_find_001_instruction",
+      "text": "T ve t harflerinin hepsini bul.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_01_anet/t_02_find.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_t_find_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_t_intro_001_instruction",
+      "text": "t sesini ve T - t harflerini tanı.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_01_anet/t_01_intro.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_t_intro_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_t_sound_001_instruction",
+      "text": "İsminde t sesi olan varlıkları seç.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_01_anet/t_03_sound.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_t_sound_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_t_syllable_001_instruction",
+      "text": "Harfleri doğru sırayla seç ve at hecesini oluştur.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_01_anet/t_05_syllable.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_t_syllable_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_t_trace_001_instruction",
+      "text": "t harfinin üzerinden parmağınla geç.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_01_anet/t_04_trace.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_t_trace_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_t_word_001_instruction",
+      "text": "Harfleri doğru sırayla seç ve tane kelimesini oluştur.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_01_anet/t_06_word.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_t_word_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_u_find_001_instruction",
+      "text": "U ve u harflerinin hepsini bul.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/u_02_find.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_u_find_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_u_intro_001_instruction",
+      "text": "u sesini ve U - u harflerini tanı.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/u_01_intro.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_u_intro_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_u_sound_001_instruction",
+      "text": "İsminde u sesi olan varlıkları seç.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/u_03_sound.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_u_sound_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_u_syllable_001_instruction",
+      "text": "Harfleri doğru sırayla seç ve un hecesini oluştur.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/u_05_syllable.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_u_syllable_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_u_trace_001_instruction",
+      "text": "u harfinin üzerinden parmağınla geç.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/u_04_trace.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_u_trace_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_lit_u_word_001_instruction",
+      "text": "Harfleri doğru sırayla seç ve okul kelimesini oluştur.",
+      "voiceProfile": "TEACHER_PHONICS",
+      "source": "content/literacy/group_02_iloku/u_06_word.json",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_lit_u_word_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_number_00",
+      "text": "sıfır",
+      "voiceProfile": "TEACHER_MATH",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_number_00.ogg"
+    },
+    {
+      "audioId": "aud_number_01",
+      "text": "bir",
+      "voiceProfile": "TEACHER_MATH",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_number_01.ogg"
+    },
+    {
+      "audioId": "aud_number_02",
+      "text": "iki",
+      "voiceProfile": "TEACHER_MATH",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_number_02.ogg"
+    },
+    {
+      "audioId": "aud_number_03",
+      "text": "üç",
+      "voiceProfile": "TEACHER_MATH",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_number_03.ogg"
+    },
+    {
+      "audioId": "aud_number_04",
+      "text": "dört",
+      "voiceProfile": "TEACHER_MATH",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_number_04.ogg"
+    },
+    {
+      "audioId": "aud_number_05",
+      "text": "beş",
+      "voiceProfile": "TEACHER_MATH",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_number_05.ogg"
+    },
+    {
+      "audioId": "aud_number_06",
+      "text": "altı",
+      "voiceProfile": "TEACHER_MATH",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_number_06.ogg"
+    },
+    {
+      "audioId": "aud_number_07",
+      "text": "yedi",
+      "voiceProfile": "TEACHER_MATH",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_number_07.ogg"
+    },
+    {
+      "audioId": "aud_number_08",
+      "text": "sekiz",
+      "voiceProfile": "TEACHER_MATH",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_number_08.ogg"
+    },
+    {
+      "audioId": "aud_number_09",
+      "text": "dokuz",
+      "voiceProfile": "TEACHER_MATH",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_number_09.ogg"
+    },
+    {
+      "audioId": "aud_number_10",
+      "text": "on",
+      "voiceProfile": "TEACHER_MATH",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_number_10.ogg"
+    },
+    {
+      "audioId": "aud_number_11",
+      "text": "on bir",
+      "voiceProfile": "TEACHER_MATH",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_number_11.ogg"
+    },
+    {
+      "audioId": "aud_number_12",
+      "text": "on iki",
+      "voiceProfile": "TEACHER_MATH",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_number_12.ogg"
+    },
+    {
+      "audioId": "aud_number_13",
+      "text": "on üç",
+      "voiceProfile": "TEACHER_MATH",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_number_13.ogg"
+    },
+    {
+      "audioId": "aud_number_14",
+      "text": "on dört",
+      "voiceProfile": "TEACHER_MATH",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_number_14.ogg"
+    },
+    {
+      "audioId": "aud_number_15",
+      "text": "on beş",
+      "voiceProfile": "TEACHER_MATH",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_number_15.ogg"
+    },
+    {
+      "audioId": "aud_number_16",
+      "text": "on altı",
+      "voiceProfile": "TEACHER_MATH",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_number_16.ogg"
+    },
+    {
+      "audioId": "aud_number_17",
+      "text": "on yedi",
+      "voiceProfile": "TEACHER_MATH",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_number_17.ogg"
+    },
+    {
+      "audioId": "aud_number_18",
+      "text": "on sekiz",
+      "voiceProfile": "TEACHER_MATH",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_number_18.ogg"
+    },
+    {
+      "audioId": "aud_number_19",
+      "text": "on dokuz",
+      "voiceProfile": "TEACHER_MATH",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_number_19.ogg"
+    },
+    {
+      "audioId": "aud_number_20",
+      "text": "yirmi",
+      "voiceProfile": "TEACHER_MATH",
+      "preset": "numeric_normalization",
+      "durationScale": 1.06,
+      "output": "audio/generated/speech/aud_number_20.ogg"
+    },
+    {
+      "audioId": "aud_phoneme_a",
+      "text": "a",
+      "voiceProfile": "TEACHER_PHONICS",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_phoneme_a.ogg"
+    },
+    {
+      "audioId": "aud_phoneme_e",
+      "text": "e",
+      "voiceProfile": "TEACHER_PHONICS",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_phoneme_e.ogg"
+    },
+    {
+      "audioId": "aud_phoneme_i",
+      "text": "i",
+      "voiceProfile": "TEACHER_PHONICS",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_phoneme_i.ogg"
+    },
+    {
+      "audioId": "aud_phoneme_k",
+      "text": "k",
+      "voiceProfile": "TEACHER_PHONICS",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_phoneme_k.ogg"
+    },
+    {
+      "audioId": "aud_phoneme_l",
+      "text": "l",
+      "voiceProfile": "TEACHER_PHONICS",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_phoneme_l.ogg"
+    },
+    {
+      "audioId": "aud_phoneme_n",
+      "text": "n",
+      "voiceProfile": "TEACHER_PHONICS",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_phoneme_n.ogg"
+    },
+    {
+      "audioId": "aud_phoneme_o",
+      "text": "o",
+      "voiceProfile": "TEACHER_PHONICS",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_phoneme_o.ogg"
+    },
+    {
+      "audioId": "aud_phoneme_t",
+      "text": "t",
+      "voiceProfile": "TEACHER_PHONICS",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_phoneme_t.ogg"
+    },
+    {
+      "audioId": "aud_phoneme_u",
+      "text": "u",
+      "voiceProfile": "TEACHER_PHONICS",
+      "preset": "phonetic_normalization",
+      "durationScale": 1.16,
+      "output": "audio/generated/speech/aud_phoneme_u.ogg"
+    },
+    {
+      "audioId": "aud_pre_trace_copy_001_instruction",
+      "text": "Eğri yolu dikkatlice takip et ve çizgiyi tamamla.",
+      "voiceProfile": "TEACHER_WARM",
+      "source": "content/literacy/preparation/04_copy_curve.json",
+      "preset": "warm_voice_agent",
+      "durationScale": 1.04,
+      "output": "audio/generated/speech/aud_pre_trace_copy_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_pre_trace_direction_001_instruction",
+      "text": "Başlangıçtan sona doğru zikzak çizgiyi takip et.",
+      "voiceProfile": "TEACHER_WARM",
+      "source": "content/literacy/preparation/03_direction_trace.json",
+      "preset": "warm_voice_agent",
+      "durationScale": 1.04,
+      "output": "audio/generated/speech/aud_pre_trace_direction_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_pre_trace_path_001_instruction",
+      "text": "Başlangıç noktasından hedefe kadar noktalı yolu parmağınla takip et.",
+      "voiceProfile": "TEACHER_WARM",
+      "source": "content/literacy/preparation/01_path_trace.json",
+      "preset": "warm_voice_agent",
+      "durationScale": 1.04,
+      "output": "audio/generated/speech/aud_pre_trace_path_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_pre_trace_shape_001_instruction",
+      "text": "Noktalı spiral çizginin üzerinden giderek şekli tamamla.",
+      "voiceProfile": "TEACHER_WARM",
+      "source": "content/literacy/preparation/02_complete_visual.json",
+      "preset": "warm_voice_agent",
+      "durationScale": 1.04,
+      "output": "audio/generated/speech/aud_pre_trace_shape_001_instruction.ogg"
+    },
+    {
+      "audioId": "aud_pre_vis_difference_001_instruction",
+      "text": "İki grubu karşılaştır. Sağ tarafta farklı olan 5 şekli bul.",
+      "voiceProfile": "TEACHER_WARM",
+      "source": "content/literacy/preparation/05_find_difference.json",
+      "preset": "warm_voice_agent",
+      "durationScale": 1.04,
+      "output": "audio/generated/speech/aud_pre_vis_difference_001_instruction.ogg"
+    }
+  ]
+}
