@@ -1,6 +1,6 @@
 {
-  "version": "1.0",
-  "lockedThroughStep": 14,
+  "version": "1.1",
+  "lockedThroughStep": 15,
   "protectedTrees": {
     "app/src/main": "5fecb193f97fe1e4f630a40908f77034dcf9c557",
     "assets": "a07031bd0b25573fb046955b48a4e37545021396",
@@ -33,6 +33,11 @@
     "feature/mathematics/README.md": "1cd76831e6c54ad32a70c724fc3eabf1a2468031",
     "feature/mini-games/README.md": "67d66a23f7eceb6b1ac268758c954e3e069bc550",
     "feature/tracing/README.md": "52dd3d09c6f7ef4b1ab8b5ace92725e2aa452ccd",
-    "docs/REGRESSION_TESTS_V1.md": "627d6750fe292da835c3880bd0c2bbfec0adf88f"
+    "docs/REGRESSION_TESTS_V1.md": "627d6750fe292da835c3880bd0c2bbfec0adf88f",
+    "docs/RELEASE_BUILD_V1.md": "3956ed2a4bb706b381403c6c03534b2495344c68",
+    ".github/workflows/release-apk.yml": "a69f0b1c682f0a34df3a16e65c4fcb5f3f5ca8f6",
+    ".github/workflows/step15-api26.yml": "25330d85369736c19cd12b549286fe9f603e143a",
+    ".github/workflows/step15-final-gate.yml": "fc52a3b6a46e81b62535f0d23a02f8bb0907514a",
+    "tools/release/step15_release_acceptance.py": "8fb687327f543a42d9c38e78f0f3b65e5c2a9e1a"
   }
 }
