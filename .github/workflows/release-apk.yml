@@ -177,17 +177,46 @@ jobs:
           set -euo pipefail
           COUNT="$(find step15-smoke -maxdepth 1 -type f -name '*.png' | wc -l | tr -d ' ')"
           echo "Release acceptance screenshots: $COUNT"
-          test "$COUNT" -eq 10
+          test "$COUNT" -eq 11
 
-          for name in             01_release_welcome             02_release_setup_summary             03_release_dashboard             04_release_persistence_relaunch             05_release_tracing             06_release_literacy             07_release_mathematics             08_release_mini_games
+          for name in             01_release_welcome             02_release_setup_summary             03_release_dashboard             04_release_persistence_relaunch             05_release_tracing             06_release_literacy             07_release_mathematics             08_release_mini_games             09_release_parent_gate             10_release_parent_settings             11_release_reinstall_persistence
           do
             test -s "step15-smoke/$name.png"
           done
+
+      - name: Verify minimum Android API 26 compatibility
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 26
+          target: default
+          arch: x86_64
+          profile: pixel_2
+          emulator-options: -no-window -no-snapshot -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
+          disable-animations: true
+          script: |
+            set -eu
+            adb shell svc wifi disable || true
+            adb shell svc data disable || true
+            adb install -r step15-release/MinikAkademi-0.1.0-release-ci-signed.apk
+            adb shell am start -W -n com.uysal.minikakademi/com.uysal.minikakademi.app.MainActivity
+            sleep 2
+            adb shell pidof com.uysal.minikakademi
+            adb shell uiautomator dump /sdcard/window.xml
+            adb pull /sdcard/window.xml step15-smoke/api26-window.xml
+            grep -F "Minik Akademi" step15-smoke/api26-window.xml
+            adb exec-out screencap -p > step15-smoke/12_release_api26_welcome.png
+
+      - name: Verify API 26 smoke evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s step15-smoke/12_release_api26_welcome.png
+          test -s step15-smoke/api26-window.xml
 
       - name: Upload comprehensive release evidence
         uses: actions/upload-artifact@v4
         with:
           name: minik-akademi-step15-release-acceptance-evidence
-          path: step15-smoke/*.png
+          path: step15-smoke/
           if-no-files-found: error
           retention-days: 90
