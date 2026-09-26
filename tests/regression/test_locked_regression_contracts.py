@@ -10,6 +10,7 @@ BASELINE = ROOT / "tests" / "regression" / "locked_baseline_v1.json"
 LOCK_INDEX = ROOT / "docs" / "LOCK_INDEX.md"
 BUILD_PROCESS = ROOT / "BUILD_PROCESS.md"
 STEP13_DOC = ROOT / "docs" / "MANUAL_UI_PEDAGOGICAL_REVIEW_V1.md"
+STEP14_DOC = ROOT / "docs" / "REGRESSION_TESTS_V1.md"
 STEP14_WORKFLOW = ROOT / ".github" / "workflows" / "regression-tests.yml"
 
 
@@ -43,7 +44,7 @@ class LockedRegressionContractsTest(unittest.TestCase):
                 msg=f"LOCKED document changed without a versioned unlock: {path}",
             )
 
-    def test_lock_index_contains_steps_1_through_13(self) -> None:
+    def test_lock_index_contains_steps_1_through_14(self) -> None:
         text = LOCK_INDEX.read_text(encoding="utf-8")
         required = {
             1: "PROJECT_STRUCTURE_V1.md",
@@ -59,10 +60,11 @@ class LockedRegressionContractsTest(unittest.TestCase):
             11: "ASSET_INTEGRATION_V1.md",
             12: "AUTOMATED_TESTS_V1.md",
             13: "MANUAL_UI_PEDAGOGICAL_REVIEW_V1.md",
+            14: "REGRESSION_TESTS_V1.md",
         }
         for step, token in required.items():
             self.assertIn(token, text, msg=f"Missing locked Step {step}: {token}")
-        self.assertGreaterEqual(text.count("| LOCKED |"), 23)
+        self.assertGreaterEqual(text.count("| LOCKED |"), 24)
 
     def test_build_order_keeps_regression_before_release(self) -> None:
         text = BUILD_PROCESS.read_text(encoding="utf-8")
@@ -77,6 +79,13 @@ class LockedRegressionContractsTest(unittest.TestCase):
         self.assertIn("**Status:** LOCKED", text)
         self.assertIn("17 / 17", text)
         self.assertIn("Pedagogical UI Review #25", text)
+
+    def test_step14_is_locked_in_baseline_and_document(self) -> None:
+        self.assertEqual(14, self.baseline["lockedThroughStep"])
+        text = STEP14_DOC.read_text(encoding="utf-8")
+        self.assertIn("**Status:** LOCKED", text)
+        self.assertIn("Regression Tests #11", text)
+        self.assertIn("17 / 17 UI kanıt ekranı", text)
 
     def test_step14_never_builds_release_artifacts(self) -> None:
         text = STEP14_WORKFLOW.read_text(encoding="utf-8")
