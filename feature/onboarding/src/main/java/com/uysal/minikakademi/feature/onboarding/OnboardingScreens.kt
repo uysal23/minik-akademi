@@ -11,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.uysal.minikakademi.core.audio.OfflineAudioPlayer
 import com.uysal.minikakademi.core.designsystem.KidPrimaryButton
 import com.uysal.minikakademi.core.designsystem.KidScreen
 import com.uysal.minikakademi.core.model.AppSettings
@@ -27,12 +29,22 @@ import com.uysal.minikakademi.core.model.ThemePreference
 
 @Composable
 fun WelcomeScreen(onStart: () -> Unit) {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val audioPlayer = remember(context) { OfflineAudioPlayer(context) }
+    DisposableEffect(audioPlayer) {
+        onDispose { audioPlayer.close() }
+    }
+
     KidScreen {
         Column(verticalArrangement = Arrangement.spacedBy(18.dp)) {
             Text("Minik Akademi'ye Hoş Geldiniz", style = MaterialTheme.typography.headlineMedium)
             Text(
                 "İlk kurulumu bir yetişkin tamamlamalıdır. Kurulumdan sonra çocuk doğrudan kendi öğrenme alanına geçer.",
                 style = MaterialTheme.typography.bodyLarge
+            )
+            KidPrimaryButton(
+                text = "🔊 Karşılama Sesini Dinle",
+                onClick = { audioPlayer.playSpeech("aud_common_welcome_01", 0.90f) }
             )
             KidPrimaryButton(text = "Kuruluma Başla", onClick = onStart)
         }
@@ -82,11 +94,17 @@ fun SoundSetupScreen(
     onPreview: () -> Unit,
     onContinue: () -> Unit
 ) {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val audioPlayer = remember(context) { OfflineAudioPlayer(context) }
+    DisposableEffect(audioPlayer) {
+        onDispose { audioPlayer.close() }
+    }
+
     KidScreen {
         Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
             Text("Konuşma Hızı", style = MaterialTheme.typography.headlineMedium)
             Text(
-                "Kadın öğretmen/anlatıcı sesi uygulamaya offline olarak eklenecek. Burada sadece konuşma temposunu seçin.",
+                "Öğretmen/anlatıcı sesi uygulamanın içinde offline olarak bulunur. Burada konuşma temposunu seçin.",
                 style = MaterialTheme.typography.bodyLarge
             )
             SpeechRateOption.entries.forEach { rate ->
@@ -96,8 +114,14 @@ fun SoundSetupScreen(
                     onClick = { onSelected(rate) }
                 )
             }
-            KidPrimaryButton(text = "Örneği Dinle", onClick = onPreview, enabled = false)
-            Text("Örnek kadın öğretmen sesi, offline ses paketi bağlandığında etkinleşecek.")
+            KidPrimaryButton(
+                text = "Örneği Dinle",
+                onClick = {
+                    audioPlayer.playSpeech("aud_common_ready_01", selected.multiplier)
+                    onPreview()
+                }
+            )
+            Text("Örnek ses APK içindeki offline ses paketinden çalınır.")
             KidPrimaryButton(text = "Devam Et", onClick = onContinue)
         }
     }
