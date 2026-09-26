@@ -8,7 +8,7 @@ Bu belge production signing ve gerçek dağıtım aşaması içindir.
 - Release teknik kabulü: `docs/RELEASE_BUILD_V1.md`
 - Production package: `com.uysal.minikakademi`
 - versionCode: `1`
-- versionName: `0.1.0`
+- versionName: `1.0.0`
 - minSdk: `26`
 - targetSdk: `37`
 - Offline-first; INTERNET permission yok.
