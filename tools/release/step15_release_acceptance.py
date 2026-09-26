@@ -152,6 +152,7 @@ def main() -> None:
 
     OUT.mkdir(parents=True, exist_ok=True)
     adb("shell", "settings", "put", "global", "hide_error_dialogs", "1", check=False)
+    adb("logcat", "-c", check=False)
     adb("install", "-r", str(APK))
 
     # Offline-first acceptance: networking is disabled before first launch and remains off.
@@ -292,9 +293,26 @@ def main() -> None:
     if not package_path.startswith("package:") or not pid:
         raise RuntimeError(f"Installed release is not healthy: path={package_path!r} pid={pid!r}")
 
+    # Same-signature reinstall/update smoke: app data must survive an in-place reinstall.
+    adb("install", "-r", str(APK))
+    adb("shell", "am", "force-stop", PACKAGE)
+    adb("shell", "am", "start", "-W", "-n", COMPONENT)
+    assert_text("Merhaba, Ece")
+    assert_text("Çiziyorum")
+    screenshot("11_release_reinstall_persistence")
+    assert_process_alive()
+
+    # Final crash/ANR sweep over the whole release acceptance session.
+    logcat = adb("logcat", "-d", capture=True).stdout
+    (OUT / "release-logcat.txt").write_text(logcat, encoding="utf-8")
+    if f"ANR in {PACKAGE}" in logcat:
+        raise RuntimeError("Release acceptance detected an ANR")
+    if "FATAL EXCEPTION" in logcat and f"Process: {PACKAGE}" in logcat:
+        raise RuntimeError("Release acceptance detected a fatal exception")
+
     screenshots = sorted(OUT.glob("*.png"))
-    if len(screenshots) != 10:
-        raise RuntimeError(f"Expected 10 release evidence screenshots, found {len(screenshots)}")
+    if len(screenshots) != 11:
+        raise RuntimeError(f"Expected 11 release evidence screenshots, found {len(screenshots)}")
 
     print("STEP 15 COMPREHENSIVE RELEASE ACCEPTANCE: PASS")
 
