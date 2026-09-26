@@ -83,7 +83,7 @@ jobs:
             adb shell settings put system font_scale 1.0
             gradle --no-daemon :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.uysal.minikakademi.app.PedagogicalUiReviewTest
             mkdir -p ui-review-evidence
-            adb pull /sdcard/Android/data/com.uysal.minikakademi/files/ui-review/. ui-review-evidence/
+            adb pull /sdcard/Download/minik-akademi-ui-review/. ui-review-evidence/
 
       - name: Verify screenshot evidence
         run: |
