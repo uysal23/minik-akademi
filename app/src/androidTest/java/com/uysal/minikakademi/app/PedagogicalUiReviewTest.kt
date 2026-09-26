@@ -67,7 +67,7 @@ class PedagogicalUiReviewTest {
         repeat(12) {
             rule.waitForIdle()
             InstrumentationRegistry.getInstrumentation().waitForIdleSync()
-            lastFocus = runShellCommand("dumpsys window | grep -E 'mCurrentFocus|mFocusedApp' || true")
+            lastFocus = runShellCommand("dumpsys window")
             if (
                 lastFocus.contains("com.uysal.minikakademi") &&
                 !lastFocus.contains("Application Not Responding", ignoreCase = true) &&
