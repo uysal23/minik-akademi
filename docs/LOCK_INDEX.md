@@ -25,6 +25,7 @@
 | ASSET_INTEGRATION_V1.md — Görsel ve Ses Varlıkları | 1.0 | LOCKED | 11 |
 | AUTOMATED_TESTS_V1.md — Otomatik Testler | 1.0 | LOCKED | 12 |
 | MANUAL_UI_PEDAGOGICAL_REVIEW_V1.md — Manuel Pedagojik / UI İnceleme | 1.0 | LOCKED | 13 |
+| REGRESSION_TESTS_V1.md — Regresyon Testleri | 1.0 | LOCKED | 14 |
 
 ## Kural
 
