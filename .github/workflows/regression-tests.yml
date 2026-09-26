@@ -180,7 +180,7 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 35
-          target: google_apis
+          target: default
           arch: x86_64
           profile: pixel_6
           emulator-options: -no-window -no-snapshot -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
@@ -190,6 +190,10 @@ jobs:
             adb shell wm size 1080x1920
             adb shell wm density 420
             adb shell settings put system font_scale 1.0
+            adb shell settings put global hide_error_dialogs 1 || true
+            adb shell settings put global show_first_crash_dialog 0 || true
+            adb shell settings put global show_restart_in_crash_dialog 0 || true
+            adb shell am force-stop com.android.launcher3 || true
 
             adb shell pm clear com.uysal.minikakademi || true
             gradle --no-daemon :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.uysal.minikakademi.app.RegressionPersistenceTest
