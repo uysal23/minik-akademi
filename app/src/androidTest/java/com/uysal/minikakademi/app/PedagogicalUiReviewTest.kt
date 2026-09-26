@@ -1,6 +1,6 @@
 package com.uysal.minikakademi.app
 
-import android.graphics.Bitmap
+import android.os.ParcelFileDescriptor
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasSetTextAction
@@ -13,8 +13,6 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import java.io.File
-import java.io.FileOutputStream
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -50,14 +48,12 @@ class PedagogicalUiReviewTest {
 
     private fun shot(name: String) {
         rule.waitForIdle()
-        val bitmap = checkNotNull(
-            InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot()
-        )
-        val dir = File(rule.activity.getExternalFilesDir(null), "ui-review")
-        check(dir.exists() || dir.mkdirs())
-        val file = File(dir, "$name.png")
-        FileOutputStream(file).use { stream ->
-            check(bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream))
+        val uiAutomation = InstrumentationRegistry.getInstrumentation().uiAutomation
+        val command = "mkdir -p /sdcard/Download/minik-akademi-ui-review && " +
+            "screencap -p /sdcard/Download/minik-akademi-ui-review/$name.png"
+        val output = uiAutomation.executeShellCommand(command)
+        ParcelFileDescriptor.AutoCloseInputStream(output).use { stream ->
+            stream.readBytes()
         }
     }
 
