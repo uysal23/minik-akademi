@@ -122,7 +122,7 @@ class PedagogicalUiReviewTest {
         waitForText("Yolu Takip Et")
         rule.onNodeWithText("🔊 Dinle").assertIsDisplayed()
         shot("12_tracing_activity")
-        clickText("Etkinlik Listesine Dön")
+        clickText("Etkinlik Listesi")
         waitForText("Çiziyorum")
         clickText("Ana Sayfa")
 
@@ -152,7 +152,7 @@ class PedagogicalUiReviewTest {
         shot("16_math_activity")
         clickText("Etkinlik Listesine Dön")
         waitForText("Yer ve Yön")
-        clickText("Matematik Ana Sayfa")
+        clickText("Matematik Menüsüne Dön")
         waitForText("Matematik Öğreniyorum")
         clickText("Ana Sayfa")
 
@@ -160,7 +160,7 @@ class PedagogicalUiReviewTest {
         clickText("Oyun Zamanı")
         waitForText("Oyun Zamanı")
         rule.onNodeWithText("Öğrendiklerini kısa oyunlarla tekrar et.").assertIsDisplayed()
-        rule.onNodeWithText("Biraz daha çalışınca açılacak.", substring = true)
+        rule.onAllNodesWithText("Biraz daha çalışınca açılacak.", substring = true)[0]
             .assertIsDisplayed()
         shot("17_mini_games_locked")
     }
