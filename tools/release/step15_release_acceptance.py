@@ -142,8 +142,38 @@ def clear_focused_pin() -> None:
 
 
 def start_app() -> None:
-    adb("shell", "am", "start", "-W", "-n", COMPONENT)
-    wait_text("Minik Akademi", timeout=25)
+    last_error: Exception | None = None
+    for attempt in range(1, 4):
+        adb("shell", "am", "broadcast", "-a", "android.intent.action.CLOSE_SYSTEM_DIALOGS", check=False)
+        if attempt > 1:
+            adb("shell", "am", "force-stop", PACKAGE, check=False)
+            time.sleep(0.8)
+
+        result = adb("shell", "am", "start", "-W", "-n", COMPONENT, capture=True)
+        print(result.stdout)
+        if result.returncode != 0:
+            last_error = RuntimeError(result.stderr or result.stdout)
+            continue
+
+        try:
+            wait_text("Minik Akademi", timeout=25)
+            assert_process_alive()
+            return
+        except Exception as exc:
+            last_error = exc
+            pid = adb("shell", "pidof", PACKAGE, check=False, capture=True).stdout.strip()
+            window = adb("shell", "dumpsys", "window", check=False, capture=True).stdout
+            print(f"START RETRY {attempt}: pid={pid!r}; reason={exc}")
+            print("\n".join(
+                line for line in window.splitlines()
+                if "mCurrentFocus" in line or "mFocusedApp" in line
+            ))
+            # Clear transient launcher/ANR/system surfaces before retrying.
+            adb("shell", "input", "keyevent", "KEYCODE_BACK", check=False)
+            adb("shell", "am", "broadcast", "-a", "android.intent.action.CLOSE_SYSTEM_DIALOGS", check=False)
+            time.sleep(1.0)
+
+    raise RuntimeError(f"Release app could not reach its welcome UI after retries: {last_error}")
 
 
 def main() -> None:
