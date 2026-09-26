@@ -1,0 +1,209 @@
+name: Production v1 Release Candidate
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "release/production-v1.trigger"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: minik-akademi-production-v1
+  cancel-in-progress: false
+
+jobs:
+  build-production:
+    name: Build and verify production-signed v1.0.0
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    env:
+      APK_NAME: MinikAkademi-v1.0.0.apk
+      AAB_NAME: MinikAkademi-v1.0.0.aab
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify Step 15 locked baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -F '**Status:** LOCKED' docs/RELEASE_BUILD_V1.md
+          grep -F '| RELEASE_BUILD_V1.md — Release APK Build / Technical Acceptance | 1.0 | LOCKED | 15 |' docs/LOCK_INDEX.md
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path("tests/regression/locked_baseline_v1.json").read_text(encoding="utf-8"))
+          assert data["lockedThroughStep"] == 15, data
+          print("Step 15 locked baseline verified.")
+          PY
+
+      - name: Require production signing secrets
+        shell: bash
+        env:
+          KEYSTORE_B64: ${{ secrets.MINIK_AKADEMI_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.MINIK_AKADEMI_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.MINIK_AKADEMI_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.MINIK_AKADEMI_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          test -n "$KEYSTORE_B64"
+          test -n "$KEYSTORE_PASSWORD"
+          test -n "$KEY_ALIAS"
+          test -n "$KEY_PASSWORD"
+          echo "Production signing secrets are present."
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install validator dependencies
+        run: python -m pip install -r tools/content-validator/requirements.txt
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+
+      - name: Install compile SDK and signing tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          PLATFORM_PACKAGE="$($SDKMANAGER --list --channel=3 | awk '/platforms;android-37([.;[:space:]]|$)/ {print $1; exit}')"
+          test -n "$PLATFORM_PACKAGE"
+          $SDKMANAGER --channel=3 "$PLATFORM_PACKAGE" "build-tools;36.0.0"
+          if [ -d "$ANDROID_HOME/platforms/android-37.0" ] && [ ! -e "$ANDROID_HOME/platforms/android-37" ]; then
+            ln -s "$ANDROID_HOME/platforms/android-37.0" "$ANDROID_HOME/platforms/android-37"
+          fi
+
+      - name: Set up Gradle 9.6
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "9.6.0"
+
+      - name: Run final locked test suite and validators
+        run: |
+          python -m unittest discover -s tests -p "test_*.py" -v
+          python tools/content-validator/validate_content.py --mode authoring
+          python tools/audio/validate_audio_assets.py
+          python tools/asset-validator/validate_visual_assets.py
+
+      - name: Build unsigned APK and AAB
+        run: gradle --no-daemon :app:assembleRelease :app:bundleRelease
+
+      - name: Restore production keystore
+        shell: bash
+        env:
+          KEYSTORE_B64: ${{ secrets.MINIK_AKADEMI_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.MINIK_AKADEMI_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.MINIK_AKADEMI_KEY_ALIAS }}
+        run: |
+          set -euo pipefail
+          printf '%s' "$KEYSTORE_B64" | base64 --decode > "$RUNNER_TEMP/minik-akademi-production.jks"
+          keytool -list -keystore "$RUNNER_TEMP/minik-akademi-production.jks"             -storepass "$KEYSTORE_PASSWORD" -alias "$KEY_ALIAS" >/dev/null
+          echo "Production keystore restored and alias verified."
+
+      - name: Sign production APK and AAB
+        shell: bash
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.MINIK_AKADEMI_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.MINIK_AKADEMI_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.MINIK_AKADEMI_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          mkdir -p production-release
+          BUILD_TOOLS="$ANDROID_HOME/build-tools/36.0.0"
+          APK_UNSIGNED="app/build/outputs/apk/release/app-release-unsigned.apk"
+          AAB_UNSIGNED="app/build/outputs/bundle/release/app-release.aab"
+          test -s "$APK_UNSIGNED"
+          test -s "$AAB_UNSIGNED"
+
+          "$BUILD_TOOLS/zipalign" -p -f 4 "$APK_UNSIGNED" production-release/aligned.apk
+          "$BUILD_TOOLS/apksigner" sign             --ks "$RUNNER_TEMP/minik-akademi-production.jks"             --ks-key-alias "$KEY_ALIAS"             --ks-pass env:KEYSTORE_PASSWORD             --key-pass env:KEY_PASSWORD             --out "production-release/$APK_NAME"             production-release/aligned.apk
+          rm production-release/aligned.apk
+
+          cp "$AAB_UNSIGNED" "production-release/$AAB_NAME"
+          jarsigner             -keystore "$RUNNER_TEMP/minik-akademi-production.jks"             -storepass "$KEYSTORE_PASSWORD"             -keypass "$KEY_PASSWORD"             "production-release/$AAB_NAME" "$KEY_ALIAS"
+
+      - name: Verify production signatures and package
+        shell: bash
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.MINIK_AKADEMI_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.MINIK_AKADEMI_KEY_ALIAS }}
+        run: |
+          set -euo pipefail
+          BUILD_TOOLS="$ANDROID_HOME/build-tools/36.0.0"
+          APK="production-release/$APK_NAME"
+          AAB="production-release/$AAB_NAME"
+
+          "$BUILD_TOOLS/apksigner" verify --verbose --print-certs "$APK"             | tee production-release/APK_SIGNATURE.txt
+          jarsigner -verify -verbose -certs "$AAB"             > production-release/AAB_SIGNATURE.txt
+
+          "$BUILD_TOOLS/aapt" dump badging "$APK"             | tee production-release/APK_BADGING.txt
+          "$BUILD_TOOLS/aapt" dump permissions "$APK"             | tee production-release/APK_PERMISSIONS.txt
+
+          grep -F "package: name='com.uysal.minikakademi'" production-release/APK_BADGING.txt
+          grep -F "sdkVersion:'26'" production-release/APK_BADGING.txt
+          grep -F "targetSdkVersion:'37'" production-release/APK_BADGING.txt
+
+          if grep -Fq "android.permission.INTERNET" production-release/APK_PERMISSIONS.txt; then
+            echo "Production APK unexpectedly requests INTERNET permission."
+            exit 1
+          fi
+
+          keytool -list -v             -keystore "$RUNNER_TEMP/minik-akademi-production.jks"             -storepass "$KEYSTORE_PASSWORD"             -alias "$KEY_ALIAS"             > production-release/PRODUCTION_CERTIFICATE.txt
+
+          sha256sum "$APK" "$AAB" | tee production-release/SHA256SUMS.txt
+
+      - name: Upload production artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: minik-akademi-v1-production
+          path: production-release/
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Run full offline acceptance on production APK
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: default
+          arch: x86_64
+          profile: pixel_6
+          emulator-options: -no-window -no-snapshot -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
+          disable-animations: true
+          script: |
+            set -eu
+            python tools/release/step15_release_acceptance.py "production-release/$APK_NAME"
+
+      - name: Upload production acceptance evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: minik-akademi-v1-production-acceptance
+          path: step15-smoke/
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Create or update draft GitHub Release v1.0.0
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if gh release view v1.0.0 >/dev/null 2>&1; then
+            gh release upload v1.0.0               "production-release/$APK_NAME"               "production-release/$AAB_NAME"               production-release/SHA256SUMS.txt               production-release/PRODUCTION_CERTIFICATE.txt               --clobber
+            gh release edit v1.0.0               --draft               --title "Minik Akademi v1.0.0"               --notes-file docs/PRODUCTION_RELEASE_V1.md
+          else
+            gh release create v1.0.0               "production-release/$APK_NAME"               "production-release/$AAB_NAME"               production-release/SHA256SUMS.txt               production-release/PRODUCTION_CERTIFICATE.txt               --target "$GITHUB_SHA"               --draft               --title "Minik Akademi v1.0.0"               --notes-file docs/PRODUCTION_RELEASE_V1.md
+          fi
+          echo "Draft GitHub Release v1.0.0 prepared."
