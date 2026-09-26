@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-09-26 — Regression Tests V1.0
+
+- Build Step 14 completed and locked.
+- Final Regression Tests #11 (run 36251160389) completed successfully.
+- Locked contracts and validators: PASS.
+- Kotlin unit tests and debug regression build: PASS.
+- Persistence instrumentation and full UI regression: PASS.
+- 17/17 regression evidence screens were generated and visually reviewed; no launcher/ANR/system-dialog contamination remained.
+- UI evidence artifact: `minik-akademi-step14-regression-ui-evidence` (artifact ID 10909565688, SHA-256 `a6520af58163a90b16b3714f9e60254dd0a3c0d616df0a2110d3bf016fd8e57f`).
+- Instrumentation reports artifact ID: 10909231153.
+- Debug regression artifact ID: 10908977135.
+- A previous technically successful run with Pixel Launcher system-dialog contamination was rejected rather than accepted as evidence.
+- The faulty focus guard introduced during remediation was removed after its shell-command limitation was identified.
+- Locked baseline now protects through Build Step 14.
+- Release APK/bundle/signing was not started; Build Step 15 remains gated.
+
 ## 2026-09-26 — Manual Pedagogical / UI Review V1.0
 
 - Build Step 13 completed and locked.
