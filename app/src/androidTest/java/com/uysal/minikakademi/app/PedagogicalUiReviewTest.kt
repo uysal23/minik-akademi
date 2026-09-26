@@ -9,7 +9,6 @@ import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -32,10 +31,8 @@ class PedagogicalUiReviewTest {
         rule.onNodeWithText(text).assertIsDisplayed()
     }
 
-    private fun clickText(text: String, scrollTo: Boolean = false) {
-        val node = rule.onNodeWithText(text)
-        if (scrollTo) node.performScrollTo()
-        node.performClick()
+    private fun clickText(text: String) {
+        rule.onNodeWithText(text).performClick()
         rule.waitForIdle()
     }
 
@@ -56,6 +53,9 @@ class PedagogicalUiReviewTest {
     }
 
     private fun shot(name: String) {
+        rule.waitForIdle()
+        // Let the Android compositor and IME finish the final frame after navigation.
+        Thread.sleep(350)
         rule.waitForIdle()
         val directory = "/sdcard/Download/minik-akademi-ui-review"
         val file = "$directory/$name.png"
@@ -133,7 +133,7 @@ class PedagogicalUiReviewTest {
         shot("12_tracing_activity")
         clickText("Etkinlik Listesi")
         waitForText("Çiziyorum")
-        clickText("Ana Sayfa", scrollTo = true)
+        clickText("Ana Sayfa")
 
         waitForText("Merhaba, Ece")
         clickText("Harfleri Öğreniyorum")
@@ -142,7 +142,7 @@ class PedagogicalUiReviewTest {
             "Sesleri dinle, harfleri bul, yaz ve kelimeler oluştur."
         ).assertIsDisplayed()
         shot("13_literacy_home")
-        clickText("Ana Sayfa", scrollTo = true)
+        clickText("Ana Sayfa")
 
         waitForText("Merhaba, Ece")
         clickText("Matematik Öğreniyorum")
