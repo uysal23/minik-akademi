@@ -34,6 +34,13 @@ on:
       - ".github/workflows/automated-tests.yml"
   workflow_dispatch:
 
+permissions:
+  contents: read
+  actions: read
+
+env:
+  GITHUB_TOKEN: ${{ github.token }}
+
 jobs:
   project-contract-tests:
     name: Project contracts and validators
