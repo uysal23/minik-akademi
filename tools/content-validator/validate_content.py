@@ -10,7 +10,7 @@ from typing import Any
 from jsonschema import Draft202012Validator
 
 ROOT = Path(__file__).resolve().parents[2]
-CONTENT_DIR = ROOT / "content"
+CONTENT_DIR = ROOT / "content_v4" / "runtime"
 ASSETS_DIR = ROOT / "assets"
 AUDIO_DIR = ROOT / "audio"
 
