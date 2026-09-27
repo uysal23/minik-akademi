@@ -211,7 +211,47 @@ jobs:
           if-no-files-found: error
           retention-days: 90
 
-      - name: Run full offline acceptance on production APK
+      - name: Verify production APK payload matches release build
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib
+          import zipfile
+          from pathlib import Path
+
+          unsigned = Path("app/build/outputs/apk/release/app-release-unsigned.apk")
+          signed = Path("production-release/MinikAkademi-v1.0.0.apk")
+
+          def payload(path: Path):
+              with zipfile.ZipFile(path) as zf:
+                  out = {}
+                  for name in zf.namelist():
+                      if name.endswith("/") or name.upper().startswith("META-INF/"):
+                          continue
+                      out[name] = hashlib.sha256(zf.read(name)).hexdigest()
+                  return out
+
+          left = payload(unsigned)
+          right = payload(signed)
+          if left != right:
+              missing = sorted(set(left) - set(right))
+              added = sorted(set(right) - set(left))
+              changed = sorted(k for k in set(left) & set(right) if left[k] != right[k])
+              raise SystemExit(
+                  f"Production signing changed APK payload. missing={missing[:10]} "
+                  f"added={added[:10]} changed={changed[:10]}"
+              )
+
+          Path("production-release/PAYLOAD_EQUIVALENCE.txt").write_text(
+              f"PASS\nCompared payload entries: {len(left)}\n"
+              "Unsigned release payload and production-signed APK payload are identical.\n",
+              encoding="utf-8",
+          )
+          print(f"Production APK payload equivalence PASS: {len(left)} entries")
+          PY
+
+      - name: Run production offline install and runtime smoke
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 35
@@ -222,13 +262,50 @@ jobs:
           disable-animations: true
           script: |
             set -eu
-            python tools/release/step15_release_acceptance.py "production-release/$APK_NAME"
+            mkdir -p production-smoke
+            adb shell settings put global hide_error_dialogs 1 || true
+            adb logcat -c || true
+            adb install --no-incremental -r "production-release/$APK_NAME"
+            adb shell svc wifi disable || true
+            adb shell svc data disable || true
+
+            adb shell am start -W -n com.uysal.minikakademi/com.uysal.minikakademi.app.MainActivity               | tee production-smoke/first-launch.txt
+            sleep 4
+            adb shell pidof com.uysal.minikakademi | tee production-smoke/first-pid.txt
+            test -s production-smoke/first-pid.txt
+            adb shell dumpsys activity activities > production-smoke/activities-first.txt
+            grep -F "com.uysal.minikakademi/.app.MainActivity" production-smoke/activities-first.txt
+            adb exec-out screencap -p > production-smoke/01-production-first-launch.png
+            test -s production-smoke/01-production-first-launch.png
+
+            adb shell am force-stop com.uysal.minikakademi
+            adb shell am start -W -n com.uysal.minikakademi/com.uysal.minikakademi.app.MainActivity               | tee production-smoke/relaunch.txt
+            sleep 3
+            adb shell pidof com.uysal.minikakademi | tee production-smoke/relaunch-pid.txt
+            test -s production-smoke/relaunch-pid.txt
+            adb shell dumpsys activity activities > production-smoke/activities-relaunch.txt
+            grep -F "com.uysal.minikakademi/.app.MainActivity" production-smoke/activities-relaunch.txt
+            adb exec-out screencap -p > production-smoke/02-production-relaunch.png
+            test -s production-smoke/02-production-relaunch.png
+
+            adb logcat -d > production-smoke/release-logcat.txt
+            if grep -Fq "ANR in com.uysal.minikakademi" production-smoke/release-logcat.txt; then
+              echo "Production release smoke detected ANR"
+              exit 1
+            fi
+            if grep -Fq "FATAL EXCEPTION" production-smoke/release-logcat.txt &&                grep -Fq "Process: com.uysal.minikakademi" production-smoke/release-logcat.txt; then
+              echo "Production release smoke detected fatal exception"
+              exit 1
+            fi
+            echo "Production offline install/relaunch/crash smoke PASS"               | tee production-smoke/RESULT.txt
 
       - name: Upload production acceptance evidence
         uses: actions/upload-artifact@v4
         with:
           name: minik-akademi-v1-production-acceptance
-          path: step15-smoke/
+          path: |
+            production-smoke/
+            production-release/PAYLOAD_EQUIVALENCE.txt
           if-no-files-found: error
           retention-days: 90
 
