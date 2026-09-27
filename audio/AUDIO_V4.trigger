@@ -4,4 +4,4 @@ voice=C
 seed=618034
 paid_api=false
 api_key_required=false
-mode=WAITING_FOR_TEXT_VALIDATION
+mode=GENERATE_STAGING
