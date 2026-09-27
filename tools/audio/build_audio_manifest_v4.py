@@ -5,10 +5,10 @@ import json
 from pathlib import Path
 
 STATIC_PROMPTS = [
-    {"audioId":"aud_common_success_01","text":"Çok güzel, harika gidiyorsun.","voiceProfile":"TEACHER_ENCOURAGE"},
-    {"audioId":"aud_common_retry_01","text":"İstersen bir daha birlikte bakalım.","voiceProfile":"TEACHER_ENCOURAGE"},
-    {"audioId":"aud_common_welcome_01","text":"Minik Akademi'ye hoş geldin.","voiceProfile":"TEACHER_WARM"},
-    {"audioId":"aud_common_ready_01","text":"Hazırsan birlikte başlayalım.","voiceProfile":"TEACHER_WARM"},
+    {"audioId":"aud_common_success_01","text":"Çok güzel, harika gidiyorsun.","spokenText":"Çok güzel, harika gidiyorsun.","voiceProfile":"TEACHER_ENCOURAGE","manualQaRequired":False},
+    {"audioId":"aud_common_retry_01","text":"İstersen bir daha birlikte bakalım.","spokenText":"İstersen bir daha birlikte bakalım.","voiceProfile":"TEACHER_ENCOURAGE","manualQaRequired":False},
+    {"audioId":"aud_common_welcome_01","text":"Minik Akademi'ye hoş geldin.","spokenText":"Minik Akademi'ye hoş geldin.","voiceProfile":"TEACHER_WARM","manualQaRequired":False},
+    {"audioId":"aud_common_ready_01","text":"Hazırsan birlikte başlayalım.","spokenText":"Hazırsan birlikte başlayalım.","voiceProfile":"TEACHER_WARM","manualQaRequired":False},
 ]
 for letter in ["a","n","e","t","i","l","o","k","u"]:
     STATIC_PROMPTS.append({
