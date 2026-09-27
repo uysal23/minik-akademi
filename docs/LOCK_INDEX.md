@@ -12,6 +12,7 @@
 | VISUAL_STYLE_GUIDE.md | 1.0 | LOCKED | 4 |
 | ANIMATION_RULES.md | 1.0 | LOCKED | 4 |
 | AUDIO_STYLE_GUIDE.md | 1.0 | LOCKED | 4 |
+| AUDIO_STYLE_GUIDE_V2.md — Warm Teacher Audio V2 | 2.0 | IN REVIEW | Maintenance |
 | PARENT_SYSTEM_V1.md | 1.0 | LOCKED | 4 |
 | ADMIN_PANEL_V1.md | 1.0 | LOCKED | 4 |
 | THEME_ACCESSIBILITY_V1.md | 1.0 | LOCKED | 4 |
