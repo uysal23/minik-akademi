@@ -67,37 +67,10 @@ PHONEMES = {"a", "n", "e", "t", "i", "l", "o", "k", "u"}
 
 
 def expected_ids() -> set[str]:
-    ids: set[str] = {
-        "aud_common_success_01",
-        "aud_common_retry_01",
-        "aud_common_welcome_01",
-        "aud_common_ready_01",
-    }
-    ids.update(f"aud_phoneme_{x}" for x in ["a", "n", "e", "t", "i", "l", "o", "k", "u"])
-    ids.update(f"aud_number_{n:02d}" for n in range(21))
-
-    content_root = ROOT / "content"
-    for path in content_root.rglob("*.json"):
-        if path.name in {"activity_schema.json", "curriculum_manifest.json"}:
-            continue
-        try:
-            data = json.loads(path.read_text(encoding="utf-8"))
-        except Exception:
-            continue
-        instruction = data.get("instruction", {})
-        feedback = data.get("feedback", {})
-        extra = data.get("audio", {}).get("extraAudioIds", [])
-        for value in [
-            instruction.get("audioId"),
-            feedback.get("successAudioId"),
-            feedback.get("retryAudioId"),
-            *extra,
-        ]:
-            if isinstance(value, str) and value:
-                ids.add(value)
-
+    data = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    ids = {str(x) for x in data.get("speechIds", [])}
     if len(ids) != 159:
-        raise SystemExit(f"V4 C inventory must contain 159 unique audio IDs, found {len(ids)}")
+        raise SystemExit(f"V4 C manifest must pin 159 unique audio IDs, found {len(ids)}")
     return ids
 
 def download_artifact(artifact_id: int, expected_sha256: str) -> bytes:
