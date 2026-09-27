@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any
@@ -12,7 +13,7 @@ from jsonschema import Draft202012Validator
 ROOT = Path(__file__).resolve().parents[2]
 CONTENT_DIR = ROOT / "content_v4" / "runtime"
 ASSETS_DIR = ROOT / "assets"
-AUDIO_DIR = ROOT / "audio"
+AUDIO_DIR = ROOT / "audio_v4" / "runtime"
 
 FORBIDDEN_KEYS = {
     "url",
@@ -267,6 +268,12 @@ def validate_activity(
 
 
 def main() -> int:
+    runtime_manifest = CONTENT_DIR / "curriculum_manifest.json"
+    runtime_schema = CONTENT_DIR / "activity_schema.json"
+    if not runtime_manifest.exists() or not runtime_schema.exists():
+        preparer = ROOT / "tools" / "content-validator" / "prepare_v4_runtime_content.py"
+        subprocess.run([sys.executable, str(preparer)], cwd=ROOT, check=True)
+
     parser = argparse.ArgumentParser(description="Minik Akademi content validator")
     parser.add_argument(
         "--mode",
