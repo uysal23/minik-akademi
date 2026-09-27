@@ -32,7 +32,7 @@ android {
     }
 
     sourceSets["main"].assets.srcDir(rootProject.file("content"))
-    sourceSets["main"].assets.srcDir(rootProject.file("audio/generated"))
+    sourceSets["main"].assets.srcDir(rootProject.file("audio/runtime"))
 }
 
 
@@ -74,4 +74,16 @@ dependencies {
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+}
+
+
+val prepareV4CAudio by tasks.registering(Exec::class) {
+    group = "build setup"
+    description = "Prepare the approved offline V4 C speech assets."
+    workingDir(rootProject.projectDir)
+    commandLine("python", rootProject.file("tools/audio/prepare_v4_runtime_audio.py").absolutePath)
+}
+
+tasks.matching { it.name == "preBuild" }.configureEach {
+    dependsOn(prepareV4CAudio)
 }
