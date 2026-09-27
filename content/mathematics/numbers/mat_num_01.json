@@ -13,7 +13,7 @@
   "learningLevel": "GRADE_1",
   "activityType": "NUMBER_INTRO",
   "instruction": {
-    "text": "19 sayısının 1 ve 9 rakamlarından oluştuğunu incele.",
+    "text": "19 sayısının 1 ve 9 rakamlarıyla yazıldığını incele.",
     "audioId": "aud_act_mat_num_01_instruction",
     "voiceProfile": "TEACHER_MATH",
     "replayAllowed": true
