@@ -31,7 +31,7 @@ android {
         }
     }
 
-    sourceSets["main"].assets.srcDir(rootProject.file("content"))
+    sourceSets["main"].assets.srcDir(rootProject.file("content_v4/runtime"))
     sourceSets["main"].assets.srcDir(rootProject.file("audio_v4/runtime"))
 }
 
@@ -86,4 +86,16 @@ val prepareV4CAudio by tasks.registering(Exec::class) {
 
 tasks.matching { it.name == "preBuild" }.configureEach {
     dependsOn(prepareV4CAudio)
+}
+
+
+val prepareV4Content by tasks.registering(Exec::class) {
+    group = "build setup"
+    description = "Prepare the owner-approved corrected runtime content."
+    workingDir(rootProject.projectDir)
+    commandLine("python", rootProject.file("tools/content-validator/prepare_v4_runtime_content.py").absolutePath)
+}
+
+tasks.matching { it.name == "preBuild" }.configureEach {
+    dependsOn(prepareV4Content)
 }
