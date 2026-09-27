@@ -4,4 +4,4 @@ phoneme_qa=user-approved
 speech_count=159
 paid_api=false
 requested_by_owner=true
-revision=1
+revision=2
