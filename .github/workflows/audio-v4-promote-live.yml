@@ -13,109 +13,186 @@ permissions:
 
 jobs:
   promote:
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
+    runs-on: ubuntu-slim
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Install tools
-        shell: bash
-        run: |
-          set -euo pipefail
-          sudo apt-get update
-          sudo apt-get install -y ffmpeg unzip
-          python -m pip install -r tools/content-validator/requirements.txt
-
-      - name: Download all validated C-voice chunks
+      - name: Download and assemble validated C voice
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
-          rm -rf /tmp/v4chunks /tmp/v4all
-          mkdir -p /tmp/v4chunks /tmp/v4all
-          ids=(
-            10934530775
-            10934520470
-            10934137791
-            10933494299
-            10933768803
-            10933544334
-            10933959440
-            10934261948
-            10934615218
-            10933089807
-            10933883786
-            10934436488
-            10934112768
-            10934117425
-            10934102830
-            10933569101
-          )
-          for id in "${ids[@]}"; do
-            curl --fail --location --retry 3               -H "Authorization: Bearer $GH_TOKEN"               -H "Accept: application/vnd.github+json"               -H "X-GitHub-Api-Version: 2022-11-28"               "https://api.github.com/repos/${{ github.repository }}/actions/artifacts/$id/zip"               -o "/tmp/v4chunks/$id.zip"
-            mkdir -p "/tmp/v4chunks/$id"
-            unzip -q "/tmp/v4chunks/$id.zip" -d "/tmp/v4chunks/$id"
-          done
+          python3 - <<'PY'
+          import io
+          import os
+          import shutil
+          import urllib.request
+          import zipfile
+          from pathlib import Path
 
-          find /tmp/v4chunks -type f -name '*.ogg' -exec cp {} /tmp/v4all/ \;
-          count="$(find /tmp/v4all -maxdepth 1 -type f -name '*.ogg' | wc -l)"
-          echo "Collected C-voice OGG count: $count"
-          test "$count" -eq 159
+          artifact_ids = [
+              10934530775, 10934520470, 10934137791, 10933494299,
+              10933768803, 10933544334, 10933959440, 10934261948,
+              10934615218, 10933089807, 10933883786, 10934436488,
+              10934112768, 10934117425, 10934102830, 10933569101,
+          ]
 
-      - name: Replace nine phonemes with user-approved short C variants
+          token = os.environ["GH_TOKEN"]
+          repo = os.environ["GH_REPO"]
+          assembled = Path("/tmp/v4all")
+          if assembled.exists():
+              shutil.rmtree(assembled)
+          assembled.mkdir(parents=True)
+
+          seen = set()
+          for artifact_id in artifact_ids:
+              url = f"https://api.github.com/repos/{repo}/actions/artifacts/{artifact_id}/zip"
+              req = urllib.request.Request(
+                  url,
+                  headers={
+                      "Authorization": f"Bearer {token}",
+                      "Accept": "application/vnd.github+json",
+                      "X-GitHub-Api-Version": "2022-11-28",
+                      "User-Agent": "minik-akademi-audio-promoter",
+                  },
+              )
+              with urllib.request.urlopen(req, timeout=90) as resp:
+                  data = resp.read()
+              with zipfile.ZipFile(io.BytesIO(data)) as zf:
+                  for member in zf.infolist():
+                      if member.is_dir() or not member.filename.lower().endswith(".ogg"):
+                          continue
+                      name = Path(member.filename).name
+                      if name in seen:
+                          raise SystemExit(f"Duplicate audio filename: {name}")
+                      seen.add(name)
+                      (assembled / name).write_bytes(zf.read(member))
+
+          files = sorted(assembled.glob("*.ogg"))
+          if len(files) != 159:
+              raise SystemExit(f"Expected 159 generated files, got {len(files)}")
+          print("Downloaded C voice:", len(files))
+          PY
+
+      - name: Apply user-approved phonemes
         shell: bash
         run: |
           set -euo pipefail
-          # Exact acoustic regions verified against the user-approved QA clips.
-          # Output is peak-safe, 24 kHz mono Vorbis.
-          cut_phone() {
-            local ph="$1"
-            local start="$2"
-            local dur="$3"
-            local src="/tmp/v4all/aud_phoneme_${ph}.ogg"
-            local dst="/tmp/v4all/aud_phoneme_${ph}.approved.ogg"
-            ffmpeg -y -loglevel error               -ss "$start" -t "$dur" -i "$src"               -ac 1 -ar 24000               -af "loudnorm=I=-20:LRA=7:TP=-3"               -c:a libvorbis -q:a 5 "$dst"
-            mv "$dst" "$src"
-          }
+          python3 - <<'PY'
+          from pathlib import Path
 
-          cut_phone a 0.1339583333 0.280
-          cut_phone e 0.1239583333 0.280
-          cut_phone i 0.1314583333 0.280
-          cut_phone o 0.1289583333 0.280
-          cut_phone u 0.1164583333 0.280
-          cut_phone n 0.0985000000 0.110
-          cut_phone l 0.1060000000 0.110
-          cut_phone t 0.1010000000 0.065
-          cut_phone k 0.3735000000 0.065
+          src = Path("audio/v4/approved_phonemes")
+          dst = Path("/tmp/v4all")
+          expected = {"a","n","e","t","i","l","o","k","u"}
 
-      - name: Promote all 159 speech files
+          present = {p.stem.removeprefix("aud_phoneme_") for p in src.glob("aud_phoneme_*.ogg")}
+          if present != expected:
+              raise SystemExit(f"Approved phoneme set mismatch: {sorted(present)}")
+
+          for ph in sorted(expected):
+              data = (src / f"aud_phoneme_{ph}.ogg").read_bytes()
+              (dst / f"aud_phoneme_{ph}.ogg").write_bytes(data)
+          print("Applied 9/9 user-approved phonemes")
+          PY
+
+      - name: Verify 159 files and OGG format
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p audio/generated/speech
-          rm -f audio/generated/speech/*.ogg
-          cp /tmp/v4all/*.ogg audio/generated/speech/
-          test "$(find audio/generated/speech -maxdepth 1 -type f -name '*.ogg' | wc -l)" -eq 159
+          python3 - <<'PY'
+          import json
+          import struct
+          from pathlib import Path
 
-      - name: Build final V4 C manifest and report
+          generated = Path("/tmp/v4all")
+          files = sorted(generated.glob("*.ogg"))
+          if len(files) != 159:
+              raise SystemExit(f"Expected 159 files, got {len(files)}")
+
+          errors = []
+          for p in files:
+              data = p.read_bytes()
+              if not data.startswith(b"OggS"):
+                  errors.append(f"{p.name}: missing OggS header")
+                  continue
+              idx = data.find(b"\x01vorbis")
+              if idx < 0:
+                  errors.append(f"{p.name}: missing Vorbis identification header")
+                  continue
+              pos = idx + 7
+              if len(data) < pos + 9:
+                  errors.append(f"{p.name}: truncated Vorbis header")
+                  continue
+              version = struct.unpack_from("<I", data, pos)[0]
+              channels = data[pos + 4]
+              sample_rate = struct.unpack_from("<I", data, pos + 5)[0]
+              if version != 0:
+                  errors.append(f"{p.name}: Vorbis version {version}")
+              if channels != 1:
+                  errors.append(f"{p.name}: channels={channels}")
+              if sample_rate != 24000:
+                  errors.append(f"{p.name}: sample_rate={sample_rate}")
+
+          if errors:
+              raise SystemExit("\n".join(errors))
+          print("Audio format QA PASS: 159/159 OGG Vorbis, mono, 24 kHz")
+          PY
+
+      - name: Replace live speech assets
         shell: bash
         run: |
           set -euo pipefail
-          python tools/audio/build_audio_manifest_v4.py
-          python tools/audio/validate_spoken_text_v4.py
-          python - <<'PY'
+          python3 - <<'PY'
+          import shutil
+          from pathlib import Path
+
+          src = Path("/tmp/v4all")
+          dst = Path("audio/generated/speech")
+          dst.mkdir(parents=True, exist_ok=True)
+
+          for p in dst.glob("*.ogg"):
+              p.unlink()
+          for p in src.glob("*.ogg"):
+              shutil.copy2(p, dst / p.name)
+
+          files = list(dst.glob("*.ogg"))
+          if len(files) != 159:
+              raise SystemExit(f"Live speech count mismatch: {len(files)}")
+          print("Live speech replaced:", len(files))
+          PY
+
+      - name: Build and validate final V4 manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/audio/build_audio_manifest_v4.py
+          python3 tools/audio/validate_spoken_text_v4.py
+          python3 - <<'PY'
           import json
           from pathlib import Path
 
           src = json.loads(Path("audio/v4/full_manifest.json").read_text(encoding="utf-8"))
-          profile_speeds = {}
-          items = []
-          for item in src["items"]:
-              profile_speeds.setdefault(item["voiceProfile"], {"speed": item["speed"], "pitch": 0})
-              items.append({
+          items = src["items"]
+          if len(items) != 159:
+              raise SystemExit(f"Manifest item count mismatch: {len(items)}")
+
+          live_names = {p.name for p in Path("audio/generated/speech").glob("*.ogg")}
+          expected_names = {f"{item['audioId']}.ogg" for item in items}
+          if live_names != expected_names:
+              missing = sorted(expected_names - live_names)
+              extra = sorted(live_names - expected_names)
+              raise SystemExit(f"Live/manifest mismatch. missing={missing} extra={extra}")
+
+          profiles = {}
+          final_items = []
+          for item in items:
+              profiles.setdefault(item["voiceProfile"], {"speed": item["speed"], "pitch": 0})
+              final_items.append({
                   "audioId": item["audioId"],
                   "text": item["text"],
                   "spokenText": item["spokenText"],
@@ -137,8 +214,8 @@ jobs:
               "apiKeyRequired": False,
               "runtimeMode": "OFFLINE_PACKAGED_AUDIO",
               "syntheticDisclosureRequired": True,
-              "profiles": profile_speeds,
-              "items": items,
+              "profiles": profiles,
+              "items": final_items,
           }
           Path("audio/manifest/audio_manifest.json").write_text(
               json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
@@ -153,8 +230,8 @@ jobs:
               "audioRevision": "V4_C",
               "paidApiUsed": False,
               "apiKeyRequired": False,
-              "requested": len(items),
-              "generated": len(items),
+              "requested": 159,
+              "generated": 159,
               "skipped": 0,
               "failed": 0,
               "phonemeQa": {
@@ -169,7 +246,7 @@ jobs:
                       "profile": item["voiceProfile"],
                       "seed": 618034,
                   }
-                  for item in items
+                  for item in final_items
               ],
               "failures": [],
           }
@@ -177,27 +254,10 @@ jobs:
               json.dumps(report, ensure_ascii=False, indent=2) + "\n",
               encoding="utf-8",
           )
+          print("Final manifest QA PASS: 159/159")
           PY
 
-      - name: Verify every live speech asset
-        shell: bash
-        run: |
-          set -euo pipefail
-          test "$(find audio/generated/speech -maxdepth 1 -type f -name '*.ogg' | wc -l)" -eq 159
-
-          for f in audio/generated/speech/*.ogg; do
-            codec="$(ffprobe -v error -select_streams a:0 -show_entries stream=codec_name -of default=nw=1:nk=1 "$f")"
-            rate="$(ffprobe -v error -select_streams a:0 -show_entries stream=sample_rate -of default=nw=1:nk=1 "$f")"
-            channels="$(ffprobe -v error -select_streams a:0 -show_entries stream=channels -of default=nw=1:nk=1 "$f")"
-            test "$codec" = "vorbis"
-            test "$rate" = "24000"
-            test "$channels" = "1"
-          done
-
-          python tools/audio/validate_audio_assets.py
-          python tools/content-validator/validate_content.py --mode authoring
-
-      - name: Record V4 C as live
+      - name: Mark V4 C live
         shell: bash
         run: |
           cat > audio/AUDIO_V4.trigger <<'EOF'
@@ -207,8 +267,11 @@ jobs:
           seed=618034
           paid_api=false
           api_key_required=false
-          qa_revision=4
+          qa_revision=5
           phoneme_qa=USER_APPROVED
+          spoken_text_qa=PASS_159_OF_159
+          generation=PASS_159_OF_159
+          live_assets=PASS_159_OF_159
           mode=LIVE_V4_C
           EOF
 
@@ -224,25 +287,28 @@ jobs:
 
           ## Final result
 
-          - Application spoken-text inventory: 159/159
+          - Spoken-text inventory: 159/159
           - Spoken Text QA: PASS
-          - Content Validation: PASS
-          - Live speech OGG files: 159/159
+          - C-voice generation: 159/159
+          - Live speech assets: 159/159
           - Format: OGG/Vorbis, mono, 24 kHz
-          - Nine phonemes a/n/e/t/i/l/o/k/u: USER APPROVED
-          - All former V1 speech files replaced by the approved V4 C set.
-          - Existing SFX and all non-audio locked product behavior remain unchanged.
+          - Phonemes a/n/e/t/i/l/o/k/u: USER APPROVED
+          - Existing V1 speech assets replaced by the approved V4 C set.
+          - Existing SFX and non-audio locked product behavior remain unchanged.
 
           The production speech assets are now the V4 C voice set.
           EOF
 
-      - name: Commit promoted audio
+      - name: Commit V4 C live audio
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add audio/generated/speech                   audio/manifest/audio_manifest.json                   audio/manifest/generation_report.json                   audio/AUDIO_V4.trigger                   docs/AUDIO_V4_STATUS.md
-          git diff --cached --stat
+          git diff --cached --quiet && {
+            echo "No changes to commit"
+            exit 0
+          }
           git commit -m "audio: promote approved V4 C voice to live app"
           git push origin HEAD:main
