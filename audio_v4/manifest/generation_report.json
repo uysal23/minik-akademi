@@ -22,5 +22,7 @@
     "channels": 1
   },
   "livePackagingMode": "BUILD_TIME_PREPARED_OFFLINE_ASSETS",
-  "failures": []
+  "failures": [],
+  "activeAssetRoot": "audio_v4/runtime",
+  "lockedBaselineV1Root": "audio/generated/speech"
 }
