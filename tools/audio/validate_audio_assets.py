@@ -118,3 +118,84 @@ def main() -> int:
             extra_ids = sorted(manifest_ids - required_speech)
             errors.append(f"V4 C manifest speechIds mismatch: missing={missing} extra={extra_ids}")
 
+    if not REPORT.exists():
+        errors.append("audio generation report missing")
+        report = {}
+    else:
+        report = json.loads(REPORT.read_text(encoding="utf-8"))
+        if report.get("audioRevision") != "V4_C":
+            errors.append(f"generation report audioRevision must be V4_C, got {report.get('audioRevision')!r}")
+        if report.get("voice") != "C":
+            errors.append(f"generation report voice must be C, got {report.get('voice')!r}")
+        if report.get("requested") != 159 or report.get("generated") != 159 or report.get("failed") != 0:
+            errors.append(
+                "generation report must declare requested=159, generated=159, failed=0"
+            )
+        if report.get("phonemeQa") != "USER_APPROVED":
+            errors.append("generation report phonemeQa must be USER_APPROVED")
+
+    speech_files = sorted(SPEECH.glob("*.ogg"))
+    if len(speech_files) != 159:
+        errors.append(f"runtime speech file count must be 159, got {len(speech_files)}")
+
+    sfx_files = sorted(SFX.glob("*.ogg"))
+    if len(sfx_files) != 7:
+        errors.append(f"runtime SFX file count must be 7, got {len(sfx_files)}")
+
+    ffprobe = None
+    try:
+        ffprobe = subprocess.run(
+            ["ffprobe", "-version"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=False,
+        ).returncode == 0
+    except OSError:
+        ffprobe = False
+
+    if ffprobe:
+        for path in speech_files:
+            probe = subprocess.run(
+                [
+                    "ffprobe", "-v", "error", "-select_streams", "a:0",
+                    "-show_entries", "stream=codec_name,sample_rate,channels",
+                    "-of", "json", str(path),
+                ],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            if probe.returncode != 0:
+                errors.append(f"ffprobe failed for {path.relative_to(ROOT)}")
+                continue
+            try:
+                streams = json.loads(probe.stdout).get("streams", [])
+                stream = streams[0] if streams else {}
+            except Exception:
+                stream = {}
+            if stream.get("codec_name") != "vorbis":
+                errors.append(f"{path.relative_to(ROOT)}: codec must be vorbis")
+            if str(stream.get("sample_rate")) != "24000":
+                errors.append(f"{path.relative_to(ROOT)}: sample rate must be 24000 Hz")
+            if int(stream.get("channels", 0) or 0) != 1:
+                errors.append(f"{path.relative_to(ROOT)}: channels must be mono")
+
+    if errors:
+        print(f"AUDIO VALIDATION FAILED ({len(errors)} error(s))")
+        for err in errors:
+            print(f" - {err}")
+        return 1
+
+    print("AUDIO VALIDATION PASSED")
+    print(" audio revision: V4_C")
+    print(" voice: C")
+    print(" speech: 159/159")
+    print(" phoneme QA: USER_APPROVED")
+    print(" sfx: 7/7")
+    if ffprobe:
+        print(" format: OGG/Vorbis, mono, 24 kHz")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
