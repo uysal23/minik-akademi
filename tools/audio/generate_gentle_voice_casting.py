@@ -20,11 +20,7 @@ SEEDS = [
 PHRASES = [
     {
         "id": "gentle_instruction",
-        "text": "Acele etmene hiç gerek yok. Önce şekle birlikte dikkatlice bakalım. Hazır olduğunda parmağınla yolu yavaşça takip edebilirsin."
-    },
-    {
-        "id": "gentle_encourage",
-        "text": "Çok güzel gidiyorsun. İstersen bir kez daha birlikte deneyelim."
+        "text": "Acele etmene hiç gerek yok. Önce birlikte dikkatlice bakalım. Hazır olduğunda, parmağınla yolu yavaşça takip edebilirsin."
     }
 ]
 
@@ -33,7 +29,7 @@ def main() -> None:
     ap.add_argument("--freya-root", required=True)
     ap.add_argument("--output-dir", default="audio/v3/casting")
     ap.add_argument("--report", default="audio/v3/casting_report.json")
-    ap.add_argument("--steps", type=int, default=32)
+    ap.add_argument("--steps", type=int, default=20)
     args = ap.parse_args()
 
     if shutil.which("ffmpeg") is None:
