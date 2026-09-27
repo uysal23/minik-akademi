@@ -20,7 +20,7 @@ SFX = RUNTIME / "sfx"
 MANIFEST = ROOT / "audio_v4" / "manifest" / "audio_manifest.json"
 APPROVED_PHONEMES = ROOT / "audio_v4" / "approved_phonemes" / "minik-akademi-v4-c-phoneme-qa.zip"
 BUNDLED_ARCHIVE = ROOT / "audio_v4" / "source" / "v4_live.zip"
-BUNDLED_ARCHIVE_SHA256 = "5652d25d6a749ce493f7a402d679f4ce71f3dab8e23d30afc1527179bcd26734"
+BUNDLED_ARCHIVE_SHA256_FILE = ROOT / "audio_v4" / "source" / "v4_live.sha256"
 
 REPO = os.environ.get("GITHUB_REPOSITORY", "uysal23/minik-akademi")
 def git_checkout_token() -> str | None:
@@ -183,10 +183,13 @@ def main() -> None:
     if LOCAL_ARCHIVE:
         assemble_from_local_archive(Path(LOCAL_ARCHIVE), SPEECH)
     elif BUNDLED_ARCHIVE.is_file():
+        if not BUNDLED_ARCHIVE_SHA256_FILE.is_file():
+            raise SystemExit(f"Bundled V4 C checksum file is missing: {BUNDLED_ARCHIVE_SHA256_FILE}")
+        expected_digest = BUNDLED_ARCHIVE_SHA256_FILE.read_text(encoding="utf-8").strip().split()[0]
         digest = hashlib.sha256(BUNDLED_ARCHIVE.read_bytes()).hexdigest()
-        if digest != BUNDLED_ARCHIVE_SHA256:
+        if digest != expected_digest:
             raise SystemExit(
-                f"Bundled V4 C archive checksum mismatch: expected {BUNDLED_ARCHIVE_SHA256}, got {digest}"
+                f"Bundled V4 C archive checksum mismatch: expected {expected_digest}, got {digest}"
             )
         print(f"Using bundled approved V4 C archive: {BUNDLED_ARCHIVE.relative_to(ROOT)}")
         assemble_from_local_archive(BUNDLED_ARCHIVE, SPEECH)
