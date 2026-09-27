@@ -1,15 +1,8 @@
 name: Audio V4 C Phoneme QA
 
+# Historical/maintenance workflow. Manual dispatch only after Audio V4 C activation.
 on:
-  push:
-    branches: [ "main" ]
-    paths:
-      - "tools/audio/generate_chatterbox_phonemes_v4.py"
-      - ".github/workflows/audio-v4-phoneme-qa.yml"
   workflow_dispatch:
-
-permissions:
-  contents: read
 
 jobs:
   phonemes:
