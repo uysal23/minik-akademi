@@ -9,10 +9,14 @@ on:
 
 permissions:
   contents: write
+  actions: read
 
 concurrency:
   group: minik-akademi-production-v1
   cancel-in-progress: false
+
+env:
+  GITHUB_TOKEN: ${{ github.token }}
 
 jobs:
   trigger-gate:
@@ -114,7 +118,7 @@ jobs:
         with:
           gradle-version: "9.6.0"
 
-      - name: Run final locked test suite and validators
+      - name: Prepare approved V4 C audio\n        run: python tools/audio/prepare_v4_runtime_audio.py\n\n      - name: Run final locked test suite and validators
         run: |
           python -m unittest discover -s tests -p "test_*.py" -v
           python tools/content-validator/validate_content.py --mode authoring
