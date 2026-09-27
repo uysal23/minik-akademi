@@ -32,3 +32,7 @@ V4 C maintenance assets live outside that protected tree under `audio_v4/`, so t
 ## Owner approval
 
 The owner explicitly selected **C**, approved the final nine-phoneme QA set, and requested that all application speech be switched to C without per-file confirmation.
+
+## Spoken-text runtime layer
+
+The 20 instruction corrections approved before voice synthesis are stored in `content_v4/instruction_overrides_v1.json` and applied to `content_v4/runtime/` before build. The application packages content from that corrected runtime tree, while the protected V1 `content/` tree remains at its locked baseline SHA.
