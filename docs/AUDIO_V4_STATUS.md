@@ -1,6 +1,6 @@
 # Minik Akademi — Audio V4 C Staging Status
 
-**Status:** STAGING GENERATED — PENDING PHONEME QA  
+**Status:** STAGING GENERATED — PHONEME CANDIDATES READY / PENDING USER LISTENING QA  
 **Live V1 audio replaced:** NO
 
 ## Verified gates
@@ -46,3 +46,15 @@ These clips were generated successfully. They must be listened to and confirmed 
 All 16 audio chunk artifacts were successfully generated and uploaded.
 A separate final combine job failed before runner steps started; this is a packaging/runner issue and did not invalidate any generated audio chunk.
 Live V1 assets remain unchanged until phoneme QA and promotion are complete.
+
+
+## Phoneme candidate revision 2
+
+The original single-character TTS phoneme files were rejected by technical QA because several were too long and carried letter-name/vowel-tail risk.
+
+A new local QA candidate set was prepared from the selected C voice by isolating only the target acoustic onset/sound segment:
+- vowels a/e/i/o/u: 0.28 s clean vowel segment,
+- continuants n/l: 0.11 s consonant onset,
+- stops k/t: 0.065 s release/onset segment.
+
+Technical checks passed for duration and acoustic isolation. Locked manual listening QA is still required before these nine files and the 159-file V4 staging set are promoted to live app assets.
