@@ -1,0 +1,58 @@
+name: Audio V4 C Phoneme QA
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "tools/audio/generate_chatterbox_phonemes_v4.py"
+      - ".github/workflows/audio-v4-phoneme-qa.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  phonemes:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Free runner disk space
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo rm -rf /usr/local/lib/android /opt/ghc /usr/share/dotnet /opt/hostedtoolcache/CodeQL /usr/local/share/boost
+          sudo apt-get clean
+          rm -rf ~/.cache/pip
+
+      - name: Install CPU PyTorch and Chatterbox
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg git
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.6.0 torchaudio==2.6.0
+          git clone --depth 1 https://github.com/resemble-ai/chatterbox.git /tmp/chatterbox
+          python -m pip install --no-deps -e /tmp/chatterbox
+          python -m pip install "numpy<2" librosa==0.11.0 s3tokenizer transformers==5.2.0 diffusers==0.29.0 conformer==0.3.2 safetensors==0.5.3 spacy-pkuseg pykakasi==2.3.0 pyloudnorm omegaconf "resemble-perth @ git+https://github.com/resemble-ai/Perth.git@master"
+          rm -rf ~/.cache/pip
+
+      - name: Generate isolated C-voice phonemes
+        run: |
+          python tools/audio/generate_chatterbox_phonemes_v4.py
+          test "$(find audio/v4/phoneme_qa -type f -name 'aud_phoneme_*.ogg' | wc -l)" -eq 9
+
+      - name: Upload phoneme QA pack
+        uses: actions/upload-artifact@v4
+        with:
+          name: minik-akademi-audio-v4-c-phoneme-qa
+          path: |
+            audio/v4/phoneme_qa/*.ogg
+            audio/v4/phoneme_qa_report.json
+          if-no-files-found: error
+          retention-days: 30
