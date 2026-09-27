@@ -32,11 +32,10 @@
   ],
   "spokenTextQa": "PASS_159_OF_159",
   "contentValidation": "PASS",
-  "activeAssetRoot": "audio/runtime",
-  "legacyV1Root": "audio/legacy/v1",
+  "activeAssetRoot": "audio_v4/runtime",
   "inventorySource": "locked content JSON + 4 common prompts + 9 phonemes + numbers 0-20",
   "buildPreparer": "tools/audio/prepare_v4_runtime_audio.py",
-  "approvedPhonemePack": "audio/v4/approved_phonemes/minik-akademi-v4-c-phoneme-qa.zip",
+  "approvedPhonemePack": "audio_v4/approved_phonemes/minik-akademi-v4-c-phoneme-qa.zip",
   "sourceArtifacts": [
     {
       "start": 0,
@@ -279,5 +278,6 @@
     "aud_pre_trace_path_001_instruction",
     "aud_pre_trace_shape_001_instruction",
     "aud_pre_vis_difference_001_instruction"
-  ]
+  ],
+  "lockedBaselineV1Root": "audio/generated/speech"
 }
