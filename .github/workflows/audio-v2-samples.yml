@@ -6,7 +6,7 @@ on:
     paths:
       - "audio/AUDIO_V2.trigger"
       - ".github/workflows/audio-v2-samples.yml"
-      - "tools/audio/generate_minimax_teacher_audio.py"
+      - "tools/audio/generate_freya_teacher_audio.py"
       - "audio/v2/sample_manifest.json"
   workflow_dispatch:
 
@@ -31,46 +31,49 @@ jobs:
             echo "run_samples=true" >> "$GITHUB_OUTPUT"
           else
             echo "run_samples=false" >> "$GITHUB_OUTPUT"
-            echo "Audio V2 sample generation is waiting for approval/API key."
+            echo "Audio V2 sample generation is paused."
           fi
 
   samples:
     needs: gate
     if: needs.gate.outputs.run_samples == 'true'
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
-    env:
-      MINIMAX_API_KEY: ${{ secrets.MINIMAX_API_KEY }}
-      MINIMAX_API_BASE: https://api.minimax.io/v1
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
 
-      - name: Require MiniMax API key
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install free self-hosted FreyaTTS-small
         shell: bash
         run: |
           set -euo pipefail
-          test -n "$MINIMAX_API_KEY"
-          echo "MiniMax API key is present."
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Install dependencies
-        run: |
-          python -m pip install requests
           sudo apt-get update
-          sudo apt-get install -y ffmpeg
+          sudo apt-get install -y ffmpeg git
+          git clone --depth 1 https://github.com/freyavoiceai/FreyaTTS.git /tmp/FreyaTTS
+          python -m pip install --upgrade pip
+          python -m pip install -r /tmp/FreyaTTS/requirements.txt
 
       - name: Generate Audio V2 sample pack
+        shell: bash
         run: |
-          python tools/audio/generate_minimax_teacher_audio.py             --manifest audio/v2/sample_manifest.json             --output-dir audio/v2/generated_samples             --report audio/v2/sample_report.json             --force
+          set -euo pipefail
+          python tools/audio/generate_freya_teacher_audio.py             --manifest audio/v2/sample_manifest.json             --freya-root /tmp/FreyaTTS             --output-dir audio/v2/generated_samples             --report audio/v2/sample_report.json             --steps 32             --force
           test "$(find audio/v2/generated_samples -type f -name '*.ogg' | wc -l)" -eq 10
+
+      - name: Verify no paid API secret is required
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -R "MINIMAX_API_KEY\|ELEVENLABS\|OPENAI_API_KEY"             audio/AUDIO_V2.trigger audio/v2/sample_manifest.json tools/audio/generate_freya_teacher_audio.py
 
       - name: Upload Audio V2 samples
         uses: actions/upload-artifact@v4
         with:
-          name: minik-akademi-audio-v2-quality-samples
+          name: minik-akademi-audio-v2-quality-samples-free
           path: |
             audio/v2/generated_samples/*.ogg
             audio/v2/sample_report.json
