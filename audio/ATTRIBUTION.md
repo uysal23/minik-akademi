@@ -1,10 +1,10 @@
 # Offline Audio Attribution
 
-Minik Akademi konuşma assetleri build sırasında açık Türkçe TTS modeliyle sentetik olarak üretilir ve APK içine statik OGG dosyaları olarak paketlenir.
+Minik Akademi konuşma assetleri build sırasında açık Türkçe TTS modelleriyle sentetik olarak üretilir ve APK içine statik OGG dosyaları olarak paketlenir.
 
-## Antalia 1
+## V1 — Antalia 1
 
-Primary build-time model:
+V1 build-time model:
 
 - Model: `cloud0day3/antalia-1`
 - Code: `0daycloud/antalia`
@@ -21,9 +21,27 @@ The application must disclose in the adult About/Open Source area that the teach
 
 The generated clips must not be presented as recordings of the anonymous voice actor.
 
+## V2 IN REVIEW — FreyaTTS-small
+
+V2 kalite inceleme hattı:
+
+- Model: `freyavoice/freya-tts`
+- Code: `freyavoiceai/FreyaTTS`
+- Model/code license: Apache-2.0
+- Voice selection: canonical deterministic Leyla seed
+- Source output: 48 kHz synthetic speech
+- Packaged output: 24 kHz mono OGG/Vorbis
+- Paid API use: **none**
+- API key required: **none**
+- Runtime cloud/TTS use: **none**
+
+V2 yalnız build-time kalite örnekleri üretir. Kullanıcı dinleme onayı olmadan V1 konuşma assetlerinin üzerine yazılmaz.
+
+FreyaTTS-large ticari modeldir ve Minik Akademi V2 hattında kullanılmaz.
+
 ## BigVGAN
 
-Antalia uses NVIDIA BigVGAN v2 as vocoder. The workflow pins the upstream source revision used by the Antalia quick-start recipe.
+Antalia V1 uses NVIDIA BigVGAN v2 as vocoder. The workflow pins the upstream source revision used by the Antalia quick-start recipe.
 
 ## Child-safety audio rule
 
