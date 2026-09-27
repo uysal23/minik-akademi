@@ -289,15 +289,8 @@ jobs:
             test -s production-smoke/02-production-relaunch.png
 
             adb logcat -d > production-smoke/release-logcat.txt
-            if grep -Fq "ANR in com.uysal.minikakademi" production-smoke/release-logcat.txt; then
-              echo "Production release smoke detected ANR"
-              exit 1
-            fi
-            if grep -Fq "FATAL EXCEPTION" production-smoke/release-logcat.txt &&                grep -Fq "Process: com.uysal.minikakademi" production-smoke/release-logcat.txt; then
-              echo "Production release smoke detected fatal exception"
-              exit 1
-            fi
-            echo "Production offline install/relaunch/crash smoke PASS"               | tee production-smoke/RESULT.txt
+            python -c 'from pathlib import Path; t=Path("production-smoke/release-logcat.txt").read_text(encoding="utf-8", errors="replace"); assert "ANR in com.uysal.minikakademi" not in t, "Production release smoke detected ANR"; assert not ("FATAL EXCEPTION" in t and "Process: com.uysal.minikakademi" in t), "Production release smoke detected fatal exception"'
+            echo "Production offline install/relaunch/crash smoke PASS" | tee production-smoke/RESULT.txt
 
       - name: Upload production acceptance evidence
         uses: actions/upload-artifact@v4
