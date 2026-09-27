@@ -164,6 +164,20 @@ class PedagogicalUiReviewTest {
         rule.onNodeWithText("Oyun Zamanı").assertIsDisplayed()
         shot("10_child_home")
 
+        // Bugfix regression: the gear opens the parent gate on a normal tap,
+        // then the Settings button opens the settings screen.
+        clickText("⚙")
+        waitForText("Ebeveyn Alanı")
+        rule.onAllNodes(hasSetTextAction())[0].performTextInput("1234")
+        clickText("Giriş")
+        waitForText("Ebeveyn Paneli")
+        clickText("Ayarlar")
+        waitForText("Ayarlar")
+        clickText("Ebeveyn Paneline Dön")
+        waitForText("Ebeveyn Paneli")
+        clickText("Çocuk Moduna Dön")
+        waitForText("Merhaba, Ece")
+
         clickText("Çiziyorum")
         waitForText("Çiziyorum")
         rule.onNodeWithText(
@@ -186,6 +200,22 @@ class PedagogicalUiReviewTest {
             "Sesleri dinle, harfleri bul, yaz ve kelimeler oluştur."
         ).assertIsDisplayed()
         shot("13_literacy_home")
+
+        // Bugfix regression: listening to the passive 'a' intro completes it
+        // and unlocks the next scene immediately.
+        clickCardContaining("a sesi ve harfi")
+        waitForText("A - a")
+        clickCardContaining("a - A Harfi")
+        waitForText("a sesini dinle. Büyük A ile küçük a harflerini tanı.")
+        clickText("🔊 Harfi Dinle")
+        clickText("Etkinlik Listesine Dön")
+        waitForText("A - a")
+        clickCardContaining("A ve a Harflerini Bul")
+        waitForText("A ve a harflerinin hepsini bul.")
+        clickText("Etkinlik Listesine Dön")
+        waitForText("A - a")
+        clickText("Harf Listesine Dön")
+        waitForText("Harfleri Öğreniyorum")
         clickText("Ana Sayfa")
 
         waitForText("Merhaba, Ece")
@@ -202,6 +232,7 @@ class PedagogicalUiReviewTest {
         waitForText("Altında / üstünde")
         rule.onNodeWithText("Top masanın neresinde?").assertIsDisplayed()
         rule.onNodeWithText("🔊 Dinle").assertIsDisplayed()
+        rule.onNodeWithText("⚽").assertIsDisplayed()
         shot("16_math_activity")
         clickText("Etkinlik Listesine Dön")
         waitForText("Yer ve Yön")
