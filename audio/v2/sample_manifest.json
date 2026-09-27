@@ -1,19 +1,23 @@
 {
   "schemaVersion": "2.0",
-  "provider": "MiniMax",
-  "model": "speech-2.8-hd",
-  "voice": "Turkish_CalmWoman",
-  "languageBoost": "Turkish",
+  "provider": "self-hosted open source",
+  "model": "freyavoice/freya-tts",
+  "modelFamily": "FreyaTTS-small",
+  "license": "Apache-2.0",
+  "voice": "canonical Leyla seed",
+  "paidApiUsed": false,
+  "apiKeyRequired": false,
+  "runtimeMode": "OFFLINE_PACKAGED_AUDIO",
   "outputFormat": "ogg",
   "items": [
     {
       "audioId": "v2_sample_welcome",
-      "text": "Minik Akademi'ye hoş geldin. Hazırsan birlikte başlayalım.",
+      "text": "Minik Akademi'ye hoş geldin. Hazırsan, birlikte başlayalım.",
       "voiceProfile": "TEACHER_WARM"
     },
     {
       "audioId": "v2_sample_trace",
-      "text": "Başlangıç noktasından hedefe kadar noktalı yolu parmağınla yavaşça takip et.",
+      "text": "Şimdi, başlangıç noktasından hedefe kadar noktalı yolu parmağınla yavaşça takip et.",
       "voiceProfile": "TEACHER_WARM"
     },
     {
@@ -28,7 +32,7 @@
     },
     {
       "audioId": "v2_sample_math",
-      "text": "Üç nesneye iki nesne daha ekle. Toplamı seç.",
+      "text": "Üç nesneye iki nesne daha ekle. Şimdi toplamı seç.",
       "voiceProfile": "TEACHER_MATH"
     },
     {
@@ -38,22 +42,22 @@
     },
     {
       "audioId": "v2_sample_story",
-      "text": "Bugün birlikte küçük bir keşfe çıkıyoruz. Hazırsan ilk adımı atalım.",
+      "text": "Bugün birlikte küçük bir keşfe çıkıyoruz. Hazırsan, ilk adımı atalım.",
       "voiceProfile": "TEACHER_STORY"
     },
     {
       "audioId": "v2_sample_success",
-      "text": "Harika! Çok güzel ilerliyorsun.",
+      "text": "Harika. Çok güzel ilerliyorsun.",
       "voiceProfile": "TEACHER_ENCOURAGE"
     },
     {
       "audioId": "v2_sample_retry",
-      "text": "Olmadıysa sorun değil. Bir daha birlikte bakalım.",
+      "text": "Olmadıysa hiç önemli değil. Gel, bir daha birlikte bakalım.",
       "voiceProfile": "TEACHER_ENCOURAGE"
     },
     {
       "audioId": "v2_sample_long_warm",
-      "text": "Acele etmene gerek yok. Önce şekle dikkatlice bak, sonra parmağınla yolu takip et. Hazır olduğunda başlayabilirsin.",
+      "text": "Acele etmene gerek yok. Önce şekle dikkatlice bak. Sonra parmağınla yolu takip et. Hazır olduğunda başlayabilirsin.",
       "voiceProfile": "TEACHER_WARM"
     }
   ]
