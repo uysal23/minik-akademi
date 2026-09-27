@@ -4,7 +4,9 @@ on:
   push:
     paths:
       - "content/**"
+      - "content_v4/**"
       - "tools/content-validator/**"
+      - "tools/content-validator/prepare_v4_runtime_content.py"
       - ".github/workflows/content-validation.yml"
   pull_request:
     paths:
