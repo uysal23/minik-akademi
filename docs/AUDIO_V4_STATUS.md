@@ -36,3 +36,23 @@ The owner explicitly selected **C**, approved the final nine-phoneme QA set, and
 ## Spoken-text runtime layer
 
 The 20 instruction corrections approved before voice synthesis are stored in `content_v4/instruction_overrides_v1.json` and applied to `content_v4/runtime/` before build. The application packages content from that corrected runtime tree, while the protected V1 `content/` tree remains at its locked baseline SHA.
+
+## Final validation — 2026-09-27
+
+- Repository visibility was temporarily changed to public so GitHub-hosted runners could execute after the private-repository Actions budget hard stop.
+- Audio Validation: **PASS**.
+- Content Validation: **PASS**.
+- Automated Python/contracts/visual/audio validators: **PASS**.
+- Kotlin unit tests: **PASS**.
+- Android debug APK build and artifact upload: **PASS**.
+- Locked regression contracts and validators: **PASS**.
+- Regression Kotlin tests/debug APK build: **PASS**.
+- Persistence + full UI emulator regression: **PASS**.
+- Exact UI evidence set: **PASS**.
+- Permanent V4 C source archive committed at `audio_v4/source/v4_live.zip` with `v4_live.sha256` checksum verification.
+- Verified debug APK payload contains exactly **159 speech OGG + 7 SFX OGG = 166 OGG**.
+- Verified APK contains `assets/V4_C_READY.json` declaring voice C, 159 speech files, USER_APPROVED phonemes, and no paid API.
+- Verified APK contains `assets/V4_CONTENT_READY.json` declaring 20 owner-approved spoken-text corrections.
+- No INTERNET permission string was found in the inspected debug APK manifest payload.
+
+**Maintenance status:** RELEASE-READY FOR STEP 15 / FINAL RELEASE CANDIDATE BUILD. Final release build still requires the owner's explicit build approval under the locked workflow.
