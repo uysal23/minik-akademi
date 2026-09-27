@@ -46,6 +46,13 @@ concurrency:
   group: regression-tests-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+  actions: read
+
+env:
+  GITHUB_TOKEN: ${{ github.token }}
+
 jobs:
   locked-contracts:
     name: Locked contracts and validators
