@@ -13,6 +13,13 @@ on:
       - ".github/workflows/audio-validation.yml"
   workflow_dispatch:
 
+permissions:
+  contents: read
+  actions: read
+
+env:
+  GITHUB_TOKEN: ${{ github.token }}
+
 jobs:
   validate-audio:
     runs-on: ubuntu-24.04
