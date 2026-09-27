@@ -13,7 +13,7 @@
   "learningLevel": "GRADE_1",
   "activityType": "TAP_CHOICE",
   "instruction": {
-    "text": "1 onluk ve 5 birlik hangi sayıyı oluşturur?",
+    "text": "1 onluk 5 birlik hangi sayıdır?",
     "audioId": "aud_act_mat_tens_03_instruction",
     "voiceProfile": "TEACHER_MATH",
     "replayAllowed": true

@@ -13,7 +13,7 @@
   "learningLevel": "GRADE_1",
   "activityType": "COMPARE_MASS",
   "instruction": {
-    "text": "Kitap ile silgiyi karşılaştır. Hangisi daha ağır?",
+    "text": "Kitap ve silgiyi karşılaştır.",
     "audioId": "aud_act_mat_mass_01_instruction",
     "voiceProfile": "TEACHER_MATH",
     "replayAllowed": true

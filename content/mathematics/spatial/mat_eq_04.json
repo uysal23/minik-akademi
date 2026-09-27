@@ -13,7 +13,7 @@
   "learningLevel": "GRADE_1",
   "activityType": "MATCH_PAIR",
   "instruction": {
-    "text": "İki görseli eş hâle getirmek için çıkarılması gereken nesneyi seç.",
+    "text": "İki görseli eş yapmak için çıkarılacak nesneyi seç.",
     "audioId": "aud_act_mat_eq_04_instruction",
     "voiceProfile": "TEACHER_MATH",
     "replayAllowed": true

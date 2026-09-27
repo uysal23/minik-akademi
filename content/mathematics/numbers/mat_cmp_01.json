@@ -13,7 +13,7 @@
   "learningLevel": "GRADE_1",
   "activityType": "COMPARE_QUANTITY",
   "instruction": {
-    "text": "İki gruptaki nesne sayılarını karşılaştır.",
+    "text": "İki grubun çokluğunu karşılaştır.",
     "audioId": "aud_act_mat_cmp_01_instruction",
     "voiceProfile": "TEACHER_MATH",
     "replayAllowed": true

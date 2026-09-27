@@ -13,7 +13,7 @@
   "learningLevel": "PRESCHOOL_START",
   "activityType": "FIND_DIFFERENCE",
   "instruction": {
-    "text": "İki grubu karşılaştır. Sağ taraftaki farklı beş şekli bul.",
+    "text": "İki grubu karşılaştır. Sağ tarafta farklı olan 5 şekli bul.",
     "audioId": "aud_pre_vis_difference_001_instruction",
     "voiceProfile": "TEACHER_WARM",
     "replayAllowed": true

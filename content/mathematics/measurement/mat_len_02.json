@@ -13,7 +13,7 @@
   "learningLevel": "GRADE_1",
   "activityType": "MEASURE_NONSTANDARD",
   "instruction": {
-    "text": "Sınıfın uzunluğunu ölçmek için uygun ölçme aracını seç.",
+    "text": "Sınıfın uzunluğu için uygun ölçme aracını seç.",
     "audioId": "aud_act_mat_len_02_instruction",
     "voiceProfile": "TEACHER_MATH",
     "replayAllowed": true
