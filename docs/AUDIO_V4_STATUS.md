@@ -1,32 +1,26 @@
 # Minik Akademi — Audio V4 C Status
 
-**Status:** USER APPROVED — PROMOTION READY / GITHUB ACTIONS RUNNER BLOCKED
-**Voice:** C
-**Engine:** ResembleAI Chatterbox Multilingual V3
-**Seed:** 618034
-**Paid API:** none
+**Status:** ACTIVE / USER APPROVED  
+**Audio revision:** V4 C  
+**Voice:** C  
+**Engine:** ResembleAI Chatterbox Multilingual V3  
+**Seed:** 618034  
+**Paid API:** none  
 **API key:** none
 
-## Completed
+## Final audio state
 
-- Spoken-text inventory: 159/159
-- Spoken Text QA: PASS
-- Content Validation: PASS
-- C-voice generation: 159/159
-- Generation chunks: 16/16 SUCCESS
-- Format QA of assembled C set: PASS
-  - OGG/Vorbis
-  - mono
-  - 24 kHz
-- Phonemes a/n/e/t/i/l/o/k/u: USER APPROVED
-- Live-promotion workflow is committed at:
-  `.github/workflows/audio-v4-promote-live.yml`
+- 159 / 159 spoken assets were generated with the approved C voice.
+- Spoken-text QA: 159 / 159 PASS.
+- Content validation: PASS.
+- The nine phonemes `a, n, e, t, i, l, o, k, u` use the exact user-approved QA set.
+- Speech format: OGG/Vorbis, mono, 24 kHz.
+- The seven locked SFX remain unchanged.
+- V1 Antalia speech is no longer an active APK asset source and is archived under `audio/legacy/v1/speech`.
+- The Android app packages speech only from `audio/runtime/speech`.
+- `tools/audio/prepare_v4_runtime_audio.py` assembles the 16 checksum-pinned approved C chunks, overlays the approved phonemes, verifies the full 159-ID inventory, and copies the unchanged SFX before build.
+- Runtime internet/TTS remains absent; all audio is packaged into the APK at build time.
 
-## Current external blocker
+## Owner approval
 
-GitHub Actions is currently refusing to start hosted runners for this private repository.
-The promotion job and even a previously successful small content-validation job fail before step 1 with no runner steps/logs. Therefore this is not an audio-generation or validation failure.
-
-The existing live V1 speech assets remain untouched until the V4 C promotion can execute atomically. This prevents a partial/mixed voice deployment.
-
-No paid service or API is required or authorized.
+The owner explicitly selected **C** and approved the final nine-phoneme QA set, then requested that all sounds be updated to C without per-file confirmation.
