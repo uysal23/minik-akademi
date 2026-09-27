@@ -1,8 +1,5 @@
 package com.uysal.minikakademi.feature.childhome
 
-import androidx.compose.foundation.gestures.awaitEachGesture
-import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,14 +14,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.uysal.minikakademi.core.designsystem.AvatarPlaceholder
 import com.uysal.minikakademi.core.designsystem.KidPrimaryButton
 import com.uysal.minikakademi.core.designsystem.KidScreen
 import com.uysal.minikakademi.core.model.AppSettings
-import kotlinx.coroutines.withTimeoutOrNull
 
 @Composable
 fun ChildHomeScreen(
@@ -109,20 +104,8 @@ private fun CategoryCard(
 @Composable
 private fun ParentAccessButton(onParentAccess: () -> Unit) {
     Card(
-        modifier = Modifier
-            .size(54.dp)
-            .pointerInput(onParentAccess) {
-                awaitEachGesture {
-                    awaitFirstDown(requireUnconsumed = false)
-                    val releasedBeforeThreeSeconds = withTimeoutOrNull(3_000L) {
-                        waitForUpOrCancellation()
-                    }
-                    if (releasedBeforeThreeSeconds == null) {
-                        onParentAccess()
-                        waitForUpOrCancellation()
-                    }
-                }
-            },
+        onClick = onParentAccess,
+        modifier = Modifier.size(54.dp),
         shape = CircleShape,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
