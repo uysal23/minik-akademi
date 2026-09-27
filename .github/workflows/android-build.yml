@@ -8,8 +8,12 @@ on:
       - "**/*.kts"
       - "gradle/**"
       - "app/**"
+      - "audio_v4/**"
+      - "content_v4/**"
       - "core/**"
       - "feature/**"
+      - "tools/audio/prepare_v4_runtime_audio.py"
+      - "tools/content-validator/prepare_v4_runtime_content.py"
       - ".github/workflows/android-build.yml"
   pull_request:
     paths:
@@ -17,8 +21,12 @@ on:
       - "**/*.kts"
       - "gradle/**"
       - "app/**"
+      - "audio_v4/**"
+      - "content_v4/**"
       - "core/**"
       - "feature/**"
+      - "tools/audio/prepare_v4_runtime_audio.py"
+      - "tools/content-validator/prepare_v4_runtime_content.py"
       - ".github/workflows/android-build.yml"
 
 jobs:
