@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "1.0",
+  "status": "OWNER_APPROVED",
+  "count": 20,
+  "overrides": {
+    "content/literacy/group_01_anet/a_01_intro.json": "a sesini dinle. Büyük A ile küçük a harflerini tanı.",
+    "content/literacy/group_01_anet/n_01_intro.json": "n sesini dinle. Büyük N ile küçük n harflerini tanı.",
+    "content/literacy/group_01_anet/e_01_intro.json": "e sesini dinle. Büyük E ile küçük e harflerini tanı.",
+    "content/literacy/group_01_anet/t_01_intro.json": "t sesini dinle. Büyük T ile küçük t harflerini tanı.",
+    "content/literacy/group_02_iloku/i_01_intro.json": "i sesini dinle. Büyük İ ile küçük i harflerini tanı.",
+    "content/literacy/group_02_iloku/l_01_intro.json": "l sesini dinle. Büyük L ile küçük l harflerini tanı.",
+    "content/literacy/group_02_iloku/o_01_intro.json": "o sesini dinle. Büyük O ile küçük o harflerini tanı.",
+    "content/literacy/group_02_iloku/k_01_intro.json": "k sesini dinle. Büyük K ile küçük k harflerini tanı.",
+    "content/literacy/group_02_iloku/u_01_intro.json": "u sesini dinle. Büyük U ile küçük u harflerini tanı.",
+    "content/mathematics/spatial/mat_sp_adapt.json": "Avatarın sandalyeye göre nerede olması gerektiğini seç.",
+    "content/mathematics/measurement/mat_len_02.json": "Sınıfın uzunluğunu ölçmek için uygun ölçme aracını seç.",
+    "content/mathematics/measurement/mat_len_03.json": "Silginin boyunu ölçmek için uygun ölçme aracını seç.",
+    "content/mathematics/measurement/mat_measure_adapt.json": "Masanın uzunluğu için en uygun ölçme sonucunu seç.",
+    "content/mathematics/numbers/mat_num_01.json": "19 sayısının 1 ve 9 rakamlarıyla yazıldığını incele.",
+    "content/mathematics/numbers/mat_tens_03.json": "1 onluk ve 5 birlik hangi sayıyı oluşturur?",
+    "content/mathematics/numbers/mat_tens_05.json": "1 onluk ve 3 birlik hangi sayıyı oluşturur?",
+    "content/mathematics/spatial/mat_eq_04.json": "İki görseli eş hâle getirmek için çıkarılması gereken nesneyi seç.",
+    "content/mathematics/measurement/mat_mass_01.json": "Kitap ile silgiyi karşılaştır. Hangisi daha ağır?",
+    "content/mathematics/numbers/mat_cmp_01.json": "İki gruptaki nesne sayılarını karşılaştır.",
+    "content/literacy/preparation/05_find_difference.json": "İki grubu karşılaştır. Sağ taraftaki farklı beş şekli bul."
+  }
+}
