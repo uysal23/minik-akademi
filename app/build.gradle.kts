@@ -32,7 +32,7 @@ android {
     }
 
     sourceSets["main"].assets.srcDir(rootProject.file("content"))
-    sourceSets["main"].assets.srcDir(rootProject.file("audio/runtime"))
+    sourceSets["main"].assets.srcDir(rootProject.file("audio_v4/runtime"))
 }
 
 
