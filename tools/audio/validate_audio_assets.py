@@ -8,10 +8,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CONTENT = ROOT / "content"
-SPEECH = ROOT / "audio" / "runtime" / "speech"
-SFX = ROOT / "audio" / "runtime" / "sfx"
-MANIFEST = ROOT / "audio" / "manifest" / "audio_manifest.json"
-REPORT = ROOT / "audio" / "manifest" / "generation_report.json"
+SPEECH = ROOT / "audio_v4" / "runtime" / "speech"
+SFX = ROOT / "audio_v4" / "runtime" / "sfx"
+MANIFEST = ROOT / "audio_v4" / "manifest" / "audio_manifest.json"
+REPORT = ROOT / "audio_v4" / "manifest" / "generation_report.json"
 
 EXPECTED_SFX = {
     "sfx_soft_pop",
