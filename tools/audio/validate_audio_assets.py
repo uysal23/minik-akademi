@@ -7,8 +7,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CONTENT = ROOT / "content"
-SPEECH = ROOT / "audio" / "generated" / "speech"
-SFX = ROOT / "audio" / "generated" / "sfx"
+SPEECH = ROOT / "audio" / "runtime" / "speech"
+SFX = ROOT / "audio" / "runtime" / "sfx"
 MANIFEST = ROOT / "audio" / "manifest" / "audio_manifest.json"
 REPORT = ROOT / "audio" / "manifest" / "generation_report.json"
 
