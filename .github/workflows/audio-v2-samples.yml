@@ -1,21 +1,8 @@
 name: Audio V2 Quality Samples
 
+# Historical/maintenance workflow. Manual dispatch only after Audio V4 C activation.
 on:
-  push:
-    branches: [ "main" ]
-    paths:
-      - "audio/AUDIO_V2.trigger"
-      - ".github/workflows/audio-v2-samples.yml"
-      - "tools/audio/generate_freya_teacher_audio.py"
-      - "audio/v2/sample_manifest.json"
   workflow_dispatch:
-
-permissions:
-  contents: read
-
-concurrency:
-  group: audio-v2-samples-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   gate:
