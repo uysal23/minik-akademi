@@ -7,3 +7,6 @@ local.properties
 captures/
 .externalNativeBuild/
 .cxx/
+
+# Generated at build time from the approved V4 C audio pack
+audio/runtime/
