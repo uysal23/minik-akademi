@@ -30,6 +30,13 @@ on:
       - ".github/workflows/automated-tests.yml"
   workflow_dispatch:
 
+permissions:
+  contents: read
+  actions: read
+
+env:
+  GITHUB_TOKEN: ${{ github.token }}
+
 jobs:
   project-contract-tests:
     name: Project contracts and validators
@@ -53,7 +60,7 @@ jobs:
       - name: Validate authored content
         run: python tools/content-validator/validate_content.py --mode authoring
 
-      - name: Validate offline audio
+      - name: Prepare approved V4 C audio\n        run: python tools/audio/prepare_v4_runtime_audio.py\n\n      - name: Validate offline audio
         run: python tools/audio/validate_audio_assets.py
 
       - name: Validate offline visuals
