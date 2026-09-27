@@ -18,7 +18,7 @@ RUNTIME = ROOT / "audio_v4" / "runtime"
 SPEECH = RUNTIME / "speech"
 SFX = RUNTIME / "sfx"
 MANIFEST = ROOT / "audio_v4" / "manifest" / "audio_manifest.json"
-APPROVED_PHONEMES = ROOT / "audio_v4" / "approved_phonemes" / "minik-akademi-v4-c-phoneme-qa.zip"
+APPROVED_PHONEMES_DIR = ROOT / "audio_v4" / "approved_phonemes"
 BUNDLED_ARCHIVE = ROOT / "audio_v4" / "source" / "v4_live.zip"
 BUNDLED_ARCHIVE_SHA256_FILE = ROOT / "audio_v4" / "source" / "v4_live.sha256"
 
@@ -131,22 +131,21 @@ def assemble_from_local_archive(path: Path, target: Path) -> None:
 
 
 def overlay_approved_phonemes(target: Path) -> None:
-    if not APPROVED_PHONEMES.is_file():
-        raise SystemExit(f"Approved phoneme pack is missing: {APPROVED_PHONEMES}")
-    with zipfile.ZipFile(APPROVED_PHONEMES) as zf:
-        candidates = {
-            Path(info.filename).name: info
-            for info in zf.infolist()
-            if not info.is_dir() and Path(info.filename).name.startswith("aud_phoneme_")
-            and info.filename.lower().endswith(".ogg")
-        }
-        present = {Path(name).stem.removeprefix("aud_phoneme_") for name in candidates}
-        if present != PHONEMES:
-            raise SystemExit(f"Approved phoneme set mismatch: {sorted(present)}")
-        for phoneme in sorted(PHONEMES):
-            name = f"aud_phoneme_{phoneme}.ogg"
-            (target / name).write_bytes(zf.read(candidates[name]))
+    present: set[str] = set()
+    for phoneme in sorted(PHONEMES):
+        name = f"aud_phoneme_{phoneme}.ogg"
+        src = APPROVED_PHONEMES_DIR / name
+        if not src.is_file():
+            raise SystemExit(f"Approved phoneme file is missing: {src}")
+        data = src.read_bytes()
+        if len(data) <= 256 or not data.startswith(b"OggS") or b"\x01vorbis" not in data[:8192]:
+            raise SystemExit(f"Approved phoneme is not valid OGG/Vorbis: {src}")
+        (target / name).write_bytes(data)
+        present.add(phoneme)
 
+    if present != PHONEMES:
+        raise SystemExit(f"Approved phoneme set mismatch: {sorted(present)}")
+    print("Applied exact 9/9 owner-approved phoneme OGG files")
 
 def validate_speech(target: Path) -> None:
     ids = expected_ids()
