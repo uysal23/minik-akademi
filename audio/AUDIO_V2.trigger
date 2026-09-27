@@ -1,5 +1,8 @@
 version=2
-provider=MiniMax
-model=speech-2.8-hd
-voice=Turkish_CalmWoman
-mode=WAITING_FOR_MINIMAX_API_KEY
+provider=FreyaTTS-small
+model=freyavoice/freya-tts
+voice=canonical-Leyla
+license=Apache-2.0
+paid_api=false
+api_key_required=false
+mode=GENERATE_SAMPLES
