@@ -1,19 +1,8 @@
 name: Audio V4 Natural Gentle Voice Test
 
+# Historical/maintenance workflow. Manual dispatch only after Audio V4 C activation.
 on:
-  push:
-    branches: [ "main" ]
-    paths:
-      - "tools/audio/generate_chatterbox_gentle_candidate.py"
-      - ".github/workflows/audio-v4-natural-voice.yml"
   workflow_dispatch:
-
-permissions:
-  contents: read
-
-concurrency:
-  group: audio-v4-natural-voice-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   samples:
