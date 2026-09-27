@@ -4,5 +4,5 @@ voice=C
 seed=618034
 paid_api=false
 api_key_required=false
-qa_revision=2
-mode=STAGING_GENERATED_PENDING_PHONEME_QA
+qa_revision=3
+mode=PHONEME_CANDIDATES_READY_PENDING_USER_LISTENING
