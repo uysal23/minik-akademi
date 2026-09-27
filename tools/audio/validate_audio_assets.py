@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -40,6 +41,10 @@ def activity_files() -> list[Path]:
 
 
 def main() -> int:
+    if not SPEECH.exists() or len(list(SPEECH.glob("*.ogg"))) != 159:
+        preparer = ROOT / "tools" / "audio" / "prepare_v4_runtime_audio.py"
+        subprocess.run([sys.executable, str(preparer)], cwd=ROOT, check=True)
+
     errors: list[str] = []
     required_speech: set[str] = set()
     required_sfx: set[str] = set()
