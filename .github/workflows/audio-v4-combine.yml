@@ -1,0 +1,88 @@
+name: Audio V4 C Staging Combine
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - ".github/workflows/audio-v4-combine.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  combine:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Download 16 successful C-voice chunks
+        uses: actions/download-artifact@v4
+        with:
+          pattern: audio-v4-c-chunk-*
+          path: downloaded
+          merge-multiple: true
+          run-id: 36326154456
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify and combine exactly 159 unique OGG files
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Downloaded files:"
+          find downloaded -type f | sort
+
+          mkdir -p combined
+          mapfile -d '' files < <(find downloaded -type f -name '*.ogg' -print0)
+
+          echo "Found ${#files[@]} OGG source files"
+          test "${#files[@]}" -eq 159
+
+          printf '%s\0' "${files[@]}" | while IFS= read -r -d '' f; do
+            base="$(basename "$f")"
+            test ! -e "combined/$base" || {
+              echo "Duplicate basename: $base"
+              exit 2
+            }
+            cp "$f" "combined/$base"
+          done
+
+          count="$(find combined -maxdepth 1 -type f -name '*.ogg' | wc -l)"
+          echo "Combined OGG count: $count"
+          test "$count" -eq 159
+
+      - name: Download reviewed V4 manifest
+        uses: actions/download-artifact@v4
+        with:
+          name: audio-v4-reviewed-manifest
+          path: metadata
+          run-id: 36326154456
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build staging metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > metadata/STAGING_INFO.txt <<'EOF'
+          Minik Akademi Audio V4 — C Voice
+          Status: STAGING / NOT YET PROMOTED TO LIVE APP ASSETS
+          Engine: ResembleAI Chatterbox Multilingual V3
+          Voice choice: C
+          Seed: 618034
+          Paid API: none
+          API key: none
+          Spoken text QA: PASS (159/159)
+          Content validation: PASS
+          Generated OGG files: 159
+          Manual phoneme QA still required before promotion.
+          EOF
+
+      - name: Upload complete C-voice staging pack
+        uses: actions/upload-artifact@v4
+        with:
+          name: minik-akademi-audio-v4-c-full-staging
+          path: |
+            combined/*.ogg
+            metadata/full_manifest.json
+            metadata/STAGING_INFO.txt
+          if-no-files-found: error
+          retention-days: 30
