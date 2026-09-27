@@ -488,7 +488,8 @@ fun MathematicsActivityScreen(
                             onRetry = ::playRetryAudio,
                             onComplete = ::completeOnce
                         )
-                    else -> ChoiceGame(
+                    else -> VisualChoiceGame(
+                        activityId = config.id,
                         target = config.targetSymbol,
                         options = config.options,
                         onRetry = ::playRetryAudio,
@@ -512,6 +513,168 @@ fun MathematicsActivityScreen(
             }
 
             KidPrimaryButton(text = "Etkinlik Listesine Dön", onClick = onBack)
+        }
+    }
+}
+
+@Composable
+private fun VisualChoiceGame(
+    activityId: String,
+    target: String,
+    options: List<MathOption>,
+    onRetry: () -> Unit,
+    onComplete: () -> Unit
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(14.dp)
+    ) {
+        MathConceptVisual(activityId)
+        ChoiceGame(
+            target = target,
+            options = options,
+            onRetry = onRetry,
+            onComplete = onComplete
+        )
+    }
+}
+
+@Composable
+private fun MathConceptVisual(activityId: String) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.55f)
+        )
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(14.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            when (activityId) {
+                "ACT-MAT-SP-01" -> Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(2.dp)
+                ) {
+                    Text("⚽", fontSize = 62.sp)
+                    LearningObjectArt(label = "masa", size = 110.dp)
+                }
+
+                "ACT-MAT-SP-02" -> Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(2.dp)
+                ) {
+                    Text("🐦       🐦", fontSize = 42.sp)
+                    LearningObjectArt(label = "orman", size = 105.dp)
+                    Text("🐦       🐦", fontSize = 36.sp)
+                }
+
+                "ACT-MAT-SP-03" -> Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(14.dp)
+                ) {
+                    AvatarPlaceholder(avatarId = "avatar_1", size = 58.dp)
+                    Text("⚽", fontSize = 52.sp)
+                    AvatarPlaceholder(avatarId = "avatar_2", size = 58.dp)
+                }
+
+                "ACT-MAT-SP-04" -> Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Text("🚗", fontSize = 62.sp)
+                    Text("→", fontSize = 38.sp, fontWeight = FontWeight.Bold)
+                    Text("🚚", fontSize = 62.sp)
+                }
+
+                "ACT-MAT-SP-05" -> Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Text("🐿️", fontSize = 58.sp)
+                    Text("yakın", style = MaterialTheme.typography.titleMedium)
+                    AvatarPlaceholder(avatarId = "avatar_3", size = 64.dp)
+                }
+
+                "ACT-MAT-SP-06" -> Row(
+                    verticalAlignment = Alignment.Bottom,
+                    horizontalArrangement = Arrangement.spacedBy(24.dp)
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text("🎈", fontSize = 74.sp)
+                        Text("Pembe")
+                    }
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text("🎈", fontSize = 52.sp)
+                        Text("Yeşil")
+                    }
+                }
+
+                "ACT-MAT-SP-07" -> Box(
+                    modifier = Modifier.size(145.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("🍽️", fontSize = 105.sp)
+                    Text("🍌", fontSize = 48.sp)
+                }
+
+                "ACT-MAT-SP-08" -> Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(18.dp)
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        AvatarPlaceholder(avatarId = "avatar_1", size = 64.dp)
+                        Text("Çocuk")
+                    }
+                    Text("→ sağ", style = MaterialTheme.typography.titleMedium)
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        AvatarPlaceholder(avatarId = "avatar_2", size = 64.dp)
+                        Text("Yasemin")
+                    }
+                }
+
+                "ACT-MAT-SP-ADAPT" -> Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(2.dp)
+                ) {
+                    AvatarPlaceholder(avatarId = "avatar_1", size = 64.dp)
+                    Text("🪑", fontSize = 70.sp)
+                }
+
+                else -> when {
+                    "LEN" in activityId -> Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(22.dp)
+                    ) {
+                        LearningObjectArt(label = "kalem", size = 110.dp)
+                        LearningObjectArt(label = "silgi", size = 68.dp)
+                    }
+
+                    "MASS" in activityId -> Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(22.dp)
+                    ) {
+                        Text("📘", fontSize = 66.sp)
+                        LearningObjectArt(label = "silgi", size = 66.dp)
+                    }
+
+                    "CMP" in activityId || "EQ" in activityId -> Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        DotGroup(3, "elma")
+                        Text("↔", fontSize = 34.sp, fontWeight = FontWeight.Bold)
+                        DotGroup(5, "armut")
+                    }
+
+                    else -> LearningObjectArt(
+                        label = mathObjectFor(activityId),
+                        size = 96.dp
+                    )
+                }
+            }
         }
     }
 }
