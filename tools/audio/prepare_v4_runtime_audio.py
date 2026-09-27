@@ -14,11 +14,11 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-RUNTIME = ROOT / "audio" / "runtime"
+RUNTIME = ROOT / "audio_v4" / "runtime"
 SPEECH = RUNTIME / "speech"
 SFX = RUNTIME / "sfx"
-MANIFEST = ROOT / "audio" / "manifest" / "audio_manifest.json"
-APPROVED_PHONEMES = ROOT / "audio" / "v4" / "approved_phonemes" / "minik-akademi-v4-c-phoneme-qa.zip"
+MANIFEST = ROOT / "audio_v4" / "manifest" / "audio_manifest.json"
+APPROVED_PHONEMES = ROOT / "audio_v4" / "approved_phonemes" / "minik-akademi-v4-c-phoneme-qa.zip"
 
 REPO = os.environ.get("GITHUB_REPOSITORY", "uysal23/minik-akademi")
 def git_checkout_token() -> str | None:
