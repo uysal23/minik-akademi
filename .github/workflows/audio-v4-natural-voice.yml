@@ -1,0 +1,67 @@
+name: Audio V4 Natural Gentle Voice Test
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "tools/audio/generate_chatterbox_gentle_candidate.py"
+      - ".github/workflows/audio-v4-natural-voice.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: audio-v4-natural-voice-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  samples:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Free runner disk space
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo rm -rf /usr/local/lib/android             /opt/ghc             /usr/share/dotnet             /opt/hostedtoolcache/CodeQL             /usr/local/share/boost
+          sudo apt-get clean
+          rm -rf ~/.cache/pip
+          df -h
+
+      - name: Install CPU PyTorch and Chatterbox
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg git
+          python -m pip install --upgrade pip
+          python -m pip install             --index-url https://download.pytorch.org/whl/cpu             torch==2.6.0 torchaudio==2.6.0
+          git clone --depth 1 https://github.com/resemble-ai/chatterbox.git /tmp/chatterbox
+          python -m pip install --no-deps -e /tmp/chatterbox
+          python -m pip install             "numpy<2" librosa==0.11.0 s3tokenizer             transformers==5.2.0 diffusers==0.29.0             conformer==0.3.2 safetensors==0.5.3             spacy-pkuseg pykakasi==2.3.0 pyloudnorm omegaconf             "resemble-perth @ git+https://github.com/resemble-ai/Perth.git@master"
+          rm -rf ~/.cache/pip
+          df -h
+
+      - name: Generate V4 natural gentle samples
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/audio/generate_chatterbox_gentle_candidate.py             --output-dir audio/v4/chatterbox_samples             --report audio/v4/chatterbox_report.json
+          test "$(find audio/v4/chatterbox_samples -type f -name '*.ogg' | wc -l)" -eq 3
+
+      - name: Upload V4 natural gentle samples
+        uses: actions/upload-artifact@v4
+        with:
+          name: minik-akademi-audio-v4-natural-gentle-samples
+          path: |
+            audio/v4/chatterbox_samples/*.ogg
+            audio/v4/chatterbox_report.json
+          if-no-files-found: error
+          retention-days: 30
