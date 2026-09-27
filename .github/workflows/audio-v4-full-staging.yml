@@ -1,19 +1,8 @@
 name: Audio V4 Full Staging
 
+# Historical/maintenance workflow. Manual dispatch only after Audio V4 C activation.
 on:
-  push:
-    branches: [ "main" ]
-    paths:
-      - "audio/AUDIO_V4.trigger"
-      - ".github/workflows/audio-v4-full-staging.yml"
   workflow_dispatch:
-
-permissions:
-  contents: read
-
-concurrency:
-  group: audio-v4-full-staging-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   gate:
