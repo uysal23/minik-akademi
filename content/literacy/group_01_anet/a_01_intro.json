@@ -13,7 +13,7 @@
   "learningLevel": "GRADE_1",
   "activityType": "LETTER_INTRO",
   "instruction": {
-    "text": "a sesini ve A - a harflerini tanı.",
+    "text": "a sesini dinle. Büyük A ile küçük a harflerini tanı.",
     "audioId": "aud_lit_a_intro_001_instruction",
     "voiceProfile": "TEACHER_PHONICS",
     "replayAllowed": true
