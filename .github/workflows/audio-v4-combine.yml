@@ -1,15 +1,8 @@
 name: Audio V4 C Staging Combine
 
+# Historical/maintenance workflow. Manual dispatch only after Audio V4 C activation.
 on:
-  push:
-    branches: [ "main" ]
-    paths:
-      - ".github/workflows/audio-v4-combine.yml"
   workflow_dispatch:
-
-permissions:
-  contents: read
-  actions: read
 
 jobs:
   combine:
