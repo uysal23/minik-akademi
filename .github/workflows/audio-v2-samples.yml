@@ -1,0 +1,79 @@
+name: Audio V2 Quality Samples
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "audio/AUDIO_V2.trigger"
+      - ".github/workflows/audio-v2-samples.yml"
+      - "tools/audio/generate_minimax_teacher_audio.py"
+      - "audio/v2/sample_manifest.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: audio-v2-samples-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gate:
+    runs-on: ubuntu-24.04
+    outputs:
+      run_samples: ${{ steps.gate.outputs.run_samples }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        shell: bash
+        run: |
+          if grep -Fq 'mode=GENERATE_SAMPLES' audio/AUDIO_V2.trigger; then
+            echo "run_samples=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run_samples=false" >> "$GITHUB_OUTPUT"
+            echo "Audio V2 sample generation is waiting for approval/API key."
+          fi
+
+  samples:
+    needs: gate
+    if: needs.gate.outputs.run_samples == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      MINIMAX_API_KEY: ${{ secrets.MINIMAX_API_KEY }}
+      MINIMAX_API_BASE: https://api.minimax.io/v1
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Require MiniMax API key
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$MINIMAX_API_KEY"
+          echo "MiniMax API key is present."
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install requests
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      - name: Generate Audio V2 sample pack
+        run: |
+          python tools/audio/generate_minimax_teacher_audio.py             --manifest audio/v2/sample_manifest.json             --output-dir audio/v2/generated_samples             --report audio/v2/sample_report.json             --force
+          test "$(find audio/v2/generated_samples -type f -name '*.ogg' | wc -l)" -eq 10
+
+      - name: Upload Audio V2 samples
+        uses: actions/upload-artifact@v4
+        with:
+          name: minik-akademi-audio-v2-quality-samples
+          path: |
+            audio/v2/generated_samples/*.ogg
+            audio/v2/sample_report.json
+            audio/v2/sample_manifest.json
+          if-no-files-found: error
+          retention-days: 30
