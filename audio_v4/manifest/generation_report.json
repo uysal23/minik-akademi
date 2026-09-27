@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "4.0",
+  "audioRevision": "V4_C",
+  "provider": "self-hosted open source",
+  "model": "ResembleAI Chatterbox Multilingual V3",
+  "voice": "C",
+  "voiceSeed": 618034,
+  "paidApiUsed": false,
+  "apiKeyRequired": false,
+  "requested": 159,
+  "generated": 159,
+  "skipped": 0,
+  "failed": 0,
+  "chunksSucceeded": 16,
+  "chunksFailed": 0,
+  "spokenTextQa": "PASS_159_OF_159",
+  "phonemeQa": "USER_APPROVED",
+  "format": {
+    "container": "OGG",
+    "codec": "Vorbis",
+    "sampleRateHz": 24000,
+    "channels": 1
+  },
+  "livePackagingMode": "BUILD_TIME_PREPARED_OFFLINE_ASSETS",
+  "failures": []
+}
