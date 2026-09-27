@@ -86,18 +86,25 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
 
-          src = Path("audio/v4/approved_phonemes")
+          import zipfile
+          zip_path = Path("audio/v4/approved_phonemes/minik-akademi-v4-c-phoneme-qa.zip")
+          extract = Path("/tmp/v4approved")
+          extract.mkdir(parents=True, exist_ok=True)
+          with zipfile.ZipFile(zip_path) as zf:
+              zf.extractall(extract)
+
           dst = Path("/tmp/v4all")
           expected = {"a","n","e","t","i","l","o","k","u"}
-
-          present = {p.stem.removeprefix("aud_phoneme_") for p in src.glob("aud_phoneme_*.ogg")}
+          files = list(extract.rglob("aud_phoneme_*.ogg"))
+          present = {p.stem.removeprefix("aud_phoneme_") for p in files}
           if present != expected:
               raise SystemExit(f"Approved phoneme set mismatch: {sorted(present)}")
 
+          by_name = {p.name:p for p in files}
           for ph in sorted(expected):
-              data = (src / f"aud_phoneme_{ph}.ogg").read_bytes()
+              data = by_name[f"aud_phoneme_{ph}.ogg"].read_bytes()
               (dst / f"aud_phoneme_{ph}.ogg").write_bytes(data)
-          print("Applied 9/9 user-approved phonemes")
+          print("Applied exact 9/9 user-approved phoneme files from approved QA ZIP")
           PY
 
       - name: Verify 159 files and OGG format
@@ -260,21 +267,6 @@ jobs:
       - name: Mark V4 C live
         shell: bash
         run: |
-          cat > audio/AUDIO_V4.trigger <<'EOF'
-          version=4
-          engine=Chatterbox-Multilingual-V3
-          voice=C
-          seed=618034
-          paid_api=false
-          api_key_required=false
-          qa_revision=5
-          phoneme_qa=USER_APPROVED
-          spoken_text_qa=PASS_159_OF_159
-          generation=PASS_159_OF_159
-          live_assets=PASS_159_OF_159
-          mode=LIVE_V4_C
-          EOF
-
           cat > docs/AUDIO_V4_STATUS.md <<'EOF'
           # Minik Akademi — Audio V4 C Status
 
@@ -305,7 +297,7 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add audio/generated/speech                   audio/manifest/audio_manifest.json                   audio/manifest/generation_report.json                   audio/AUDIO_V4.trigger                   docs/AUDIO_V4_STATUS.md
+          git add audio/generated/speech audio/manifest/audio_manifest.json audio/manifest/generation_report.json docs/AUDIO_V4_STATUS.md
           git diff --cached --quiet && {
             echo "No changes to commit"
             exit 0
