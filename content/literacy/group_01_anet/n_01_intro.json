@@ -13,7 +13,7 @@
   "learningLevel": "GRADE_1",
   "activityType": "LETTER_INTRO",
   "instruction": {
-    "text": "n sesini ve N - n harflerini tanı.",
+    "text": "n sesini dinle. Büyük N ile küçük n harflerini tanı.",
     "audioId": "aud_lit_n_intro_001_instruction",
     "voiceProfile": "TEACHER_PHONICS",
     "replayAllowed": true
