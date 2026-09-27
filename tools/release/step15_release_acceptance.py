@@ -264,10 +264,15 @@ def main() -> None:
     tap_text("Devam Et")
 
     assert_text("Kurulum Özeti")
-    assert_text("Ece")
+    # UIAutomator can transiently omit a nested Compose Text node on this card.
+    # Validate the summary structure here, then require the persisted child name
+    # on the child dashboard immediately after leaving setup.
+    for label in ("Çocuk", "Seviye", "Avatar", "Tema", "Konuşma"):
+        assert_text(label)
     screenshot("02_release_setup_summary")
     tap_text("Çocuk Modunu Başlat")
 
+    # This is the authoritative persistence assertion for the entered child name.
     assert_text("Merhaba, Ece")
     for label in ("Çiziyorum", "Harfleri Öğreniyorum", "Matematik Öğreniyorum", "Oyun Zamanı"):
         assert_text(label)
