@@ -29,6 +29,13 @@ on:
       - "tools/content-validator/prepare_v4_runtime_content.py"
       - ".github/workflows/android-build.yml"
 
+permissions:
+  contents: read
+  actions: read
+
+env:
+  GITHUB_TOKEN: ${{ github.token }}
+
 jobs:
   assemble-debug:
     runs-on: ubuntu-latest
