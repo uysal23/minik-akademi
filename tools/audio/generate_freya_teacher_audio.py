@@ -10,11 +10,11 @@ import tempfile
 from pathlib import Path
 
 PROFILE_SPEED = {
-    "TEACHER_WARM": 0.94,
-    "TEACHER_PHONICS": 0.86,
-    "TEACHER_MATH": 0.92,
-    "TEACHER_STORY": 0.94,
-    "TEACHER_ENCOURAGE": 0.98,
+    "TEACHER_WARM": 0.92,
+    "TEACHER_PHONICS": 0.85,
+    "TEACHER_MATH": 0.90,
+    "TEACHER_STORY": 0.92,
+    "TEACHER_ENCOURAGE": 0.96,
 }
 
 def main() -> None:
@@ -42,6 +42,7 @@ def main() -> None:
 
     print("Loading FreyaTTS-small (Apache-2.0) on CPU.")
     print("No paid API, API key, cloud TTS runtime, or device TTS is used.")
+    print("V2.1 soft-voice post-processing is enabled.")
     tts = FreyaTTS.from_pretrained("freyavoice/freya-tts", device="cpu")
 
     results = []
@@ -71,12 +72,21 @@ def main() -> None:
                 if not wav_path.exists() or wav_path.stat().st_size < 1024:
                     raise RuntimeError("FreyaTTS did not create a valid WAV")
 
-                # Preserve pitch while applying the locked task-profile tempo,
-                # normalize gently, then package as 24 kHz mono OGG for the APK.
+                # V2.1 softening pass:
+                # - preserve the original voice/pitch
+                # - slightly relax tempo
+                # - gently reduce harsh upper-mid / treble energy
+                # - add a very small amount of low-mid warmth
+                # - normalize less aggressively than V2.0
                 audio_filter = (
                     f"atempo={speed},"
-                    "loudnorm=I=-18:LRA=11:TP=-2"
+                    "equalizer=f=220:t=q:w=1.0:g=1.2,"
+                    "equalizer=f=4200:t=q:w=1.0:g=-2.2,"
+                    "equalizer=f=6500:t=q:w=0.9:g=-2.8,"
+                    "lowpass=f=9200,"
+                    "loudnorm=I=-19:LRA=12:TP=-2.5"
                 )
+
                 subprocess.run(
                     [
                         "ffmpeg", "-y", "-loglevel", "error",
@@ -100,6 +110,7 @@ def main() -> None:
                 "speed": speed,
                 "steps": args.steps,
                 "voice": "FreyaTTS-small canonical Leyla seed",
+                "processing": "V2.1 soft-voice",
             })
         except Exception as exc:
             print(f"FAILED {audio_id}: {exc}", file=sys.stderr)
@@ -114,6 +125,15 @@ def main() -> None:
         "runtimeTtsUsed": False,
         "sourceSampleRate": 48000,
         "packagedSampleRate": 24000,
+        "processingProfile": "V2.1_SOFT_VOICE",
+        "softening": {
+            "lowMidWarmthDb": 1.2,
+            "upperMidCutDb": -2.2,
+            "trebleCutDb": -2.8,
+            "lowpassHz": 9200,
+            "targetLufs": -19,
+            "truePeakDb": -2.5
+        },
         "steps": args.steps,
         "requested": len(items),
         "generated": sum(1 for x in results if x["status"] == "generated"),
@@ -122,6 +142,7 @@ def main() -> None:
         "results": results,
         "failures": failures,
     }
+
     report_path = Path(args.report)
     report_path.parent.mkdir(parents=True, exist_ok=True)
     report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
