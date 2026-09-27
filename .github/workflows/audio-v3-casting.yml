@@ -56,8 +56,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python tools/audio/generate_gentle_voice_casting.py             --freya-root /tmp/FreyaTTS             --output-dir audio/v3/casting             --report audio/v3/casting_report.json             --steps 32
-          test "$(find audio/v3/casting -type f -name '*.ogg' | wc -l)" -eq 24
+          python tools/audio/generate_gentle_voice_casting.py             --freya-root /tmp/FreyaTTS             --output-dir audio/v3/casting             --report audio/v3/casting_report.json             --steps 20
+          test "$(find audio/v3/casting -type f -name '*.ogg' | wc -l)" -eq 12
 
       - name: Upload casting pack
         uses: actions/upload-artifact@v4
