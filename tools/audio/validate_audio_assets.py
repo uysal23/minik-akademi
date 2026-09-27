@@ -112,4 +112,9 @@ def main() -> int:
             errors.append("active audio phonemeQa must be USER_APPROVED")
         if manifest.get("paidApiUsed") is not False:
             errors.append("active audio manifest must declare paidApiUsed=false")
+        manifest_ids = {str(x) for x in manifest.get("speechIds", [])}
+        if manifest_ids != required_speech:
+            missing = sorted(required_speech - manifest_ids)
+            extra_ids = sorted(manifest_ids - required_speech)
+            errors.append(f"V4 C manifest speechIds mismatch: missing={missing} extra={extra_ids}")
 
