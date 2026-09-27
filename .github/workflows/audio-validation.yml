@@ -9,6 +9,13 @@ on:
       - ".github/workflows/audio-validation.yml"
   workflow_dispatch:
 
+permissions:
+  contents: read
+  actions: read
+
+env:
+  GITHUB_TOKEN: ${{ github.token }}
+
 jobs:
   validate-audio:
     runs-on: ubuntu-24.04
@@ -21,5 +28,5 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Validate offline speech and SFX coverage
+      - name: Prepare approved V4 C audio\n        run: python tools/audio/prepare_v4_runtime_audio.py\n\n      - name: Validate offline speech and SFX coverage
         run: python tools/audio/validate_audio_assets.py
