@@ -177,8 +177,10 @@ class PedagogicalUiReviewTest {
         waitForText("Ayarlar")
         rule.onNodeWithText("Ebeveyn Paneline Dön").performScrollTo().performClick()
         rule.waitForIdle()
-        waitForText("Ebeveyn Paneli")
-        rule.onNodeWithText("Çocuk Moduna Dön").performScrollTo().performClick()
+        rule.onNodeWithText("Çocuk Moduna Dön")
+            .performScrollTo()
+            .assertIsDisplayed()
+            .performClick()
         rule.waitForIdle()
         waitForText("Merhaba, Ece")
 
