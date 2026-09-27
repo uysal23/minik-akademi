@@ -6,6 +6,7 @@ import io
 import json
 import os
 import shutil
+import subprocess
 import sys
 import urllib.error
 import urllib.request
@@ -20,7 +21,27 @@ MANIFEST = ROOT / "audio" / "manifest" / "audio_manifest.json"
 APPROVED_PHONEMES = ROOT / "audio" / "v4" / "approved_phonemes" / "minik-akademi-v4-c-phoneme-qa.zip"
 
 REPO = os.environ.get("GITHUB_REPOSITORY", "uysal23/minik-akademi")
-TOKEN = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+def git_checkout_token() -> str | None:
+    try:
+        header = subprocess.check_output(
+            ["git", "config", "--get", "http.https://github.com/.extraheader"],
+            cwd=ROOT, text=True, stderr=subprocess.DEVNULL
+        ).strip()
+    except Exception:
+        return None
+    prefix = "AUTHORIZATION: basic "
+    if not header.upper().startswith(prefix.upper()):
+        return None
+    import base64
+    try:
+        raw = base64.b64decode(header[len(prefix):]).decode("utf-8")
+    except Exception:
+        return None
+    if ":" not in raw:
+        return None
+    return raw.split(":", 1)[1]
+
+TOKEN = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN") or git_checkout_token()
 LOCAL_ARCHIVE = os.environ.get("MINIK_V4_AUDIO_ARCHIVE")
 
 ARTIFACTS = [
