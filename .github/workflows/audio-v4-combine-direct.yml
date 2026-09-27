@@ -1,15 +1,8 @@
 name: Audio V4 C Direct Combine
 
+# Historical/maintenance workflow. Manual dispatch only after Audio V4 C activation.
 on:
-  push:
-    branches: [ "main" ]
-    paths:
-      - ".github/workflows/audio-v4-combine-direct.yml"
   workflow_dispatch:
-
-permissions:
-  contents: read
-  actions: read
 
 jobs:
   combine:
