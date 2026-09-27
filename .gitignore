@@ -9,4 +9,4 @@ captures/
 .cxx/
 
 # Generated at build time from the approved V4 C audio pack
-audio/runtime/
+audio_v4/runtime/
