@@ -310,37 +310,44 @@ fun LetterLessonScreen(
                 }
             }
 
-            activities.forEachIndexed { index, activity ->
-                val previousComplete = index == 0 || activities[index - 1].id in completedActivityIds
-                val complete = activity.id in completedActivityIds
-                Card(
-                    onClick = { if (previousComplete) onOpenActivity(activity.id) },
-                    enabled = previousComplete,
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = when {
-                            complete -> MaterialTheme.colorScheme.primaryContainer
-                            previousComplete -> MaterialTheme.colorScheme.surface
-                            else -> MaterialTheme.colorScheme.surfaceVariant
-                        }
-                    )
-                ) {
-                    Column(
-                        modifier = Modifier.padding(15.dp),
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
-                    ) {
-                        Text(
-                            text = (index + 1).toString() + ". " + activity.title,
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            when {
-                                complete -> "✓ Tamamlandı"
-                                previousComplete -> activity.instruction
-                                else -> "Önce bir önceki çalışmayı tamamla."
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                activities.forEachIndexed { index, activity ->
+                    val previousComplete = index == 0 || activities[index - 1].id in completedActivityIds
+                    val complete = activity.id in completedActivityIds
+                    Card(
+                        onClick = { if (previousComplete) onOpenActivity(activity.id) },
+                        enabled = previousComplete,
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(
+                            containerColor = when {
+                                complete -> MaterialTheme.colorScheme.primaryContainer
+                                previousComplete -> MaterialTheme.colorScheme.surface
+                                else -> MaterialTheme.colorScheme.surfaceVariant
                             }
                         )
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(15.dp),
+                            verticalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Text(
+                                text = (index + 1).toString() + ". " + activity.title,
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                when {
+                                    complete -> "✓ Tamamlandı"
+                                    previousComplete -> activity.instruction
+                                    else -> "Önce bir önceki çalışmayı tamamla."
+                                }
+                            )
+                        }
                     }
                 }
             }
@@ -519,7 +526,12 @@ private fun LetterIntroGame(
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.secondary
         )
-        Button(onClick = onPlayPhoneme) {
+        Button(
+            onClick = {
+                onPlayPhoneme()
+                onComplete()
+            }
+        ) {
             Text("🔊 Harfi Dinle")
         }
         KidPrimaryButton(text = "Hazırım", onClick = onComplete)
