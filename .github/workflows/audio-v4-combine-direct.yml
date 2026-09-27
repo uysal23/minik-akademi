@@ -1,0 +1,107 @@
+name: Audio V4 C Direct Combine
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - ".github/workflows/audio-v4-combine-direct.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  combine:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Download successful chunk artifacts directly
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p zips downloaded combined metadata
+          ids=(
+            10934530775
+            10934520470
+            10934137791
+            10933494299
+            10933768803
+            10933544334
+            10933959440
+            10934261948
+            10934615218
+            10933089807
+            10933883786
+            10934436488
+            10934112768
+            10934117425
+            10934102830
+            10933569101
+          )
+
+          for id in "${ids[@]}"; do
+            echo "Downloading artifact $id"
+            curl --fail --location --retry 3               -H "Authorization: Bearer $GH_TOKEN"               -H "Accept: application/vnd.github+json"               -H "X-GitHub-Api-Version: 2022-11-28"               "https://api.github.com/repos/${{ github.repository }}/actions/artifacts/$id/zip"               -o "zips/$id.zip"
+            mkdir -p "downloaded/$id"
+            unzip -q "zips/$id.zip" -d "downloaded/$id"
+          done
+
+          echo "All source OGG files:"
+          find downloaded -type f -name '*.ogg' -print | sort
+
+          mapfile -d '' files < <(find downloaded -type f -name '*.ogg' -print0)
+          echo "Source OGG count: ${#files[@]}"
+          test "${#files[@]}" -eq 159
+
+          printf '%s\0' "${files[@]}" | while IFS= read -r -d '' f; do
+            base="$(basename "$f")"
+            if [[ -e "combined/$base" ]]; then
+              echo "Duplicate basename found: $base"
+              exit 2
+            fi
+            cp "$f" "combined/$base"
+          done
+
+          count="$(find combined -maxdepth 1 -type f -name '*.ogg' | wc -l)"
+          echo "Combined unique OGG count: $count"
+          test "$count" -eq 159
+
+      - name: Download reviewed manifest directly
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3             -H "Authorization: Bearer $GH_TOKEN"             -H "Accept: application/vnd.github+json"             -H "X-GitHub-Api-Version: 2022-11-28"             "https://api.github.com/repos/${{ github.repository }}/actions/artifacts/10933588574/zip"             -o manifest.zip
+          unzip -q manifest.zip -d metadata
+          test -f metadata/full_manifest.json
+
+      - name: Write staging status
+        shell: bash
+        run: |
+          cat > metadata/STAGING_INFO.txt <<'EOF'
+          Minik Akademi Audio V4 — C Voice
+          Status: STAGING / NOT PROMOTED TO LIVE APP
+          Engine: ResembleAI Chatterbox Multilingual V3
+          Voice choice: C
+          Seed: 618034
+          Paid API: none
+          API key: none
+          Content validation: PASS
+          Spoken text QA: PASS (159/159)
+          Generated OGG: 159/159
+          Manual phoneme QA required before live promotion.
+          EOF
+
+      - name: Upload complete staging pack
+        uses: actions/upload-artifact@v4
+        with:
+          name: minik-akademi-audio-v4-c-full-staging
+          path: |
+            combined/*.ogg
+            metadata/full_manifest.json
+            metadata/STAGING_INFO.txt
+          if-no-files-found: error
+          retention-days: 30
