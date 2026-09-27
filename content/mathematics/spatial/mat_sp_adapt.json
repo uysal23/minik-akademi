@@ -13,7 +13,7 @@
   "learningLevel": "GRADE_1",
   "activityType": "POSITION_SELECT",
   "instruction": {
-    "text": "Avatarı sandalyenin neresine yerleştir?",
+    "text": "Avatarın sandalyeye göre nerede olması gerektiğini seç.",
     "audioId": "aud_act_mat_sp_adapt_instruction",
     "voiceProfile": "TEACHER_MATH",
     "replayAllowed": true
