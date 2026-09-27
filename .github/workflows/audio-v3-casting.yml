@@ -1,19 +1,8 @@
 name: Audio V3 Gentle Voice Casting
 
+# Historical/maintenance workflow. Manual dispatch only after Audio V4 C activation.
 on:
-  push:
-    branches: [ "main" ]
-    paths:
-      - "tools/audio/generate_gentle_voice_casting.py"
-      - ".github/workflows/audio-v3-casting.yml"
   workflow_dispatch:
-
-permissions:
-  contents: read
-
-concurrency:
-  group: audio-v3-casting-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   casting:
