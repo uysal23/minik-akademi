@@ -66,10 +66,13 @@ def main() -> None:
 
     manifest = {
         "schemaVersion": "2.0",
-        "provider": "MiniMax",
-        "model": "speech-2.8-hd",
-        "voice": "Turkish_CalmWoman",
-        "languageBoost": "Turkish",
+        "provider": "self-hosted open source",
+        "model": "freyavoice/freya-tts",
+        "modelFamily": "FreyaTTS-small",
+        "license": "Apache-2.0",
+        "voice": "canonical Leyla seed",
+        "paidApiUsed": False,
+        "apiKeyRequired": False,
         "runtimeMode": "OFFLINE_PACKAGED_AUDIO",
         "profiles": PROFILES,
         "items": [by_id[k] for k in sorted(by_id)],
@@ -78,7 +81,6 @@ def main() -> None:
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"Wrote {len(manifest['items'])} Audio V2 prompts")
-
 
 if __name__ == "__main__":
     main()
