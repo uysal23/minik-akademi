@@ -9,6 +9,7 @@ import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -171,11 +172,14 @@ class PedagogicalUiReviewTest {
         rule.onAllNodes(hasSetTextAction())[0].performTextInput("1234")
         clickText("Giriş")
         waitForText("Ebeveyn Paneli")
-        clickText("Ayarlar")
+        rule.onNodeWithText("Ayarlar").performScrollTo().performClick()
+        rule.waitForIdle()
         waitForText("Ayarlar")
-        clickText("Ebeveyn Paneline Dön")
+        rule.onNodeWithText("Ebeveyn Paneline Dön").performScrollTo().performClick()
+        rule.waitForIdle()
         waitForText("Ebeveyn Paneli")
-        clickText("Çocuk Moduna Dön")
+        rule.onNodeWithText("Çocuk Moduna Dön").performScrollTo().performClick()
+        rule.waitForIdle()
         waitForText("Merhaba, Ece")
 
         clickText("Çiziyorum")
