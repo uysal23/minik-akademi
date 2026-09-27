@@ -16,11 +16,19 @@
 - The nine phonemes `a, n, e, t, i, l, o, k, u` use the exact user-approved QA set.
 - Speech format: OGG/Vorbis, mono, 24 kHz.
 - The seven locked SFX remain unchanged.
-- V1 Antalia speech is no longer an active APK asset source and is archived under `audio/legacy/v1/speech`.
-- The Android app packages speech only from `audio/runtime/speech`.
-- `tools/audio/prepare_v4_runtime_audio.py` assembles the 16 checksum-pinned approved C chunks, overlays the approved phonemes, verifies the full 159-ID inventory, and copies the unchanged SFX before build.
-- Runtime internet/TTS remains absent; all audio is packaged into the APK at build time.
+- The locked V1 `audio/` tree is preserved byte-for-byte for regression history only.
+- The Android app **does not package speech from the V1 audio tree**.
+- The only active APK audio asset root is `audio_v4/runtime/`.
+- `tools/audio/prepare_v4_runtime_audio.py` assembles the 16 checksum-pinned approved C chunks, overlays the exact approved phoneme files, verifies the pinned 159-ID inventory, and copies the seven unchanged SFX before build.
+- Runtime TTS and runtime internet remain absent. The prepared audio is packaged into the APK as offline assets.
+
+## Lock compatibility
+
+The protected `audio` tree remains at the locked baseline SHA:
+`a76f8b07e160a9c16a34fb21009352368ad9cc85`.
+
+V4 C maintenance assets live outside that protected tree under `audio_v4/`, so the original V1 baseline remains reproducible while the application build uses only the approved C voice.
 
 ## Owner approval
 
-The owner explicitly selected **C** and approved the final nine-phoneme QA set, then requested that all sounds be updated to C without per-file confirmation.
+The owner explicitly selected **C**, approved the final nine-phoneme QA set, and requested that all application speech be switched to C without per-file confirmation.
