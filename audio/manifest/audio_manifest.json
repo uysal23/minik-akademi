@@ -1,0 +1,122 @@
+{
+  "schemaVersion": "1.0",
+  "audioRevision": "V4_C",
+  "status": "ACTIVE_BUILD_SOURCE",
+  "provider": "self-hosted open source",
+  "model": "ResembleAI Chatterbox Multilingual V3",
+  "language": "tr",
+  "voice": "C",
+  "voiceSeed": 618034,
+  "voiceParameters": {
+    "exaggeration": 0.25,
+    "cfgWeight": 0.2,
+    "temperature": 0.6
+  },
+  "license": "MIT",
+  "paidApiUsed": false,
+  "apiKeyRequired": false,
+  "runtimeMode": "OFFLINE_PACKAGED_AUDIO",
+  "speechCount": 159,
+  "sfxCount": 7,
+  "phonemeQa": "USER_APPROVED",
+  "phonemes": [
+    "a",
+    "n",
+    "e",
+    "t",
+    "i",
+    "l",
+    "o",
+    "k",
+    "u"
+  ],
+  "spokenTextQa": "PASS_159_OF_159",
+  "contentValidation": "PASS",
+  "activeAssetRoot": "audio/runtime",
+  "legacyV1Root": "audio/legacy/v1",
+  "inventorySource": "locked content JSON + 4 common prompts + 9 phonemes + numbers 0-20",
+  "buildPreparer": "tools/audio/prepare_v4_runtime_audio.py",
+  "approvedPhonemePack": "audio/v4/approved_phonemes/minik-akademi-v4-c-phoneme-qa.zip",
+  "sourceArtifacts": [
+    {
+      "start": 0,
+      "artifactId": 10934530775,
+      "sha256": "e1efee1da61b4b6e9fd9e58c1269117c55ca6c1f5b78d791bc5be8f61631d3c1"
+    },
+    {
+      "start": 10,
+      "artifactId": 10934520470,
+      "sha256": "dec5dc7194eb2c1b2b97ad4b8d6cb1e07516dba57e7397087bf5cd8fb70aeb36"
+    },
+    {
+      "start": 20,
+      "artifactId": 10934137791,
+      "sha256": "363817218db29f9a58720fc871ac7a0510e45ddeb55951f0a65db8a70d1e57ee"
+    },
+    {
+      "start": 30,
+      "artifactId": 10933494299,
+      "sha256": "814c738ae37861eeafcb7cff284149ae2ac41bd80c563e08b0cb26e067f64cb3"
+    },
+    {
+      "start": 40,
+      "artifactId": 10933768803,
+      "sha256": "16f5ffa565d6f512f6b4f3306a5a707bdd36bb2f00a17cc3cbf7d72a4ede80ff"
+    },
+    {
+      "start": 50,
+      "artifactId": 10933544334,
+      "sha256": "02bcae91b35f69eb46a960a0d5104f1d16985479b6205e655f88516dbc7c0b1b"
+    },
+    {
+      "start": 60,
+      "artifactId": 10933959440,
+      "sha256": "423f2585feaa5bff5c562f2a6f20baadb3cf1c9f18c012caea9837f511077105"
+    },
+    {
+      "start": 70,
+      "artifactId": 10934261948,
+      "sha256": "3e163f1bf525eb84923f3f5060c353eabe4515cb1c7db93a628cd3413628646a"
+    },
+    {
+      "start": 80,
+      "artifactId": 10934615218,
+      "sha256": "6a8244f9025f88089fd3f2bef43667875751b30c07c70e841c2f335aee922a6a"
+    },
+    {
+      "start": 90,
+      "artifactId": 10933089807,
+      "sha256": "822fb5f3c0275add3bae07d14936ca0606820794aec3784c96522cc88854db74"
+    },
+    {
+      "start": 100,
+      "artifactId": 10933883786,
+      "sha256": "24af0cc6876c2a7e592d6a9a58f1260872aea481f5a9172870d2efa0102d3b8a"
+    },
+    {
+      "start": 110,
+      "artifactId": 10934436488,
+      "sha256": "ff8330ccc7b48001adb0d91ad32d43b835dbe26466cbd36dd9665958c59f2a93"
+    },
+    {
+      "start": 120,
+      "artifactId": 10934112768,
+      "sha256": "3cbd6ccf99f3334d55ebced1b3c255beb3954bebeb16fd444f0d5aeaf84a7cc1"
+    },
+    {
+      "start": 130,
+      "artifactId": 10934117425,
+      "sha256": "8cc1907ccb2bce7ad4aa9405e76245dacba0cae6e051a58bfa4e887494c9677d"
+    },
+    {
+      "start": 140,
+      "artifactId": 10934102830,
+      "sha256": "b5efabf6925b0e3743d2da7d1d90462ca3e9d03c4d1e442e5e37fcc541ac8b86"
+    },
+    {
+      "start": 150,
+      "artifactId": 10933569101,
+      "sha256": "fbff24013e91382e96459a1c2267e6668faef2a3037308c6b4499bd1b43ed8ff"
+    }
+  ]
+}
