@@ -3,3 +3,5 @@
 # Production v1.0 authorized after production signing secrets were configured.
 status=RUN_PRODUCTION_V1
 retry=robust-setup-summary-v2
+
+# rerun-after-production-smoke-hardening
