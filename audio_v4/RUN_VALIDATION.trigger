@@ -1,5 +1,5 @@
-run=public-runner-retry
+run=permanent-v4-c-source
 audio_revision=V4_C
 voice=C
-reason=validate-and-build-after-public
-revision=1790535875577
+source=audio_v4/source/v4_live.zip
+revision=3
