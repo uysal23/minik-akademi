@@ -1,15 +1,8 @@
 name: Promote Audio V4 C Live
 
+# Historical/maintenance workflow. Manual dispatch only after Audio V4 C activation.
 on:
-  push:
-    branches: [ "main" ]
-    paths:
-      - ".github/workflows/audio-v4-promote-live.yml"
   workflow_dispatch:
-
-permissions:
-  contents: write
-  actions: read
 
 jobs:
   promote:
