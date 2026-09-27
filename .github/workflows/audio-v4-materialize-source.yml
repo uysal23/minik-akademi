@@ -1,0 +1,122 @@
+name: Materialize Audio V4 C Source
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - ".github/workflows/audio-v4-materialize-source.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  materialize:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download approved V4 C chunks from successful source run
+        uses: actions/download-artifact@v4
+        with:
+          pattern: audio-v4-c-chunk-*
+          path: /tmp/v4chunks
+          merge-multiple: true
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 36326154456
+
+      - name: Assemble and validate permanent V4 C archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+          import hashlib
+          import json
+          import shutil
+          import zipfile
+          from pathlib import Path
+
+          root = Path.cwd()
+          chunks = Path("/tmp/v4chunks")
+          flat = Path("/tmp/v4flat")
+          flat.mkdir(parents=True, exist_ok=True)
+
+          seen = set()
+          for src in sorted(chunks.rglob("*.ogg")):
+              name = src.name
+              if name in seen:
+                  raise SystemExit(f"duplicate source OGG: {name}")
+              shutil.copy2(src, flat / name)
+              seen.add(name)
+
+          if len(seen) != 159:
+              raise SystemExit(f"expected 159 source OGG files, found {len(seen)}")
+
+          # Overlay the exact owner-approved nine phoneme files.
+          approved = root / "audio_v4" / "approved_phonemes"
+          phonemes = {"a","n","e","t","i","l","o","k","u"}
+          for ph in sorted(phonemes):
+              src = approved / f"aud_phoneme_{ph}.ogg"
+              if not src.is_file():
+                  raise SystemExit(f"approved phoneme missing: {src}")
+              shutil.copy2(src, flat / src.name)
+
+          manifest = json.loads((root / "audio_v4" / "manifest" / "audio_manifest.json").read_text(encoding="utf-8"))
+          expected_ids = set(manifest["speechIds"])
+          actual_ids = {p.stem for p in flat.glob("*.ogg")}
+          if actual_ids != expected_ids:
+              missing = sorted(expected_ids - actual_ids)
+              extra = sorted(actual_ids - expected_ids)
+              raise SystemExit(f"speech inventory mismatch missing={missing} extra={extra}")
+
+          for p in flat.glob("*.ogg"):
+              data = p.read_bytes()
+              if len(data) <= 256 or not data.startswith(b"OggS") or b"\x01vorbis" not in data[:8192]:
+                  raise SystemExit(f"invalid OGG/Vorbis: {p.name}")
+
+          out_dir = root / "audio_v4" / "source"
+          out_dir.mkdir(parents=True, exist_ok=True)
+          archive = out_dir / "v4_live.zip"
+
+          # Deterministic archive: fixed timestamp, sorted names.
+          with zipfile.ZipFile(archive, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zf:
+              for p in sorted(flat.glob("*.ogg"), key=lambda x: x.name):
+                  info = zipfile.ZipInfo(p.name, date_time=(2026, 9, 27, 16, 51, 22))
+                  info.compress_type = zipfile.ZIP_DEFLATED
+                  info.external_attr = 0o100644 << 16
+                  info.create_system = 3
+                  zf.writestr(info, p.read_bytes(), compress_type=zipfile.ZIP_DEFLATED, compresslevel=9)
+
+          digest = hashlib.sha256(archive.read_bytes()).hexdigest()
+          (out_dir / "v4_live.sha256").write_text(f"{digest}  v4_live.zip\n", encoding="utf-8")
+          (out_dir / "README.md").write_text(
+              "# V4 C permanent source\n\n"
+              "This archive contains the 159 owner-approved V4 C speech assets.\n"
+              "The nine phonemes are the exact manually approved QA files.\n"
+              "Builds verify v4_live.zip against v4_live.sha256 before use.\n",
+              encoding="utf-8",
+          )
+          print(f"Permanent V4 C archive ready: {archive}")
+          print(f"speech=159 sha256={digest}")
+          PY
+
+          test -s audio_v4/source/v4_live.zip
+          test -s audio_v4/source/v4_live.sha256
+
+      - name: Commit permanent V4 C source archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audio_v4/source/v4_live.zip audio_v4/source/v4_live.sha256 audio_v4/source/README.md
+          if git diff --cached --quiet; then
+            echo "Permanent V4 C source archive already matches."
+            exit 0
+          fi
+          git commit -m "audio: materialize permanent approved V4 C source archive"
+          git push origin HEAD:main
