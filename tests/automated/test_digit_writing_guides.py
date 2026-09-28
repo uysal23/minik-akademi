@@ -38,7 +38,7 @@ class DigitWritingGuidesTest(unittest.TestCase):
 
     def test_zero_direction_and_two_shape_are_explicit(self) -> None:
         self.assertIn(
-            "arc(0.50f, 0.52f, 0.22f, 0.32f, -90f, -450f, 64)",
+            "arc(0.50f, 0.52f, 0.22f, 0.32f, -30f, -390f, 64)",
             self.guide,
         )
         for token in (
@@ -50,11 +50,12 @@ class DigitWritingGuidesTest(unittest.TestCase):
             self.assertIn(token, self.guide)
 
     def test_complex_digits_use_continuous_or_explicit_multistroke_forms(self) -> None:
-        self.assertIn("// 1 iki hareket", self.guide)
+        self.assertIn("// 1 tek kesintisiz hareket", self.guide)
         self.assertIn("// 4: eğik-aşağı + yatay hareket, sonra ayrı dik hareket.", self.guide)
-        self.assertIn("// 5: önce aşağı inip alt kavsi tamamla", self.guide)
+        self.assertIn("// 5 iki hareket: önce üst yatay", self.guide)
+        self.assertIn("// 7 iki hareket: üst yatay", self.guide)
         self.assertIn("// 8 tek kesintisiz hareket", self.guide)
-        self.assertIn("// 9: üst halkayı tamamla", self.guide)
+        self.assertIn("// 9: saat 2 civarından", self.guide)
         self.assertIn("fun cubic(", self.guide)
         self.assertIn("fun join(vararg parts: List<Offset>)", self.guide)
 
@@ -69,7 +70,8 @@ class DigitWritingGuidesTest(unittest.TestCase):
             "distance(expectedStart, point) <= startTolerance()",
             "(from + 10).coerceAtMost(active.lastIndex)",
             "bestIndex >= activeProgressIndex",
-            "if (ratio >= 0.80f)",
+            "val reachedEnd = activeProgressIndex >= (active.lastIndex - 2).coerceAtLeast(0)",
+            "if (ratio >= 0.90f && reachedEnd)",
             "nextStroke >= guide.size",
             "Math.atan2",
             "middleY = size.height * 0.52f",
@@ -80,6 +82,7 @@ class DigitWritingGuidesTest(unittest.TestCase):
 
         self.assertNotIn("visited.size.toFloat() / guide.size.toFloat()", trace)
         self.assertNotIn("ratio >= 0.68f", trace)
+        self.assertNotIn("ratio >= 0.80f", trace)
 
     def test_model_preview_uses_exact_same_vector_geometry(self) -> None:
         start = self.source.index("private fun DigitModelPreview")
