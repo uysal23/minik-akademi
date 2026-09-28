@@ -591,11 +591,14 @@ private fun FindDifferenceGame(
                 clickable = true,
                 onSelect = { index ->
                     if (index in correct) {
-                        found = found + index
-                        if (!finished && found.size == correct.size) {
+                        val next = found + index
+                        found = next
+                        if (!finished && next.size == correct.size) {
                             finished = true
                             onComplete()
                         }
+                    } else {
+                        onRetry()
                     }
                 }
             )
