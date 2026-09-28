@@ -7,7 +7,7 @@
     "audio": "a76f8b07e160a9c16a34fb21009352368ad9cc85",
     "content": "58b64a85eda9661deebbe605e29b44c0ed2cc3f4",
     "core": "04a6e272bb052dc43d9e3dd46899e68218ab9c9a",
-    "feature": "ef88d83087a3e93fde1eb29bf6998c31f08e4300"
+    "feature": "aefaabf386ba6fde3f5a1703dbca1e117dedcbff"
   },
   "protectedFiles": {
     "BUILD_PROCESS.md": "6825b933dea10bd44c912097c3e37e4476395223",
@@ -44,10 +44,10 @@
     "id": "DIGIT_WRITING_MAINTENANCE_2026_09_28",
     "ownerApproved": true,
     "changes": [
-      "0-9 digit forms aligned to the current MEB basic-form and writing-direction reference",
+      "0-9 digit forms aligned to the current MEB basic-form and writing-direction reference, including current stroke counts and circular starts",
       "digit tracing converted from unordered flat hit-map completion to stroke-aware ordered guidance",
-      "per-stroke start points, direction arrows and writing guide lines added",
-      "each stroke requires at least 80% forward progress and all strokes are required for completion",
+      "per-stroke start points, direction arrows, endpoint cues and three-line writing guides added",
+      "each stroke requires at least 90% forward progress plus reaching the stroke endpoint and all strokes are required for completion",
       "displayed model digit now renders from the exact same vector geometry as the trace path",
       "automated QA added for all ten digit-writing activities and known legacy geometry regressions",
       "release APK build remains gated and was not started for this maintenance"
@@ -81,10 +81,10 @@
       "id": "DIGIT_WRITING_MAINTENANCE_2026_09_28",
       "ownerApproved": true,
       "changes": [
-        "0-9 digit forms aligned to the current MEB basic-form and writing-direction reference",
+        "0-9 digit forms aligned to the current MEB basic-form and writing-direction reference, including current stroke counts and circular starts",
         "digit tracing converted from unordered flat hit-map completion to stroke-aware ordered guidance",
-        "per-stroke start points, direction arrows and writing guide lines added",
-        "each stroke requires at least 80% forward progress and all strokes are required for completion",
+        "per-stroke start points, direction arrows, endpoint cues and three-line writing guides added",
+        "each stroke requires at least 90% forward progress plus reaching the stroke endpoint and all strokes are required for completion",
         "displayed model digit now renders from the exact same vector geometry as the trace path",
         "automated QA added for all ten digit-writing activities and known legacy geometry regressions",
         "release APK build remains gated and was not started for this maintenance"
