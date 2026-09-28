@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-09-28 — Full Content Pedagogy Audit V1
+
+- Audited all 125 authored activities plus all 20 live V4 instruction overrides for learning-target, answer, progression, safety and runtime consistency.
+- Pre-writing tracing now requires the correct start point, forward progress, at least 90% path coverage and the real endpoint; the former unordered ~72% point-collection completion was removed.
+- Letter tracing now uses ordered MEB-aligned multi-stroke guides for a, n, e, t, i, l, o, k and u; the former unordered ~70% point-collection completion was removed.
+- Letter model previews are rendered from the same vector geometry as their trace paths and use three-line writing guides with direction arrows.
+- Find Difference now gives gentle retry feedback on incorrect selections instead of silently ignoring them.
+- Added a permanent semantic CI audit covering all activity files, live instruction overrides, option correctness, count/arithmetic/rhythmic answers, Turkish İ/ı normalization, allowed-letter constraints, mini-game semantics and ordered trace engines.
+- Locked content/curriculum tree remains unchanged; no release APK build was started.
+
 ## 2026-09-28 — Digit Writing Maintenance V1
 
 - Project-owner approved maintenance audits all 0–9 digit-writing activities against the current MEB basic-form and writing-direction reference.

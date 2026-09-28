@@ -320,103 +320,160 @@ private fun TraceBoard(
 ) {
     val normalizedGuide = remember(targetSymbol) { createGuide(targetSymbol) }
     var boardSize by remember { mutableStateOf(IntSize.Zero) }
-    var visited by remember(targetSymbol) { mutableStateOf(emptySet<Int>()) }
+    var progressIndex by remember(targetSymbol) { mutableStateOf(0) }
     var stroke by remember(targetSymbol) { mutableStateOf(emptyList<Offset>()) }
+    var strokeAccepted by remember(targetSymbol) { mutableStateOf(false) }
     var completed by remember(targetSymbol) { mutableStateOf(false) }
+    var hint by remember(targetSymbol) { mutableStateOf("Büyük başlangıç noktasından başla.") }
 
-    fun markNearby(point: Offset) {
-        if (boardSize.width <= 0 || boardSize.height <= 0) return
-        val tolerance = (boardSize.width.coerceAtMost(boardSize.height) * 0.075f)
-            .coerceIn(22f, 52f)
-        val additions = buildSet {
-            normalizedGuide.forEachIndexed { index, n ->
-                val guidePoint = Offset(
-                    x = n.x * boardSize.width,
-                    y = n.y * boardSize.height
-                )
-                val dx = guidePoint.x - point.x
-                val dy = guidePoint.y - point.y
-                if (sqrt(dx * dx + dy * dy) <= tolerance) add(index)
+    val guideColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.30f)
+    val childColor = MaterialTheme.colorScheme.primary
+    val successColor = MaterialTheme.colorScheme.secondary
+    val futureColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.16f)
+
+    fun toCanvasPoint(n: Offset): Offset =
+        Offset(n.x * boardSize.width, n.y * boardSize.height)
+
+    fun distance(a: Offset, b: Offset): Float {
+        val dx = a.x - b.x
+        val dy = a.y - b.y
+        return sqrt(dx * dx + dy * dy)
+    }
+
+    fun tolerance(): Float =
+        (boardSize.width.coerceAtMost(boardSize.height) * 0.075f).coerceIn(22f, 52f)
+
+    fun startTolerance(): Float = tolerance() * 1.30f
+
+    fun markForward(point: Offset) {
+        if (!strokeAccepted || normalizedGuide.isEmpty()) return
+        val from = progressIndex.coerceIn(0, normalizedGuide.lastIndex)
+        val to = (from + 10).coerceAtMost(normalizedGuide.lastIndex)
+        var bestIndex = from
+        var bestDistance = Float.MAX_VALUE
+        for (index in from..to) {
+            val d = distance(toCanvasPoint(normalizedGuide[index]), point)
+            if (d < bestDistance) {
+                bestDistance = d
+                bestIndex = index
             }
         }
-        if (additions.isNotEmpty()) {
-            visited = visited + additions
+        if (bestDistance <= tolerance() && bestIndex >= progressIndex) {
+            progressIndex = bestIndex
         }
     }
 
     fun finishStroke() {
-        val ratio = if (normalizedGuide.isEmpty()) 0f
-        else visited.size.toFloat() / normalizedGuide.size.toFloat()
-
-        if (!completed && ratio >= 0.72f) {
-            completed = true
-            onComplete()
+        if (!strokeAccepted || normalizedGuide.isEmpty()) {
+            stroke = emptyList()
+            strokeAccepted = false
+            return
         }
+        val ratio = (progressIndex + 1).toFloat() / normalizedGuide.size.toFloat()
+        val reachedEnd = progressIndex >= (normalizedGuide.lastIndex - 2).coerceAtLeast(0)
+        if (!completed && ratio >= 0.90f && reachedEnd) {
+            completed = true
+            hint = "Harika! Yolu başlangıçtan hedefe doğru tamamladın."
+            onComplete()
+        } else if (!completed) {
+            hint = "Yolu ok yönünde son noktaya kadar takip et."
+        }
+        stroke = emptyList()
+        strokeAccepted = false
+        if (!completed) progressIndex = 0
     }
-
-    val guideColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.35f)
-    val childColor = MaterialTheme.colorScheme.primary
-    val successColor = MaterialTheme.colorScheme.secondary
 
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center
     ) {
-        Canvas(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(380.dp)
-                .onSizeChanged { boardSize = it }
-                .pointerInput(targetSymbol, boardSize) {
-                    detectDragGestures(
-                        onDragStart = { point ->
-                            stroke = listOf(point)
-                            markNearby(point)
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Canvas(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(350.dp)
+                    .onSizeChanged { boardSize = it }
+                    .pointerInput(targetSymbol, boardSize, completed) {
+                        detectDragGestures(
+                            onDragStart = { point ->
+                                if (!completed && normalizedGuide.isNotEmpty()) {
+                                    val expectedStart = toCanvasPoint(normalizedGuide.first())
+                                    if (distance(expectedStart, point) <= startTolerance()) {
+                                        strokeAccepted = true
+                                        progressIndex = 0
+                                        stroke = listOf(point)
+                                        hint = "Ok yönünde ilerle."
+                                        markForward(point)
+                                    } else {
+                                        strokeAccepted = false
+                                        stroke = emptyList()
+                                        hint = "Önce büyük başlangıç noktasına dokun."
+                                    }
+                                }
+                            },
+                            onDrag = { change, _ ->
+                                if (strokeAccepted) {
+                                    val point = change.position
+                                    stroke = stroke + point
+                                    markForward(point)
+                                }
+                                change.consume()
+                            },
+                            onDragEnd = { finishStroke() },
+                            onDragCancel = { finishStroke() }
+                        )
+                    }
+            ) {
+                normalizedGuide.forEachIndexed { index, n ->
+                    val point = Offset(n.x * size.width, n.y * size.height)
+                    val progressed = strokeAccepted && index <= progressIndex
+                    drawCircle(
+                        color = when {
+                            completed || progressed -> successColor
+                            else -> guideColor
                         },
-                        onDrag = { change, _ ->
-                            val point = change.position
-                            stroke = stroke + point
-                            markNearby(point)
-                            change.consume()
+                        radius = when {
+                            index == 0 -> 11f
+                            index == normalizedGuide.lastIndex -> 8f
+                            index % 4 == 0 -> 6f
+                            else -> 4.5f
                         },
-                        onDragEnd = { finishStroke() },
-                        onDragCancel = { finishStroke() }
+                        center = point
                     )
                 }
-        ) {
-            normalizedGuide.forEachIndexed { index, n ->
-                val point = Offset(n.x * size.width, n.y * size.height)
-                drawCircle(
-                    color = if (index in visited) successColor else guideColor,
-                    radius = if (index % 4 == 0) 6.5f else 4.5f,
-                    center = point
-                )
-            }
 
-            if (normalizedGuide.isNotEmpty()) {
-                val start = normalizedGuide.first()
-                val end = normalizedGuide.last()
-                drawCircle(
-                    color = childColor,
-                    radius = 13f,
-                    center = Offset(start.x * size.width, start.y * size.height)
-                )
-                drawCircle(
-                    color = successColor,
-                    radius = 13f,
-                    center = Offset(end.x * size.width, end.y * size.height)
-                )
-            }
+                if (normalizedGuide.size >= 8) {
+                    val from = normalizedGuide[2]
+                    val to = normalizedGuide[7]
+                    val a = Offset(from.x * size.width, from.y * size.height)
+                    val b = Offset(to.x * size.width, to.y * size.height)
+                    drawLine(childColor, a, b, 4f, cap = StrokeCap.Round)
+                    val angle = Math.atan2((b.y - a.y).toDouble(), (b.x - a.x).toDouble())
+                    val head = 15f
+                    val spread = Math.toRadians(28.0)
+                    val p1 = Offset(
+                        b.x - (kotlin.math.cos(angle - spread) * head).toFloat(),
+                        b.y - (kotlin.math.sin(angle - spread) * head).toFloat()
+                    )
+                    val p2 = Offset(
+                        b.x - (kotlin.math.cos(angle + spread) * head).toFloat(),
+                        b.y - (kotlin.math.sin(angle + spread) * head).toFloat()
+                    )
+                    drawLine(childColor, b, p1, 4f, cap = StrokeCap.Round)
+                    drawLine(childColor, b, p2, 4f, cap = StrokeCap.Round)
+                }
 
-            stroke.zipWithNext().forEach { pair ->
-                drawLine(
-                    color = childColor,
-                    start = pair.first,
-                    end = pair.second,
-                    strokeWidth = 10f,
-                    cap = StrokeCap.Round
-                )
+                stroke.zipWithNext().forEach { pair ->
+                    drawLine(
+                        color = childColor,
+                        start = pair.first,
+                        end = pair.second,
+                        strokeWidth = 10f,
+                        cap = StrokeCap.Round
+                    )
+                }
             }
+            Text(hint, style = MaterialTheme.typography.titleMedium)
         }
     }
 }
@@ -522,6 +579,8 @@ private fun FindDifferenceGame(
                             finished = true
                             onComplete()
                         }
+                    } else {
+                        onRetry()
                     }
                 }
             )
