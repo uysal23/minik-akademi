@@ -1325,6 +1325,7 @@ private fun DigitTraceGame(
     val strokeColor = MaterialTheme.colorScheme.primary
     val visitedColor = MaterialTheme.colorScheme.secondary
     val guideLineColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.24f)
+    val activeArrowColor = MaterialTheme.colorScheme.primary
 
     fun distance(a: Offset, b: Offset): Float {
         val dx = a.x - b.x
@@ -1505,11 +1506,7 @@ private fun DigitTraceGame(
                         stroke[arrowEndIndex].x * size.width,
                         stroke[arrowEndIndex].y * size.height
                     )
-                    val arrowColor = if (isActive) {
-                        MaterialTheme.colorScheme.primary
-                    } else {
-                        pointColor
-                    }
+                    val arrowColor = if (isActive) activeArrowColor else pointColor
 
                     drawLine(
                         color = arrowColor,
