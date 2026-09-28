@@ -1417,21 +1417,22 @@ private fun DigitTraceGame(
                 .pointerInput(digit, boardSize, activeStrokeIndex, finished) {
                     detectDragGestures(
                         onDragStart = { point ->
-                            if (finished || activeStrokeIndex !in guide.indices) return@detectDragGestures
-                            val active = guide[activeStrokeIndex]
-                            if (active.isEmpty()) return@detectDragGestures
-
-                            val expectedStart = toCanvasPoint(active.first())
-                            if (distance(expectedStart, point) <= startTolerance()) {
-                                currentStrokeAccepted = true
-                                activeProgressIndex = 0
-                                currentStroke = listOf(point)
-                                hint = "${activeStrokeIndex + 1}. hareket: ok yönünde ilerle."
-                                markForwardProgress(point)
-                            } else {
-                                currentStrokeAccepted = false
-                                currentStroke = emptyList()
-                                hint = "Önce ${activeStrokeIndex + 1}. hareketin büyük noktasına dokun."
+                            if (!finished && activeStrokeIndex in guide.indices) {
+                                val active = guide[activeStrokeIndex]
+                                if (active.isNotEmpty()) {
+                                    val expectedStart = toCanvasPoint(active.first())
+                                    if (distance(expectedStart, point) <= startTolerance()) {
+                                        currentStrokeAccepted = true
+                                        activeProgressIndex = 0
+                                        currentStroke = listOf(point)
+                                        hint = "${activeStrokeIndex + 1}. hareket: ok yönünde ilerle."
+                                        markForwardProgress(point)
+                                    } else {
+                                        currentStrokeAccepted = false
+                                        currentStroke = emptyList()
+                                        hint = "Önce ${activeStrokeIndex + 1}. hareketin büyük noktasına dokun."
+                                    }
+                                }
                             }
                         },
                         onDrag = { change, _ ->
