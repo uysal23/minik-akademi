@@ -285,10 +285,37 @@ def audit() -> tuple[list[str], dict[str, Any]]:
         if token not in text:
             errors.append(f"runtime: missing {label}")
 
+    # Runtime V4 replaces 20 authored instructions; audit those child-facing texts too.
+    overrides_path = ROOT / "content_v4" / "instruction_overrides_v1.json"
+    if not overrides_path.is_file():
+        errors.append("runtime: instruction_overrides_v1.json is missing")
+        override_count = 0
+    else:
+        override_doc = json.loads(overrides_path.read_text(encoding="utf-8"))
+        overrides = override_doc.get("overrides", {})
+        override_count = len(overrides) if isinstance(overrides, dict) else 0
+        if override_doc.get("status") != "OWNER_APPROVED":
+            errors.append("runtime: instruction overrides must be OWNER_APPROVED")
+        if override_count != 20:
+            errors.append(f"runtime: expected 20 instruction overrides, found {override_count}")
+        if isinstance(overrides, dict):
+            for source_path, value in overrides.items():
+                text_value = str(value).strip()
+                if not text_value:
+                    errors.append(f"runtime: empty instruction override for {source_path}")
+                    continue
+                lowered = text_value.casefold()
+                for phrase in PRESSURE_OR_PUNITIVE:
+                    if phrase in lowered:
+                        errors.append(
+                            f"runtime: punitive/pressure wording in override {source_path}: {phrase!r}"
+                        )
+
     report = {
         "activities": len(activities),
         "domains": dict(sorted(domains.items())),
         "activityTypes": dict(sorted(counts.items())),
+        "instructionOverrides": override_count,
         "errors": len(errors),
     }
     return errors, report
