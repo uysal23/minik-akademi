@@ -591,14 +591,20 @@ private fun MathConceptVisual(activityId: String) {
                     Text("Fazla olan top çıkarılırsa iki grup eş olur.", style = MaterialTheme.typography.titleMedium)
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        SceneObjectCard("kitap", "kitap")
-                        SceneObjectCard("kalem", "kalem")
-                        ShapeCard("⚽", "çıkar")
-                        Text("→", fontSize = 30.sp)
-                        SceneObjectCard("kitap", "kitap")
-                        SceneObjectCard("kalem", "kalem")
+                        SceneObjectCard("kitap", "kitap", 54)
+                        SceneObjectCard("kalem", "kalem", 54)
+                        ShapeCard("⚽", "fazla")
+                    }
+                    Text("↓  topu çıkar  ↓", style = MaterialTheme.typography.labelLarge)
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        SceneObjectCard("kitap", "kitap", 54)
+                        SceneObjectCard("kalem", "kalem", 54)
+                        Text("= eş", fontWeight = FontWeight.Bold)
                     }
                 }
 
