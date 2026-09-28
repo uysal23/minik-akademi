@@ -91,7 +91,7 @@
     "punitive": false
   },
   "safety": {
-    "reviewed": false,
+    "reviewed": true,
     "prohibitedContentPresent": false,
     "externalUrl": false,
     "ads": false,
