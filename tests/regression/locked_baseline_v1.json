@@ -1,5 +1,5 @@
 {
-  "version": "1.3",
+  "version": "1.4",
   "lockedThroughStep": 15,
   "protectedTrees": {
     "app/src/main": "5fecb193f97fe1e4f630a40908f77034dcf9c557",
@@ -7,7 +7,7 @@
     "audio": "a76f8b07e160a9c16a34fb21009352368ad9cc85",
     "content": "58b64a85eda9661deebbe605e29b44c0ed2cc3f4",
     "core": "04a6e272bb052dc43d9e3dd46899e68218ab9c9a",
-    "feature": "6d5f99ed58151538b574a5a2142e479146ea8ea5"
+    "feature": "aefaabf386ba6fde3f5a1703dbca1e117dedcbff"
   },
   "protectedFiles": {
     "BUILD_PROCESS.md": "6825b933dea10bd44c912097c3e37e4476395223",
@@ -35,21 +35,22 @@
     "feature/tracing/README.md": "52dd3d09c6f7ef4b1ab8b5ace92725e2aa452ccd",
     "docs/REGRESSION_TESTS_V1.md": "627d6750fe292da835c3880bd0c2bbfec0adf88f",
     "docs/RELEASE_BUILD_V1.md": "3956ed2a4bb706b381403c6c03534b2495344c68",
-    ".github/workflows/release-apk.yml": "a69f0b1c682f0a34df3a16e65c4fcb5f3f5ca8f6",
+    ".github/workflows/release-apk.yml": "d9643aa7f2e530a2c5ee1e2e98ed53927ea72ad5",
     ".github/workflows/step15-api26.yml": "25330d85369736c19cd12b549286fe9f603e143a",
     ".github/workflows/step15-final-gate.yml": "fc52a3b6a46e81b62535f0d23a02f8bb0907514a",
     "tools/release/step15_release_acceptance.py": "a4ad0a5b1392143a9a2ee75375634668e4c5ec94"
   },
   "maintenanceRevision": {
-    "id": "SCENE_VISUAL_ALIGNMENT_V2_2026_09_28",
+    "id": "DIGIT_WRITING_MAINTENANCE_2026_09_28",
     "ownerApproved": true,
     "changes": [
-      "34 flagged scene visuals remediated without changing curriculum IDs or learning targets",
-      "CMP/EQ semantic mismatch removed with scene-specific quantity/equality renderers",
-      "tens/ones, abacus, pattern, measurement, mass and spatial visuals made concept-specific",
-      "LearningObjectArt upgraded with 2.5D/CGI-inspired depth and required scene objects",
-      "125-scene static alignment QA and regression coverage added",
-      "release APK build remains gated and was not started"
+      "0-9 digit forms aligned to the current MEB basic-form and writing-direction reference, including current stroke counts and circular starts",
+      "digit tracing converted from unordered flat hit-map completion to stroke-aware ordered guidance",
+      "per-stroke start points, direction arrows, endpoint cues and three-line writing guides added",
+      "each stroke requires at least 90% forward progress plus reaching the stroke endpoint and all strokes are required for completion",
+      "displayed model digit now renders from the exact same vector geometry as the trace path",
+      "automated QA added for all ten digit-writing activities and known legacy geometry regressions",
+      "release APK build remains gated and was not started for this maintenance"
     ]
   },
   "maintenanceHistory": [
@@ -74,6 +75,19 @@
         "LearningObjectArt upgraded with 2.5D/CGI-inspired depth and required scene objects",
         "125-scene static alignment QA and regression coverage added",
         "release APK build remains gated and was not started"
+      ]
+    },
+    {
+      "id": "DIGIT_WRITING_MAINTENANCE_2026_09_28",
+      "ownerApproved": true,
+      "changes": [
+        "0-9 digit forms aligned to the current MEB basic-form and writing-direction reference, including current stroke counts and circular starts",
+        "digit tracing converted from unordered flat hit-map completion to stroke-aware ordered guidance",
+        "per-stroke start points, direction arrows, endpoint cues and three-line writing guides added",
+        "each stroke requires at least 90% forward progress plus reaching the stroke endpoint and all strokes are required for completion",
+        "displayed model digit now renders from the exact same vector geometry as the trace path",
+        "automated QA added for all ten digit-writing activities and known legacy geometry regressions",
+        "release APK build remains gated and was not started for this maintenance"
       ]
     }
   ]
