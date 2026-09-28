@@ -34,6 +34,7 @@ LITERACY_TYPES = {
 }
 MATH_TYPES = {
     "TRACE_NUMBER",
+    "MATCH_PAIR",
     "NUMBER_INTRO",
     "COUNT_OBJECTS",
     "RHYTHMIC_COUNT",
@@ -63,7 +64,6 @@ MULTI_CORRECT_TYPES = {
     "FIND_LETTER",
     "FIND_SOUND_OBJECT",
     "FIND_TARGET_SYMBOL",
-    "MATCH_PAIR",
     "MULTI_SELECT",
 }
 SINGLE_CORRECT_TYPES = {
@@ -83,6 +83,7 @@ SINGLE_CORRECT_TYPES = {
     "NUMBER_OBJECT_MATCH",
     "TAP_CHOICE",
     "MAZE_TARGET_SYMBOL",
+    "MATCH_PAIR",
 }
 
 
@@ -98,6 +99,16 @@ def load_activities() -> list[tuple[Path, dict[str, Any]]]:
 def option_value(option: dict[str, Any]) -> str:
     value = option.get("value", option.get("label", ""))
     return str(value).strip()
+
+
+def tr_fold(value: str) -> str:
+    # Turkish dotted/dotless I needs explicit normalization before Unicode casefold.
+    return (
+        value.replace("İ", "i")
+        .replace("I", "ı")
+        .casefold()
+        .replace("\u0307", "")
+    )
 
 
 def audit() -> tuple[list[str], dict[str, Any]]:
@@ -144,7 +155,7 @@ def audit() -> tuple[list[str], dict[str, Any]]:
         if progression.get("completionRule") == "COMPLETE_ON_ATTEMPT":
             errors.append(f"{rel}: pedagogical activities must not complete merely on attempt")
 
-        if domain == "PREWRITING" and typ not in PREWRITING_TYPES:
+        if domain == "PREWRITING" and aid not in MINI_GAME_IDS and typ not in PREWRITING_TYPES:
             errors.append(f"{rel}: unsupported PREWRITING activityType {typ}")
         if domain == "LITERACY" and aid not in MINI_GAME_IDS and typ not in LITERACY_TYPES:
             errors.append(f"{rel}: unsupported LITERACY activityType {typ}")
@@ -162,11 +173,11 @@ def audit() -> tuple[list[str], dict[str, Any]]:
                 errors.append(f"{rel}: options exist but none is correct")
             if typ in SINGLE_CORRECT_TYPES and len(correct) != 1:
                 errors.append(f"{rel}: {typ} must have exactly one correct option, found {len(correct)}")
-            if typ == "MATCH_PAIR":
+            if typ == "MATCH_PAIR" and aid == "GAME-MATH-MATCH-001":
                 if len(correct) != 2:
-                    errors.append(f"{rel}: MATCH_PAIR must contain exactly two correct cards")
+                    errors.append(f"{rel}: pair-finding mini-game must contain exactly two correct cards")
                 elif len({str(o.get("label", "")) for o in correct}) != 1:
-                    errors.append(f"{rel}: MATCH_PAIR correct cards must visibly match")
+                    errors.append(f"{rel}: pair-finding mini-game correct cards must visibly match")
         elif typ in SINGLE_CORRECT_TYPES | MULTI_CORRECT_TYPES:
             errors.append(f"{rel}: {typ} requires selectable options")
 
@@ -213,8 +224,8 @@ def audit() -> tuple[list[str], dict[str, Any]]:
         if typ == "FIND_LETTER":
             correct = [o for o in options if o.get("correct") is True]
             for o in correct:
-                label = str(o.get("label", o.get("value", ""))).strip().casefold()
-                if target_symbol and label != target_symbol.casefold():
+                label = tr_fold(str(o.get("label", o.get("value", ""))).strip())
+                if target_symbol and label != tr_fold(target_symbol):
                     errors.append(f"{rel}: FIND_LETTER correct option {label!r} != target {target_symbol!r}")
 
         if typ in {"BUILD_SYLLABLE", "BUILD_WORD"}:
