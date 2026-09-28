@@ -464,6 +464,7 @@ fun MathematicsActivityScreen(
                         onComplete = ::completeOnce
                     )
                     "NUMBER_INTRO" -> NumberIntroGame(
+                        activityId = config.id,
                         target = config.targetSymbol,
                         onPlayNumber = {
                             val number = config.targetSymbol.toIntOrNull()
@@ -476,6 +477,7 @@ fun MathematicsActivityScreen(
                     )
                     "RHYTHMIC_COUNT", "PATTERN_COMPLETE", "BUILD_SEQUENCE" ->
                         SequenceChoiceGame(
+                            activityId = config.id,
                             target = config.targetSymbol,
                             options = config.options,
                             onRetry = ::playRetryAudio,
@@ -543,6 +545,7 @@ private fun VisualChoiceGame(
 private fun MathConceptVisual(activityId: String) {
     Card(
         modifier = Modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.55f)
         )
@@ -554,41 +557,201 @@ private fun MathConceptVisual(activityId: String) {
             contentAlignment = Alignment.Center
         ) {
             when (activityId) {
+                "ACT-MAT-CMP-01" -> QuantityComparison(left = 3, right = 3, relation = "=")
+                "ACT-MAT-CMP-02" -> QuantityComparison(left = 6, right = 4, relation = ">")
+
+                "ACT-MAT-EQ-01" -> Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    SceneObjectCard("araba", "aynı")
+                    Text("=", fontSize = 36.sp, fontWeight = FontWeight.Bold)
+                    SceneObjectCard("araba", "aynı")
+                }
+                "ACT-MAT-EQ-02" -> Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    ShapeCard("▲", "eş şekil")
+                    Text("=", fontSize = 36.sp, fontWeight = FontWeight.Bold)
+                    ShapeCard("▲", "eş şekil")
+                }
+                "ACT-MAT-EQ-03" -> Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    SceneObjectCard("kalem", "kalem")
+                    Text("=", fontSize = 36.sp, fontWeight = FontWeight.Bold)
+                    SceneObjectCard("kalem", "aynı kalem")
+                }
+                "ACT-MAT-EQ-04" -> Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text("Fazla olan top çıkarılırsa iki grup eş olur.", style = MaterialTheme.typography.titleMedium)
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        SceneObjectCard("kitap", "kitap")
+                        SceneObjectCard("kalem", "kalem")
+                        ShapeCard("⚽", "çıkar")
+                        Text("→", fontSize = 30.sp)
+                        SceneObjectCard("kitap", "kitap")
+                        SceneObjectCard("kalem", "kalem")
+                    }
+                }
+
+                "ACT-MAT-LEN-01" -> Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(14.dp)
+                ) {
+                    Text("UZUN", style = MaterialTheme.typography.labelLarge)
+                    Text("━━━━━━━━━━━━", fontSize = 32.sp, color = MaterialTheme.colorScheme.primary)
+                    Text("KISA", style = MaterialTheme.typography.labelLarge)
+                    Text("━━━━━━", fontSize = 32.sp, color = MaterialTheme.colorScheme.secondary)
+                }
+                "ACT-MAT-LEN-02" -> Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    LearningObjectArt(label = "okul", size = 105.dp)
+                    Text("Sınıf gibi uzun bir mesafe", style = MaterialTheme.typography.titleMedium)
+                    Text("👣  👣  👣  👣  →  adım", fontSize = 28.sp)
+                }
+                "ACT-MAT-LEN-03" -> Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(18.dp)
+                ) {
+                    LearningObjectArt(label = "silgi", size = 90.dp)
+                    Text("☝️", fontSize = 58.sp)
+                    Text("parmak", style = MaterialTheme.typography.titleLarge)
+                }
+                "ACT-MAT-LEN-04" -> Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(22.dp)
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        LearningObjectArt(label = "masa", size = 110.dp)
+                        Text("5 karış", style = MaterialTheme.typography.titleMedium)
+                    }
+                    Text(">", fontSize = 38.sp, fontWeight = FontWeight.Bold)
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        LearningObjectArt(label = "kalemlik", size = 80.dp)
+                        Text("2 karış", style = MaterialTheme.typography.titleMedium)
+                    }
+                }
+                "ACT-MAT-LEN-05" -> Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    Text("Tahmin", style = MaterialTheme.typography.labelLarge)
+                    MeasurementChips(6)
+                    Text("Ölçüm", style = MaterialTheme.typography.labelLarge)
+                    MeasurementChips(5)
+                    Text("Fark = 1 karış", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                }
+                "ACT-MAT-MEASURE-ADAPT" -> Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    LearningObjectArt(label = "masa", size = 120.dp)
+                    MeasurementChips(5)
+                    Text("Masa ≈ 5 karış", style = MaterialTheme.typography.titleMedium)
+                }
+
+                "ACT-MAT-MASS-01" -> Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(22.dp)
+                ) {
+                    SceneObjectCard("kitap", "daha ağır")
+                    Text(">", fontSize = 38.sp, fontWeight = FontWeight.Bold)
+                    SceneObjectCard("silgi", "daha hafif")
+                }
+                "ACT-MAT-MASS-02" -> EqualBalanceVisual()
+                "ACT-MAT-MASS-03" -> Row(
+                    verticalAlignment = Alignment.Bottom,
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    SceneObjectCard("karpuz", "en ağır", 104)
+                    SceneObjectCard("elma", "orta", 82)
+                    SceneObjectCard("çilek", "en hafif", 62)
+                }
+                "ACT-MAT-MASS-04" -> Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text("Ağırdan hafife", style = MaterialTheme.typography.titleMedium)
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        SceneObjectCard("karpuz", "1", 100)
+                        Text("→")
+                        SceneObjectCard("elma", "2", 80)
+                        Text("→")
+                        SceneObjectCard("çilek", "3", 62)
+                    }
+                }
+                "ACT-MAT-MASS-05" -> Row(
+                    verticalAlignment = Alignment.Bottom,
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    SceneObjectCard("kitap", "ağır", 100)
+                    SceneObjectCard("tüy", "hafif", 72)
+                    SceneObjectCard("pamuk", "hafif", 72)
+                }
+
+                "ACT-MAT-TENS-01" -> TensOnesVisual(tens = 1, ones = 0, showTenOnes = true)
+                "ACT-MAT-TENS-02" -> TensOnesVisual(tens = 1, ones = 8)
+                "ACT-MAT-TENS-03" -> AbacusVisual(tens = 1, ones = 5)
+                "ACT-MAT-TENS-04" -> AbacusVisual(tens = 1, ones = 7)
+                "ACT-MAT-TENS-05" -> TensOnesVisual(tens = 1, ones = 3, cubeStyle = true)
+                "ACT-MAT-TENS-06" -> TensOnesVisual(tens = 1, ones = 6, cubeStyle = true)
+
+                "ACT-MAT-ORD-01" -> OrdinalRow(highlight = 3, label = "Üçüncü")
+                "ACT-MAT-REV-01" -> QuantityComparison(left = 12, right = 8, relation = ">")
+                "ACT-MAT-REV-02" -> OrdinalRow(highlight = 3, label = "Soldan üçüncü")
+
                 "ACT-MAT-SP-01" -> Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(2.dp)
                 ) {
-                    Text("⚽", fontSize = 62.sp)
+                    ShapeCard("⚽", "top")
                     LearningObjectArt(label = "masa", size = 110.dp)
+                    Text("Top masanın üstünde", style = MaterialTheme.typography.labelLarge)
                 }
-
                 "ACT-MAT-SP-02" -> Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(2.dp)
                 ) {
-                    Text("🐦       🐦", fontSize = 42.sp)
-                    LearningObjectArt(label = "orman", size = 105.dp)
-                    Text("🐦       🐦", fontSize = 36.sp)
+                    Text("🐦          🐦", fontSize = 34.sp)
+                    LearningObjectArt(label = "ağaç", size = 112.dp)
+                    Text("🐦          🐦", fontSize = 34.sp)
+                    Text("Kuşlar ağacın etrafında", style = MaterialTheme.typography.labelLarge)
                 }
-
                 "ACT-MAT-SP-03" -> Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(14.dp)
                 ) {
                     AvatarPlaceholder(avatarId = "avatar_1", size = 58.dp)
-                    Text("⚽", fontSize = 52.sp)
+                    ShapeCard("⚽", "arasında")
                     AvatarPlaceholder(avatarId = "avatar_2", size = 58.dp)
                 }
-
                 "ACT-MAT-SP-04" -> Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    verticalAlignment = Alignment.Bottom,
+                    horizontalArrangement = Arrangement.spacedBy(18.dp)
                 ) {
-                    Text("🚗", fontSize = 62.sp)
-                    Text("→", fontSize = 38.sp, fontWeight = FontWeight.Bold)
-                    Text("🚚", fontSize = 62.sp)
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        LearningObjectArt(label = "araba", size = 105.dp)
+                        Text("ÖNDE", fontWeight = FontWeight.Bold)
+                    }
+                    Text("→", fontSize = 34.sp)
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        LearningObjectArt(label = "kamyon", size = 78.dp)
+                        Text("ARKADA")
+                    }
                 }
-
                 "ACT-MAT-SP-05" -> Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -597,29 +760,42 @@ private fun MathConceptVisual(activityId: String) {
                     Text("yakın", style = MaterialTheme.typography.titleMedium)
                     AvatarPlaceholder(avatarId = "avatar_3", size = 64.dp)
                 }
-
-                "ACT-MAT-SP-06" -> Row(
-                    verticalAlignment = Alignment.Bottom,
-                    horizontalArrangement = Arrangement.spacedBy(24.dp)
+                "ACT-MAT-SP-06" -> Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("🎈", fontSize = 74.sp)
-                        Text("Pembe")
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        LearningObjectArt(label = "pembe balon", size = 82.dp)
+                        Text("YÜKSEKTE", fontWeight = FontWeight.Bold)
                     }
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("🎈", fontSize = 52.sp)
-                        Text("Yeşil")
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        LearningObjectArt(label = "yeşil balon", size = 82.dp)
+                        Text("ALÇAKTA")
                     }
                 }
-
-                "ACT-MAT-SP-07" -> Box(
-                    modifier = Modifier.size(145.dp),
-                    contentAlignment = Alignment.Center
+                "ACT-MAT-SP-07" -> Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
-                    Text("🍽️", fontSize = 105.sp)
-                    Text("🍌", fontSize = 48.sp)
+                    Card(
+                        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+                        shape = RoundedCornerShape(70.dp)
+                    ) {
+                        Box(
+                            modifier = Modifier.size(width = 160.dp, height = 100.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            LearningObjectArt(label = "muz", size = 76.dp)
+                        }
+                    }
+                    Text("Muz tabağın içinde", style = MaterialTheme.typography.titleMedium)
                 }
-
                 "ACT-MAT-SP-08" -> Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(18.dp)
@@ -634,48 +810,242 @@ private fun MathConceptVisual(activityId: String) {
                         Text("Yasemin")
                     }
                 }
-
                 "ACT-MAT-SP-ADAPT" -> Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(2.dp)
                 ) {
                     AvatarPlaceholder(avatarId = "avatar_1", size = 64.dp)
-                    Text("🪑", fontSize = 70.sp)
+                    LearningObjectArt(label = "sandalye", size = 84.dp)
+                    Text("Avatar sandalyenin üstünde", style = MaterialTheme.typography.labelLarge)
                 }
 
-                else -> when {
-                    "LEN" in activityId -> Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(22.dp)
-                    ) {
-                        LearningObjectArt(label = "kalem", size = 110.dp)
-                        LearningObjectArt(label = "silgi", size = 68.dp)
-                    }
+                else -> LearningObjectArt(
+                    label = mathObjectFor(activityId),
+                    size = 96.dp
+                )
+            }
+        }
+    }
+}
 
-                    "MASS" in activityId -> Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(22.dp)
-                    ) {
-                        Text("📘", fontSize = 66.sp)
-                        LearningObjectArt(label = "silgi", size = 66.dp)
-                    }
+@Composable
+private fun SceneObjectCard(label: String, caption: String, artSize: Int = 84) {
+    Card(
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            LearningObjectArt(label = label, size = artSize.dp)
+            Text(caption, style = MaterialTheme.typography.labelLarge)
+        }
+    }
+}
 
-                    "CMP" in activityId || "EQ" in activityId -> Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        DotGroup(3, "elma")
-                        Text("↔", fontSize = 34.sp, fontWeight = FontWeight.Bold)
-                        DotGroup(5, "armut")
-                    }
+@Composable
+private fun ShapeCard(symbol: String, caption: String) {
+    Card(
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
+        Column(
+            modifier = Modifier.padding(10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(symbol, fontSize = 46.sp)
+            if (caption.isNotBlank()) Text(caption, style = MaterialTheme.typography.labelLarge)
+        }
+    }
+}
 
-                    else -> LearningObjectArt(
-                        label = mathObjectFor(activityId),
-                        size = 96.dp
-                    )
+@Composable
+private fun QuantityComparison(left: Int, right: Int, relation: String) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        DotGroup(left, "elma")
+        Text(relation, fontSize = 38.sp, fontWeight = FontWeight.Bold)
+        DotGroup(right, "armut")
+    }
+}
+
+@Composable
+private fun MeasurementChips(count: Int) {
+    FlowRow(
+        horizontalArrangement = Arrangement.spacedBy(5.dp),
+        verticalArrangement = Arrangement.spacedBy(5.dp)
+    ) {
+        repeat(count) {
+            Card(
+                modifier = Modifier.size(width = 42.dp, height = 24.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+            ) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text("✋", fontSize = 15.sp)
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun EqualBalanceVisual() {
+    val primary = MaterialTheme.colorScheme.primary
+    val secondary = MaterialTheme.colorScheme.secondary
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Canvas(modifier = Modifier.size(width = 260.dp, height = 120.dp)) {
+            drawLine(primary, Offset(size.width * 0.50f, size.height * 0.18f), Offset(size.width * 0.50f, size.height * 0.78f), 8f)
+            drawLine(primary, Offset(size.width * 0.18f, size.height * 0.34f), Offset(size.width * 0.82f, size.height * 0.34f), 8f, cap = StrokeCap.Round)
+            drawLine(secondary, Offset(size.width * 0.18f, size.height * 0.34f), Offset(size.width * 0.18f, size.height * 0.66f), 5f)
+            drawLine(secondary, Offset(size.width * 0.82f, size.height * 0.34f), Offset(size.width * 0.82f, size.height * 0.66f), 5f)
+            drawLine(secondary, Offset(size.width * 0.08f, size.height * 0.66f), Offset(size.width * 0.28f, size.height * 0.66f), 7f, cap = StrokeCap.Round)
+            drawLine(secondary, Offset(size.width * 0.72f, size.height * 0.66f), Offset(size.width * 0.92f, size.height * 0.66f), 7f, cap = StrokeCap.Round)
+            drawLine(primary, Offset(size.width * 0.38f, size.height * 0.88f), Offset(size.width * 0.62f, size.height * 0.88f), 10f, cap = StrokeCap.Round)
+        }
+        Text("İki kefe aynı seviyede → eşit ağırlık", style = MaterialTheme.typography.titleMedium)
+    }
+}
+
+@Composable
+private fun TensOnesVisual(
+    tens: Int,
+    ones: Int,
+    showTenOnes: Boolean = false,
+    cubeStyle: Boolean = false
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        if (showTenOnes) {
+            Text("10 birlik", style = MaterialTheme.typography.titleMedium)
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                repeat(10) {
+                    Card(
+                        modifier = Modifier.size(28.dp),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
+                    ) {
+                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Text("■") }
+                    }
+                }
+            }
+            Text("↓  grupla  ↓", style = MaterialTheme.typography.titleMedium)
+        }
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(14.dp)
+        ) {
+            repeat(tens) {
+                Card(
+                    modifier = Modifier.size(width = 46.dp, height = 118.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+                ) {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text(if (cubeStyle) "■\n■\n■\n■\n■\n■\n■\n■\n■\n■" else "10", fontWeight = FontWeight.Bold)
+                    }
+                }
+            }
+            Text("+", fontSize = 30.sp)
+            FlowRow(
+                modifier = Modifier.size(width = 170.dp, height = 112.dp),
+                horizontalArrangement = Arrangement.spacedBy(5.dp),
+                verticalArrangement = Arrangement.spacedBy(5.dp)
+            ) {
+                repeat(ones) {
+                    Card(
+                        modifier = Modifier.size(32.dp),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
+                    ) {
+                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Text("■")
+                        }
+                    }
+                }
+            }
+        }
+        Text("$tens onluk $ones birlik = ${tens * 10 + ones}", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+    }
+}
+
+@Composable
+private fun AbacusVisual(tens: Int, ones: Int) {
+    val primary = MaterialTheme.colorScheme.primary
+    val secondary = MaterialTheme.colorScheme.secondary
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Text("Abaküs", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+        listOf("Onluk" to tens, "Birlik" to ones).forEachIndexed { index, pair ->
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Box(modifier = Modifier.size(width = 58.dp, height = 30.dp), contentAlignment = Alignment.CenterStart) {
+                    Text(pair.first)
+                }
+                Canvas(modifier = Modifier.size(width = 210.dp, height = 42.dp)) {
+                    drawLine(
+                        color = if (index == 0) primary else secondary,
+                        start = Offset(0f, size.height / 2f),
+                        end = Offset(size.width, size.height / 2f),
+                        strokeWidth = 6f,
+                        cap = StrokeCap.Round
+                    )
+                    repeat(pair.second.coerceIn(0, 9)) { bead ->
+                        val x = size.width * (bead + 1).toFloat() / 11f
+                        drawCircle(
+                            color = if (index == 0) primary else secondary,
+                            radius = size.height * 0.22f,
+                            center = Offset(x, size.height / 2f)
+                        )
+                    }
+                }
+            }
+        }
+        Text("$tens onluk $ones birlik = ${tens * 10 + ones}", style = MaterialTheme.typography.titleMedium)
+    }
+}
+
+@Composable
+private fun OrdinalRow(highlight: Int, label: String) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            (1..5).forEach { index ->
+                Card(
+                    modifier = Modifier.size(54.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = if (index == highlight) 9.dp else 3.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = if (index == highlight) {
+                            MaterialTheme.colorScheme.primaryContainer
+                        } else {
+                            MaterialTheme.colorScheme.surface
+                        }
+                    )
+                ) {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text("$index.", fontWeight = if (index == highlight) FontWeight.Bold else FontWeight.Normal)
+                    }
+                }
+            }
+        }
+        Text(label, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
     }
 }
 
@@ -729,6 +1099,7 @@ private fun ChoiceGame(
 
 @Composable
 private fun NumberIntroGame(
+    activityId: String,
     target: String,
     onPlayNumber: () -> Unit,
     onComplete: () -> Unit
@@ -738,25 +1109,37 @@ private fun NumberIntroGame(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text(
-            target,
-            fontSize = 140.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary
-        )
-        if (number != null && number in 1..20) {
-            FlowRow(
-                horizontalArrangement = Arrangement.spacedBy(7.dp),
-                verticalArrangement = Arrangement.spacedBy(7.dp)
+        if (activityId == "ACT-MAT-NUM-01" && target == "19") {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                repeat(number) {
-                    Text("●", fontSize = 26.sp, color = MaterialTheme.colorScheme.secondary)
+                ShapeCard("1", "rakam")
+                Text("+", fontSize = 34.sp)
+                ShapeCard("9", "rakam")
+                Text("→", fontSize = 34.sp)
+                ShapeCard("19", "sayı")
+            }
+            Text("19 sayısı, 1 ve 9 rakamlarından oluşur.", style = MaterialTheme.typography.titleMedium)
+        } else {
+            Text(
+                target,
+                fontSize = 140.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
+            )
+            if (number != null && number in 1..20) {
+                FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(7.dp),
+                    verticalArrangement = Arrangement.spacedBy(7.dp)
+                ) {
+                    repeat(number) {
+                        Text("●", fontSize = 26.sp, color = MaterialTheme.colorScheme.secondary)
+                    }
                 }
             }
         }
-        Button(onClick = onPlayNumber) {
-            Text("🔊 Sayıyı Dinle")
-        }
+        Button(onClick = onPlayNumber) { Text("🔊 Sayıyı Dinle") }
         KidPrimaryButton(text = "Anladım", onClick = onComplete)
     }
 }
@@ -788,6 +1171,7 @@ private fun CountObjectsGame(
 
 @Composable
 private fun SequenceChoiceGame(
+    activityId: String,
     target: String,
     options: List<MathOption>,
     onRetry: () -> Unit,
@@ -797,13 +1181,44 @@ private fun SequenceChoiceGame(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        Text(
-            target,
-            fontSize = 34.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary
-        )
+        if (activityId.startsWith("ACT-MAT-PAT-")) {
+            PatternConceptVisual(activityId)
+        } else {
+            Text(
+                target,
+                fontSize = 34.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
         ChoiceGame(target = "Boşluğa hangisi gelir?", options = options, onRetry = onRetry, onComplete = onComplete)
+    }
+}
+
+@Composable
+private fun PatternConceptVisual(activityId: String) {
+    val sequence = when (activityId) {
+        "ACT-MAT-PAT-01" -> listOf("🟨", "🟨", "🟪", "🟨", "?")
+        "ACT-MAT-PAT-02" -> listOf("▲", "●", "▲", "●", "?")
+        "ACT-MAT-PAT-03" -> listOf("■", "■", "●", "■", "?")
+        "ACT-MAT-PAT-04" -> listOf("★", "●", "★", "●", "?")
+        else -> listOf("?")
+    }
+    val answer = when (activityId) {
+        "ACT-MAT-PAT-01" -> "sarı"
+        "ACT-MAT-PAT-02" -> "üçgen"
+        "ACT-MAT-PAT-03" -> "kare"
+        "ACT-MAT-PAT-04" -> "yıldız"
+        else -> ""
+    }
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            sequence.forEach { symbol -> ShapeCard(symbol, "") }
+        }
+        Text("Sıradaki: $answer", style = MaterialTheme.typography.labelLarge)
     }
 }
 
@@ -822,12 +1237,7 @@ private fun ArithmeticGame(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text(
-            expression,
-            fontSize = 46.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary
-        )
+        Text(expression, fontSize = 46.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
 
         when {
             plus != null -> {
@@ -842,9 +1252,20 @@ private fun ArithmeticGame(
             minus != null -> {
                 val a = minus.groupValues[1].toInt()
                 val b = minus.groupValues[2].toInt()
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    DotGroup(a, "balon")
-                    Text("$b nesne ayrılıyor", style = MaterialTheme.typography.titleMedium)
+                val remain = (a - b).coerceAtLeast(0)
+                Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            DotGroup(a, "balon")
+                            Text("başlangıç: $a")
+                        }
+                        Text("→", fontSize = 32.sp)
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            DotGroup(remain, "balon")
+                            Text("kalan: $remain", fontWeight = FontWeight.Bold)
+                        }
+                    }
+                    Text("$b nesne ayrıldı", style = MaterialTheme.typography.titleMedium)
                 }
             }
             groups != null -> {
@@ -852,10 +1273,8 @@ private fun ArithmeticGame(
                 val perGroup = groups.groupValues[2].toInt()
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     repeat(groupCount.coerceAtMost(5)) {
-                        Card {
-                            Box(modifier = Modifier.padding(10.dp)) {
-                                DotGroup(perGroup, "kelebek")
-                            }
+                        Card(elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)) {
+                            Box(modifier = Modifier.padding(10.dp)) { DotGroup(perGroup, "kelebek") }
                         }
                     }
                 }
