@@ -1403,12 +1403,7 @@ private fun DigitTraceGame(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        Text(
-            digit,
-            fontSize = 70.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary
-        )
+        DigitModelPreview(digit = digit)
         Canvas(
             modifier = Modifier
                 .fillMaxWidth()
@@ -1575,6 +1570,37 @@ private fun DigitTraceGame(
                 hint = "1. hareketin büyük başlangıç noktasından başla."
             }
         ) { Text("Tekrar Çiz") }
+    }
+}
+
+@Composable
+private fun DigitModelPreview(digit: String) {
+    val guide = remember(digit) { digitGuide(digit) }
+    val color = MaterialTheme.colorScheme.primary
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(2.dp)
+    ) {
+        Canvas(modifier = Modifier.size(width = 94.dp, height = 112.dp)) {
+            guide.forEach { stroke ->
+                stroke.zipWithNext().forEach { pair ->
+                    drawLine(
+                        color = color,
+                        start = Offset(pair.first.x * size.width, pair.first.y * size.height),
+                        end = Offset(pair.second.x * size.width, pair.second.y * size.height),
+                        strokeWidth = 9f,
+                        cap = StrokeCap.Round
+                    )
+                }
+            }
+        }
+        Text(
+            text = "$digit rakamı",
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            color = color
+        )
     }
 }
 
