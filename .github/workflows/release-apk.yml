@@ -251,14 +251,7 @@ jobs:
             grep -F "Minik Akademi" step15-api26/window.xml
             adb exec-out screencap -p > step15-api26/12_release_api26_welcome.png
             adb logcat -d > step15-api26/api26-logcat.txt
-            if grep -Fq "ANR in com.uysal.minikakademi" step15-api26/api26-logcat.txt; then
-              echo "API 26 release test detected ANR"
-              exit 1
-            fi
-            if grep -Fq "FATAL EXCEPTION" step15-api26/api26-logcat.txt && grep -Fq "Process: com.uysal.minikakademi" step15-api26/api26-logcat.txt; then
-              echo "API 26 release test detected fatal exception"
-              exit 1
-            fi
+            python -c 'from pathlib import Path; t=Path("step15-api26/api26-logcat.txt").read_text(encoding="utf-8", errors="replace"); assert "ANR in com.uysal.minikakademi" not in t, "API 26 release test detected ANR"; assert not ("FATAL EXCEPTION" in t and "Process: com.uysal.minikakademi" in t), "API 26 release test detected fatal exception"'
             test -s step15-api26/12_release_api26_welcome.png
 
       - name: Upload API 26 evidence
