@@ -510,30 +510,50 @@ private fun LetterIntroGame(
     onPlayPhoneme: () -> Unit,
     onComplete: () -> Unit
 ) {
+    val normalized = symbol.lowercase()
+    val isVowel = normalized in setOf("a", "e", "i", "o", "u")
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(22.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            text = letterUpper(symbol),
+            text = symbol,
             fontSize = 150.sp,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary
         )
         Text(
-            text = symbol,
-            fontSize = 120.sp,
+            text = "Önce küçük harf",
+            style = MaterialTheme.typography.titleMedium
+        )
+        Text(
+            text = letterUpper(symbol),
+            fontSize = 110.sp,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.secondary
         )
-        Button(
-            onClick = {
-                onPlayPhoneme()
-                onComplete()
+        Text(
+            text = "Sonra büyük harf",
+            style = MaterialTheme.typography.titleMedium
+        )
+
+        if (isVowel) {
+            Button(
+                onClick = {
+                    onPlayPhoneme()
+                    onComplete()
+                }
+            ) {
+                Text("🔊 Sesi Dinle")
             }
-        ) {
-            Text("🔊 Harfi Dinle")
+        } else {
+            Text(
+                text = "Bu sesi tek başına söylemek yerine kelimelerin içinde fark edeceğiz.",
+                style = MaterialTheme.typography.bodyLarge
+            )
         }
+
         KidPrimaryButton(text = "Hazırım", onClick = onComplete)
     }
 }
