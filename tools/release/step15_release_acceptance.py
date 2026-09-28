@@ -1,3 +1,4 @@
+# Release trigger: FULL_CONTENT_PEDAGOGY_AUDIT_2026_09_28
 from __future__ import annotations
 
 import re
