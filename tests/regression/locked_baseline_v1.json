@@ -38,7 +38,7 @@
     ".github/workflows/release-apk.yml": "d9643aa7f2e530a2c5ee1e2e98ed53927ea72ad5",
     ".github/workflows/step15-api26.yml": "25330d85369736c19cd12b549286fe9f603e143a",
     ".github/workflows/step15-final-gate.yml": "fc52a3b6a46e81b62535f0d23a02f8bb0907514a",
-    "tools/release/step15_release_acceptance.py": "a4ad0a5b1392143a9a2ee75375634668e4c5ec94"
+    "tools/release/step15_release_acceptance.py": "b40e834224bf2470846d21e7039021039a072bca"
   },
   "maintenanceRevision": {
     "id": "FULL_CONTENT_PEDAGOGY_AUDIT_2026_09_28",
