@@ -83,7 +83,6 @@ SINGLE_CORRECT_TYPES = {
     "NUMBER_OBJECT_MATCH",
     "TAP_CHOICE",
     "MAZE_TARGET_SYMBOL",
-    "MATCH_PAIR",
 }
 
 
@@ -173,6 +172,10 @@ def audit() -> tuple[list[str], dict[str, Any]]:
                 errors.append(f"{rel}: options exist but none is correct")
             if typ in SINGLE_CORRECT_TYPES and len(correct) != 1:
                 errors.append(f"{rel}: {typ} must have exactly one correct option, found {len(correct)}")
+            if typ == "MATCH_PAIR" and aid != "GAME-MATH-MATCH-001" and len(correct) != 1:
+                errors.append(
+                    f"{rel}: instructional MATCH_PAIR must have exactly one correct selectable match, found {len(correct)}"
+                )
             if typ == "MATCH_PAIR" and aid == "GAME-MATH-MATCH-001":
                 if len(correct) != 2:
                     errors.append(f"{rel}: pair-finding mini-game must contain exactly two correct cards")
