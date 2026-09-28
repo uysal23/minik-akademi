@@ -629,71 +629,130 @@ private fun LetterTraceGame(
     onComplete: () -> Unit
 ) {
     val guide = remember(symbol) { letterGuide(symbol) }
-    var visited by remember(symbol) { mutableStateOf(emptySet<Int>()) }
-    var strokes by remember(symbol) { mutableStateOf(emptyList<List<Offset>>()) }
+    var activeStrokeIndex by remember(symbol) { mutableStateOf(0) }
+    var activeProgressIndex by remember(symbol) { mutableStateOf(0) }
+    var acceptedStrokes by remember(symbol) { mutableStateOf(emptyList<List<Offset>>()) }
     var currentStroke by remember(symbol) { mutableStateOf(emptyList<Offset>()) }
+    var currentStrokeAccepted by remember(symbol) { mutableStateOf(false) }
     var boardSize by remember { mutableStateOf(androidx.compose.ui.unit.IntSize.Zero) }
     var finished by remember(symbol) { mutableStateOf(false) }
+    var hint by remember(symbol) { mutableStateOf("1. hareketin büyük başlangıç noktasından başla.") }
 
-    val guideColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.28f)
+    val guideColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.30f)
+    val futureGuideColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.16f)
+    val completedGuideColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.44f)
     val strokeColor = MaterialTheme.colorScheme.primary
     val visitedColor = MaterialTheme.colorScheme.secondary
+    val guideLineColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.24f)
+    val activeArrowColor = MaterialTheme.colorScheme.primary
 
-    fun markNearby(point: Offset) {
-        if (boardSize.width <= 0 || boardSize.height <= 0) return
-        val tolerance = (boardSize.width.coerceAtMost(boardSize.height) * 0.07f)
-            .coerceIn(20f, 48f)
-        val additions = buildSet {
-            guide.forEachIndexed { index, normalized ->
-                val guidePoint = Offset(
-                    normalized.x * boardSize.width,
-                    normalized.y * boardSize.height
-                )
-                val dx = guidePoint.x - point.x
-                val dy = guidePoint.y - point.y
-                if (sqrt(dx * dx + dy * dy) <= tolerance) add(index)
+    fun distance(a: Offset, b: Offset): Float {
+        val dx = a.x - b.x
+        val dy = a.y - b.y
+        return sqrt(dx * dx + dy * dy)
+    }
+
+    fun toCanvasPoint(normalized: Offset): Offset =
+        Offset(normalized.x * boardSize.width, normalized.y * boardSize.height)
+
+    fun tolerance(): Float =
+        (boardSize.width.coerceAtMost(boardSize.height) * 0.07f).coerceIn(20f, 48f)
+
+    fun startTolerance(): Float = tolerance() * 1.30f
+
+    fun markForwardProgress(point: Offset) {
+        if (!currentStrokeAccepted || activeStrokeIndex !in guide.indices) return
+        val active = guide[activeStrokeIndex]
+        if (active.isEmpty()) return
+
+        val from = activeProgressIndex.coerceIn(0, active.lastIndex)
+        val to = (from + 10).coerceAtMost(active.lastIndex)
+        var bestIndex = from
+        var bestDistance = Float.MAX_VALUE
+        for (index in from..to) {
+            val d = distance(toCanvasPoint(active[index]), point)
+            if (d < bestDistance) {
+                bestDistance = d
+                bestIndex = index
             }
         }
-        if (additions.isNotEmpty()) visited = visited + additions
+        if (bestDistance <= tolerance() && bestIndex >= activeProgressIndex) {
+            activeProgressIndex = bestIndex
+        }
     }
 
     fun finishStroke() {
-        if (currentStroke.isNotEmpty()) {
-            strokes = strokes + listOf(currentStroke)
+        if (!currentStrokeAccepted || activeStrokeIndex !in guide.indices) {
             currentStroke = emptyList()
+            currentStrokeAccepted = false
+            return
         }
-        val ratio = if (guide.isEmpty()) 0f else visited.size.toFloat() / guide.size.toFloat()
-        if (!finished && ratio >= 0.70f) {
-            finished = true
-            onComplete()
+
+        val active = guide[activeStrokeIndex]
+        val ratio = if (active.isEmpty()) 0f else
+            (activeProgressIndex + 1).toFloat() / active.size.toFloat()
+        val reachedEnd = activeProgressIndex >= (active.lastIndex - 2).coerceAtLeast(0)
+
+        if (ratio >= 0.90f && reachedEnd) {
+            if (currentStroke.isNotEmpty()) {
+                acceptedStrokes = acceptedStrokes + listOf(currentStroke)
+            }
+            val nextStroke = activeStrokeIndex + 1
+            if (nextStroke >= guide.size) {
+                finished = true
+                hint = "Harika! Harfin bütün hareketlerini doğru sırayla tamamladın."
+                onComplete()
+            } else {
+                activeStrokeIndex = nextStroke
+                hint = "${nextStroke + 1}. hareketin büyük başlangıç noktasından başla."
+            }
+        } else {
+            hint = "Hareket bitiş noktasına ulaşmadı. Büyük başlangıç noktasından tekrar dene."
         }
+
+        activeProgressIndex = 0
+        currentStroke = emptyList()
+        currentStrokeAccepted = false
     }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        Text(
-            text = letterUpper(symbol) + "  " + symbol,
-            fontSize = 56.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary
-        )
+        LetterModelPreview(symbol = symbol)
+
         Canvas(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(330.dp)
                 .onSizeChanged { boardSize = it }
-                .pointerInput(symbol, boardSize) {
+                .pointerInput(symbol, boardSize, activeStrokeIndex, finished) {
                     detectDragGestures(
-                        onDragStart = { startPoint ->
-                            currentStroke = listOf(startPoint)
-                            markNearby(startPoint)
+                        onDragStart = { point ->
+                            if (!finished && activeStrokeIndex in guide.indices) {
+                                val active = guide[activeStrokeIndex]
+                                if (active.isNotEmpty()) {
+                                    val expectedStart = toCanvasPoint(active.first())
+                                    if (distance(expectedStart, point) <= startTolerance()) {
+                                        currentStrokeAccepted = true
+                                        activeProgressIndex = 0
+                                        currentStroke = listOf(point)
+                                        hint = "${activeStrokeIndex + 1}. hareket: ok yönünde ilerle."
+                                        markForwardProgress(point)
+                                    } else {
+                                        currentStrokeAccepted = false
+                                        currentStroke = emptyList()
+                                        hint = "Önce ${activeStrokeIndex + 1}. hareketin büyük noktasına dokun."
+                                    }
+                                }
+                            }
                         },
                         onDrag = { change, _ ->
-                            val point = change.position
-                            currentStroke = currentStroke + point
-                            markNearby(point)
+                            if (currentStrokeAccepted) {
+                                val point = change.position
+                                currentStroke = currentStroke + point
+                                markForwardProgress(point)
+                            }
                             change.consume()
                         },
                         onDragEnd = { finishStroke() },
@@ -701,16 +760,76 @@ private fun LetterTraceGame(
                     )
                 }
         ) {
-            guide.forEachIndexed { index, normalized ->
-                drawCircle(
-                    color = if (index in visited) visitedColor else guideColor,
-                    radius = if (index == 0) 9f else 5f,
-                    center = Offset(normalized.x * size.width, normalized.y * size.height)
+            val left = size.width * 0.18f
+            val right = size.width * 0.82f
+            val topY = size.height * 0.20f
+            val middleY = size.height * 0.52f
+            val baselineY = size.height * 0.84f
+
+            drawLine(guideLineColor, Offset(left, topY), Offset(right, topY), 2.5f)
+            drawLine(guideLineColor, Offset(left, baselineY), Offset(right, baselineY), 2.5f)
+            repeat(12) { dash ->
+                val segmentWidth = (right - left) / 12f
+                val dashStart = left + dash * segmentWidth
+                drawLine(
+                    guideLineColor,
+                    Offset(dashStart, middleY),
+                    Offset(dashStart + segmentWidth * 0.55f, middleY),
+                    2f
                 )
             }
 
-            (strokes + listOf(currentStroke)).forEach { stroke ->
-                stroke.zipWithNext().forEach { pair ->
+            guide.forEachIndexed { strokeIndex, stroke ->
+                val isCompleted = strokeIndex < activeStrokeIndex || finished
+                val isActive = strokeIndex == activeStrokeIndex && !finished
+                val pointColor = when {
+                    isCompleted -> completedGuideColor
+                    isActive -> guideColor
+                    else -> futureGuideColor
+                }
+
+                stroke.forEachIndexed { pointIndex, normalized ->
+                    val progressed = isActive &&
+                        currentStrokeAccepted &&
+                        pointIndex <= activeProgressIndex
+                    drawCircle(
+                        color = if (progressed) visitedColor else pointColor,
+                        radius = when {
+                            pointIndex == 0 && isActive -> 10f
+                            pointIndex == 0 -> 7f
+                            pointIndex == stroke.lastIndex && isActive -> 7f
+                            else -> 4.5f
+                        },
+                        center = Offset(normalized.x * size.width, normalized.y * size.height)
+                    )
+                }
+
+                if (stroke.size >= 7) {
+                    val fromN = stroke[2]
+                    val toN = stroke[6]
+                    val from = Offset(fromN.x * size.width, fromN.y * size.height)
+                    val to = Offset(toN.x * size.width, toN.y * size.height)
+                    val arrowColor = if (isActive) activeArrowColor else pointColor
+                    drawLine(arrowColor, from, to, if (isActive) 4f else 2.5f, cap = StrokeCap.Round)
+
+                    val angle = Math.atan2((to.y - from.y).toDouble(), (to.x - from.x).toDouble())
+                    val head = if (isActive) 16f else 11f
+                    val spread = Math.toRadians(28.0)
+                    val p1 = Offset(
+                        to.x - (kotlin.math.cos(angle - spread) * head).toFloat(),
+                        to.y - (kotlin.math.sin(angle - spread) * head).toFloat()
+                    )
+                    val p2 = Offset(
+                        to.x - (kotlin.math.cos(angle + spread) * head).toFloat(),
+                        to.y - (kotlin.math.sin(angle + spread) * head).toFloat()
+                    )
+                    drawLine(arrowColor, to, p1, if (isActive) 4f else 2.5f, cap = StrokeCap.Round)
+                    drawLine(arrowColor, to, p2, if (isActive) 4f else 2.5f, cap = StrokeCap.Round)
+                }
+            }
+
+            (acceptedStrokes + if (currentStrokeAccepted) listOf(currentStroke) else emptyList()).forEach { childStroke ->
+                childStroke.zipWithNext().forEach { pair ->
                     drawLine(
                         color = strokeColor,
                         start = pair.first,
@@ -722,13 +841,20 @@ private fun LetterTraceGame(
             }
         }
 
-        Text("Büyük başlangıç noktasından başla ve noktalı yolu takip et.")
+        Text(
+            if (finished) hint else "${activeStrokeIndex + 1}/${guide.size} hareket • $hint",
+            style = MaterialTheme.typography.titleMedium
+        )
+
         Button(
             onClick = {
-                visited = emptySet()
-                strokes = emptyList()
+                activeStrokeIndex = 0
+                activeProgressIndex = 0
+                acceptedStrokes = emptyList()
                 currentStroke = emptyList()
+                currentStrokeAccepted = false
                 finished = false
+                hint = "1. hareketin büyük başlangıç noktasından başla."
             }
         ) {
             Text("Tekrar Çiz")
@@ -736,7 +862,38 @@ private fun LetterTraceGame(
     }
 }
 
-private fun letterGuide(symbol: String): List<Offset> {
+@Composable
+private fun LetterModelPreview(symbol: String) {
+    val guide = remember(symbol) { letterGuide(symbol) }
+    val color = MaterialTheme.colorScheme.primary
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(2.dp)
+    ) {
+        Canvas(modifier = Modifier.size(width = 96.dp, height = 112.dp)) {
+            guide.forEach { stroke ->
+                stroke.zipWithNext().forEach { pair ->
+                    drawLine(
+                        color = color,
+                        start = Offset(pair.first.x * size.width, pair.first.y * size.height),
+                        end = Offset(pair.second.x * size.width, pair.second.y * size.height),
+                        strokeWidth = 9f,
+                        cap = StrokeCap.Round
+                    )
+                }
+            }
+        }
+        Text(
+            text = "${letterUpper(symbol)} / $symbol",
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            color = color
+        )
+    }
+}
+
+private fun letterGuide(symbol: String): List<List<Offset>> {
     fun line(x1: Float, y1: Float, x2: Float, y2: Float, count: Int = 24): List<Offset> =
         List(count) { i ->
             val t = i.toFloat() / (count - 1)
@@ -762,27 +919,115 @@ private fun letterGuide(symbol: String): List<Offset> {
             )
         }
 
+    fun cubic(
+        p0: Offset,
+        p1: Offset,
+        p2: Offset,
+        p3: Offset,
+        count: Int = 28
+    ): List<Offset> =
+        List(count) { i ->
+            val t = i.toFloat() / (count - 1)
+            val u = 1f - t
+            Offset(
+                x = u * u * u * p0.x +
+                    3f * u * u * t * p1.x +
+                    3f * u * t * t * p2.x +
+                    t * t * t * p3.x,
+                y = u * u * u * p0.y +
+                    3f * u * u * t * p1.y +
+                    3f * u * t * t * p2.y +
+                    t * t * t * p3.y
+            )
+        }
+
+    fun join(vararg parts: List<Offset>): List<Offset> = buildList {
+        parts.forEach { part ->
+            if (part.isEmpty()) return@forEach
+            if (isEmpty()) addAll(part) else addAll(part.drop(1))
+        }
+    }
+
     return when (symbol) {
-        "a" -> arc(0.45f, 0.57f, 0.20f, 0.20f, -70f, 290f) +
-            line(0.64f, 0.38f, 0.64f, 0.78f)
-        "n" -> line(0.30f, 0.78f, 0.30f, 0.38f) +
-            arc(0.49f, 0.58f, 0.19f, 0.20f, 180f, 360f) +
-            line(0.68f, 0.58f, 0.68f, 0.78f)
-        "e" -> line(0.30f, 0.57f, 0.68f, 0.57f, 18) +
-            arc(0.50f, 0.57f, 0.20f, 0.20f, 15f, 330f, 38)
-        "t" -> line(0.50f, 0.28f, 0.50f, 0.78f, 34) +
-            line(0.34f, 0.46f, 0.66f, 0.46f, 20)
-        "i" -> line(0.50f, 0.43f, 0.50f, 0.78f, 28) +
-            listOf(Offset(0.50f, 0.30f))
-        "l" -> line(0.50f, 0.25f, 0.50f, 0.78f, 38)
-        "o" -> arc(0.50f, 0.57f, 0.22f, 0.22f, -90f, 270f, 54)
-        "k" -> line(0.32f, 0.28f, 0.32f, 0.78f, 36) +
-            line(0.68f, 0.38f, 0.32f, 0.58f, 24) +
-            line(0.32f, 0.58f, 0.70f, 0.78f, 24)
-        "u" -> line(0.30f, 0.38f, 0.30f, 0.62f, 18) +
-            arc(0.49f, 0.62f, 0.19f, 0.16f, 180f, 0f, 28) +
-            line(0.68f, 0.62f, 0.68f, 0.38f, 18)
-        else -> line(0.25f, 0.55f, 0.75f, 0.55f)
+        // MEB Şekil 2: dairesel gövde saat 2 civarından ters yönde, sonra sağ dik çizgi.
+        "a" -> listOf(
+            arc(0.46f, 0.61f, 0.18f, 0.17f, -30f, -390f, 46),
+            line(0.64f, 0.43f, 0.64f, 0.78f, 28)
+        )
+
+        // Soldan sağa / yukarıdan aşağı: sol dik, ardından üstten sağ alta inen kavis.
+        "n" -> listOf(
+            line(0.31f, 0.42f, 0.31f, 0.78f, 28),
+            cubic(
+                Offset(0.31f, 0.51f),
+                Offset(0.39f, 0.38f),
+                Offset(0.67f, 0.40f),
+                Offset(0.67f, 0.78f),
+                38
+            )
+        )
+
+        // Orta çizgiden sağa çıkıp saat yönünün tersine kıvrılan tek hareket.
+        "e" -> listOf(
+            join(
+                line(0.31f, 0.60f, 0.66f, 0.60f, 18),
+                cubic(
+                    Offset(0.66f, 0.60f),
+                    Offset(0.65f, 0.43f),
+                    Offset(0.35f, 0.42f),
+                    Offset(0.31f, 0.61f),
+                    24
+                ),
+                cubic(
+                    Offset(0.31f, 0.61f),
+                    Offset(0.31f, 0.78f),
+                    Offset(0.55f, 0.82f),
+                    Offset(0.68f, 0.72f),
+                    24
+                )
+            )
+        )
+
+        // Önce dik çizgi yukarıdan aşağı, sonra yatay çizgi soldan sağa.
+        "t" -> listOf(
+            line(0.50f, 0.29f, 0.50f, 0.79f, 36),
+            line(0.35f, 0.48f, 0.65f, 0.48f, 22)
+        )
+
+        // Gövde ve nokta ayrı hareketlerdir.
+        "i" -> listOf(
+            line(0.50f, 0.44f, 0.50f, 0.79f, 28),
+            line(0.50f, 0.30f, 0.50f, 0.31f, 4)
+        )
+
+        "l" -> listOf(
+            line(0.50f, 0.26f, 0.50f, 0.79f, 38)
+        )
+
+        // Dairesel çizgi saat 2 yönünden başlayıp saat yönünün tersine kapanır.
+        "o" -> listOf(
+            arc(0.50f, 0.61f, 0.20f, 0.18f, -30f, -390f, 50)
+        )
+
+        // Önce sol dik çizgi; sonra üst sağdan birleşime ve alt sağa tek eğik hareket.
+        "k" -> listOf(
+            line(0.32f, 0.29f, 0.32f, 0.79f, 36),
+            join(
+                line(0.68f, 0.40f, 0.32f, 0.59f, 24),
+                line(0.32f, 0.59f, 0.70f, 0.79f, 24)
+            )
+        )
+
+        // Sol üstten aşağı, alt kavis ve sağ yukarı tek kesintisiz hareket.
+        "u" -> listOf(
+            join(
+                line(0.31f, 0.43f, 0.31f, 0.64f, 18),
+                arc(0.49f, 0.64f, 0.18f, 0.15f, 180f, 0f, 28),
+                line(0.67f, 0.64f, 0.67f, 0.43f, 18)
+            )
+        )
+
+        else -> listOf(line(0.25f, 0.55f, 0.75f, 0.55f))
     }
 }
 
