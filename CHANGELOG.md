@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-09-28 — Scene Visual Alignment Maintenance V2
+
+- Project-owner approved maintenance fixes the 24 previously mismatched and 10 partially aligned authored scenes without changing curriculum IDs, learning targets or progression.
+- Quantity comparison scenes now render the intended 3=3 and 6>4 relationships instead of the legacy shared 3-vs-5 fallback.
+- Equal-object, tens/ones, abacus, pattern, ordinal, measurement, mass and spatial-relation scenes now use scene-specific visual compositions.
+- Subtraction now visually separates removed objects and shows the remaining group.
+- LearningObjectArt adds scene-required objects plus soft grounding/highlight depth for an offline 2.5D/CGI-inspired presentation.
+- A 125-scene static alignment validator, 34-scene automated regression test and dedicated audit workflow gate were added.
+- Release APK build is not part of this maintenance change and remains separately gated.
+
 ## 2026-09-26 — Release APK Build / Technical Acceptance V1.0
 
 - Build Step 15 completed and locked for technical release acceptance.
