@@ -18,7 +18,8 @@ import androidx.compose.ui.unit.dp
 
 /**
  * Original, offline, child-friendly pictograms used by literacy/math activities.
- * They intentionally use simple 2D vector forms and do not copy source illustrations.
+ * V2 adds soft depth, grounding shadows and scene-specific objects for a warm
+ * 2.5D/CGI-inspired look while keeping the renderer fully offline and original.
  */
 @Composable
 fun LearningObjectArt(
@@ -34,6 +35,14 @@ fun LearningObjectArt(
             val w = this.size.width
             val h = this.size.height
             val k = label.trim().lowercase()
+
+            // Soft grounding shadow shared by all objects. This keeps the child-friendly
+            // vector renderer lightweight while giving learning objects a 2.5D presence.
+            drawOval(
+                color = Color(0x22000000),
+                topLeft = Offset(w * 0.22f, h * 0.76f),
+                size = Size(w * 0.56f, h * 0.10f)
+            )
 
             fun leaf(x: Float, y: Float) {
                 drawOval(
@@ -132,6 +141,106 @@ fun LearningObjectArt(
                     drawLine(Color(0xFF635A56), Offset(w * 0.50f, h * 0.70f), Offset(w * 0.62f, h * 0.90f), w * 0.018f)
                 }
 
+                "kitap" -> {
+                    drawRoundRect(Color(0xFF507CB6), Offset(w * 0.20f, h * 0.28f), Size(w * 0.60f, h * 0.47f), CornerRadius(w * 0.05f))
+                    drawRoundRect(Color(0xFF7FA7D6), Offset(w * 0.26f, h * 0.23f), Size(w * 0.55f, h * 0.45f), CornerRadius(w * 0.05f))
+                    drawLine(Color.White.copy(alpha = 0.72f), Offset(w * 0.31f, h * 0.34f), Offset(w * 0.70f, h * 0.34f), w * 0.025f)
+                    drawLine(Color.White.copy(alpha = 0.52f), Offset(w * 0.31f, h * 0.43f), Offset(w * 0.65f, h * 0.43f), w * 0.020f)
+                }
+                "tüy" -> {
+                    val shaftStart = Offset(w * 0.30f, h * 0.76f)
+                    val shaftEnd = Offset(w * 0.72f, h * 0.22f)
+                    drawLine(Color(0xFF876A53), shaftStart, shaftEnd, w * 0.025f)
+                    listOf(
+                        0.35f to 0.65f, 0.42f to 0.57f, 0.49f to 0.49f,
+                        0.56f to 0.41f, 0.63f to 0.33f
+                    ).forEach { (x, y) ->
+                        drawLine(Color(0xFFE9E2D8), Offset(w * x, h * y), Offset(w * (x - 0.16f), h * (y - 0.08f)), w * 0.045f)
+                        drawLine(Color(0xFFF7F2EA), Offset(w * x, h * y), Offset(w * (x + 0.12f), h * (y + 0.10f)), w * 0.040f)
+                    }
+                }
+                "pamuk" -> {
+                    listOf(
+                        Offset(w * 0.38f, h * 0.52f), Offset(w * 0.50f, h * 0.45f),
+                        Offset(w * 0.62f, h * 0.52f), Offset(w * 0.45f, h * 0.61f),
+                        Offset(w * 0.57f, h * 0.61f)
+                    ).forEach { drawCircle(Color(0xFFF7F4EE), w * 0.15f, it) }
+                    drawLine(Color(0xFF6E9D62), Offset(w * 0.50f, h * 0.63f), Offset(w * 0.50f, h * 0.82f), w * 0.035f)
+                }
+                "karpuz" -> {
+                    drawOval(Color(0xFF4F9B59), Offset(w * 0.18f, h * 0.33f), Size(w * 0.64f, h * 0.38f))
+                    listOf(0.31f, 0.43f, 0.55f, 0.67f).forEach { x ->
+                        drawArc(
+                            color = Color(0xFF2F6F3D),
+                            startAngle = 100f,
+                            sweepAngle = 160f,
+                            useCenter = false,
+                            topLeft = Offset(w * (x - 0.10f), h * 0.35f),
+                            size = Size(w * 0.20f, h * 0.32f),
+                            style = Stroke(width = w * 0.018f)
+                        )
+                    }
+                    drawOval(Color.White.copy(alpha = 0.20f), Offset(w * 0.28f, h * 0.38f), Size(w * 0.18f, h * 0.08f))
+                }
+                "çilek" -> {
+                    val berry = Path().apply {
+                        moveTo(w * 0.50f, h * 0.76f)
+                        cubicTo(w * 0.22f, h * 0.58f, w * 0.27f, h * 0.30f, w * 0.50f, h * 0.31f)
+                        cubicTo(w * 0.73f, h * 0.30f, w * 0.78f, h * 0.58f, w * 0.50f, h * 0.76f)
+                        close()
+                    }
+                    drawPath(berry, Color(0xFFE85A61))
+                    leaf(w * 0.38f, h * 0.23f)
+                    leaf(w * 0.49f, h * 0.23f)
+                    listOf(
+                        0.40f to 0.45f, 0.55f to 0.43f, 0.47f to 0.56f,
+                        0.60f to 0.57f, 0.40f to 0.62f
+                    ).forEach { (x, y) -> drawCircle(Color(0xFFFFE08A), w * 0.018f, Offset(w * x, h * y)) }
+                }
+                "kalemlik" -> {
+                    drawRoundRect(Color(0xFF7F86C7), Offset(w * 0.19f, h * 0.42f), Size(w * 0.62f, h * 0.25f), CornerRadius(w * 0.12f))
+                    drawLine(Color(0xFFC9CBEC), Offset(w * 0.27f, h * 0.48f), Offset(w * 0.72f, h * 0.48f), w * 0.025f)
+                    drawCircle(Color(0xFFF2D36E), w * 0.025f, Offset(w * 0.72f, h * 0.48f))
+                }
+                "sandalye" -> {
+                    drawRoundRect(Color(0xFFB78358), Offset(w * 0.27f, h * 0.23f), Size(w * 0.45f, h * 0.30f), CornerRadius(w * 0.04f))
+                    drawRoundRect(Color(0xFFC79368), Offset(w * 0.25f, h * 0.50f), Size(w * 0.50f, h * 0.12f), CornerRadius(w * 0.04f))
+                    drawRect(Color(0xFF8D623F), Offset(w * 0.30f, h * 0.61f), Size(w * 0.07f, h * 0.22f))
+                    drawRect(Color(0xFF8D623F), Offset(w * 0.63f, h * 0.61f), Size(w * 0.07f, h * 0.22f))
+                }
+                "ağaç" -> {
+                    drawRect(Color(0xFF79553B), Offset(w * 0.46f, h * 0.52f), Size(w * 0.08f, h * 0.30f))
+                    drawCircle(Color(0xFF4F9B59), w * 0.23f, Offset(w * 0.38f, h * 0.43f))
+                    drawCircle(Color(0xFF5AA866), w * 0.25f, Offset(w * 0.58f, h * 0.40f))
+                    drawCircle(Color(0xFF4A9656), w * 0.22f, Offset(w * 0.50f, h * 0.29f))
+                }
+                "muz" -> {
+                    drawArc(
+                        color = Color(0xFFF3C94F),
+                        startAngle = 18f,
+                        sweepAngle = 145f,
+                        useCenter = false,
+                        topLeft = Offset(w * 0.20f, h * 0.27f),
+                        size = Size(w * 0.58f, h * 0.46f),
+                        style = Stroke(width = w * 0.12f, cap = StrokeCap.Round)
+                    )
+                    drawArc(
+                        color = Color(0xFFFFE58A),
+                        startAngle = 22f,
+                        sweepAngle = 135f,
+                        useCenter = false,
+                        topLeft = Offset(w * 0.25f, h * 0.31f),
+                        size = Size(w * 0.48f, h * 0.35f),
+                        style = Stroke(width = w * 0.025f, cap = StrokeCap.Round)
+                    )
+                }
+                "kamyon" -> {
+                    drawRoundRect(Color(0xFF5D8FC8), Offset(w * 0.16f, h * 0.42f), Size(w * 0.38f, h * 0.24f), CornerRadius(w * 0.04f))
+                    drawRoundRect(Color(0xFFE79B58), Offset(w * 0.53f, h * 0.48f), Size(w * 0.28f, h * 0.18f), CornerRadius(w * 0.04f))
+                    drawRect(Color(0xFFBFE0F4), Offset(w * 0.60f, h * 0.50f), Size(w * 0.12f, h * 0.08f))
+                    wheel(w * 0.30f, h * 0.70f); wheel(w * 0.67f, h * 0.70f)
+                }
+
                 "masa" -> {
                     drawRoundRect(Color(0xFFB98152), Offset(w * 0.16f, h * 0.35f), Size(w * 0.68f, h * 0.18f), CornerRadius(w * 0.04f))
                     drawRect(Color(0xFF8A5F3F), Offset(w * 0.24f, h * 0.50f), Size(w * 0.09f, h * 0.32f))
@@ -142,8 +251,17 @@ fun LearningObjectArt(
                     drawRoundRect(Color(0xFF9FD4F3), Offset(w * 0.37f, h * 0.24f), Size(w * 0.26f, h * 0.46f), CornerRadius(w * 0.03f))
                     drawCircle(Color(0xFFCFD3D7), w * 0.025f, Offset(w * 0.50f, h * 0.77f))
                 }
-                "balon" -> {
-                    drawOval(Color(0xFFE96D87), Offset(w * 0.28f, h * 0.16f), Size(w * 0.44f, h * 0.52f))
+                "balon", "pembe balon", "yeşil balon" -> {
+                    val balloonColor = when (k) {
+                        "yeşil balon" -> Color(0xFF63B66F)
+                        else -> Color(0xFFE96D87)
+                    }
+                    drawOval(balloonColor, Offset(w * 0.28f, h * 0.16f), Size(w * 0.44f, h * 0.52f))
+                    drawOval(
+                        Color.White.copy(alpha = 0.34f),
+                        Offset(w * 0.36f, h * 0.23f),
+                        Size(w * 0.11f, h * 0.17f)
+                    )
                     drawLine(Color(0xFF777777), Offset(w * 0.50f, h * 0.67f), Offset(w * 0.56f, h * 0.92f), w * 0.015f)
                 }
                 "ceket", "mont" -> {
@@ -227,6 +345,12 @@ fun LearningObjectArt(
                     drawCircle(Color(0xFFF6D46B), w * 0.12f, Offset(w * 0.50f, h * 0.50f))
                 }
             }
+
+            drawCircle(
+                color = Color.White.copy(alpha = 0.18f),
+                radius = w * 0.035f,
+                center = Offset(w * 0.36f, h * 0.31f)
+            )
         }
     }
 }
