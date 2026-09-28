@@ -25,18 +25,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Verify Step 14 lock
+      - name: Verify approved locked baseline
         shell: bash
         run: |
           set -euo pipefail
           grep -F '**Status:** LOCKED' docs/REGRESSION_TESTS_V1.md
+          grep -F '**Status:** LOCKED' docs/RELEASE_BUILD_V1.md
           grep -F '| REGRESSION_TESTS_V1.md — Regresyon Testleri | 1.0 | LOCKED | 14 |' docs/LOCK_INDEX.md
+          grep -F '| RELEASE_BUILD_V1.md — Release APK Build / Technical Acceptance | 1.0 | LOCKED | 15 |' docs/LOCK_INDEX.md
           python - <<'PY'
           import json
           from pathlib import Path
           data = json.loads(Path("tests/regression/locked_baseline_v1.json").read_text(encoding="utf-8"))
-          assert data["lockedThroughStep"] == 14
-          print("Step 14 gate verified.")
+          assert data["lockedThroughStep"] == 15, data
+          maintenance = data.get("maintenanceRevision") or {}
+          assert maintenance.get("ownerApproved") is True, maintenance
+          print("Locked Step 15 maintenance baseline verified.")
           PY
 
       - name: Set up Python 3.12
@@ -81,6 +85,7 @@ jobs:
           python tools/content-validator/validate_content.py --mode authoring
           python tools/audio/validate_audio_assets.py
           python tools/asset-validator/validate_visual_assets.py
+          python tools/asset-validator/validate_scene_visual_alignment.py
 
       - name: Build unsigned release APK
         run: gradle --no-daemon :app:assembleRelease
