@@ -30,13 +30,11 @@ temel forma ve yazım yönlerine uygun yazılması korunmuştur.
 
 ### 0
 
-Üst başlangıç noktasından sola doğru ilerleyen tek oval hareket.
+Saat 2 yönüne yakın başlangıç noktasından saat yönünün tersine ilerleyen tek oval hareket.
 
 ### 1
 
-İki hareket:
-1. kısa eğik çıkış,
-2. yukarıdan aşağı dik çizgi.
+Tek kesintisiz hareket: kısa eğik çıkıştan yukarıdan aşağı dik çizgiye devam edilir.
 
 ### 2
 
@@ -56,8 +54,8 @@ Tek kesintisiz hareket; üst ve alt sağ kavis orta birleşimde kontrollü biçi
 ### 5
 
 İki hareket:
-1. sol üstten aşağı iniş + alt kavis,
-2. üst yatay çizgi soldan sağa.
+1. üst yatay çizgi,
+2. sol üstten aşağı iniş + alt kavis.
 
 ### 6
 
@@ -66,15 +64,15 @@ Eski kopuk diyagonal parça kaldırılmıştır.
 
 ### 7
 
-Tek kesintisiz hareket; üst yatay soldan sağa, ardından sağ üstten sol alta eğik iniş.
+İki hareket: önce üst yatay çizgi, ardından sağ üstten sol alta eğik iniş.
 
 ### 8
 
-İki ayrı kapalı halka yerine tek kesintisiz sekiz hareketi kullanılır.
+İki ayrı kapalı halka yerine saat 2 civarındaki üst-sağ başlangıçtan ilerleyen tek kesintisiz sekiz hareketi kullanılır.
 
 ### 9
 
-Üst halka ve aşağı inen kuyruk aynı geometrik akışta birleştirilmiştir.
+Üst halka saat 2 civarından başlayıp saat yönünün tersine tamamlanır; aşağı inen kuyruk aynı geometrik akışta birleştirilmiştir.
 
 ## İzleme Motoru Kuralları
 
@@ -83,7 +81,7 @@ Tek kesintisiz hareket; üst yatay soldan sağa, ardından sağ üstten sol alta
 - Hareket ilerlemesi yalnızca ileri yönde kabul edilir.
 - Parmak izi, mevcut ilerlemenin önündeki sınırlı bir nokta penceresine eşleştirilir;
   geriye atlama veya rastgele nokta toplama başarı sağlamaz.
-- Bir hareketin en az %80'i doğru yönde tamamlanmadan sonraki harekete geçilmez.
+- Bir hareketin en az %90'ı doğru yönde tamamlanmalı ve parmak bitiş noktasına ulaşmalıdır; aksi durumda sonraki harekete geçilmez.
 - Bütün hareketler tamamlanmadan etkinlik başarı sayılmaz.
 - Her aktif hareket için yön oku gösterilir.
 - Yazım alanında üst çizgi, kesikli orta çizgi ve alt çizgi bulunur.
@@ -97,7 +95,7 @@ Tek kesintisiz hareket; üst yatay soldan sağa, ardından sağ üstten sol alta
 1. 0–9'un tamamında açık rakam geometrisi bulunması,
 2. eski hatalı 2/3/6/8 geometrilerinin geri gelmemesi,
 3. başlangıç noktası ve ileri yön kontrolü,
-4. hareket başına %80 tamamlama eşiği,
+4. hareket başına %90 + bitiş noktası tamamlama eşiği,
 5. bütün hareketlerin tamamlanma zorunluluğu,
 6. örnek rakamın izleme geometrisiyle aynı kaynaktan çizilmesi,
 7. 10 rakam etkinliğinin içerik hedefleriyle eşleşmesi.
