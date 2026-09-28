@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-09-28 — Digit Writing Maintenance V1
+
+- Project-owner approved maintenance audits all 0–9 digit-writing activities against the current MEB basic-form and writing-direction reference.
+- Corrected malformed or ambiguous tracing geometry, with specific remediation for 2, 3, 5, 6, 8 and 9 and direction/stroke-order corrections for 0, 1, 4 and 5.
+- Digit tracing is now stroke-aware: each stroke has its own start point and direction arrow, forward progress is enforced, at least 80% of each stroke is required, and every stroke must be completed before success.
+- Added upper/baseline guides plus a dashed middle guide to the tracing board.
+- The displayed model digit now uses the exact same vector geometry as the trace path instead of the Android system font, preventing example-vs-trace form mismatches.
+- Added automated QA covering all ten digit activities, known legacy geometry regressions, ordered tracing behavior and model/trace geometry identity.
+- New release APK build is not part of this maintenance change and remains separately gated.
+
 ## 2026-09-28 — Scene Visual Alignment Maintenance V2
 
 - Project-owner approved maintenance fixes the 24 previously mismatched and 10 partially aligned authored scenes without changing curriculum IDs, learning targets or progression.
