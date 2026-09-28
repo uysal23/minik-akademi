@@ -10,6 +10,14 @@ on:
       - "content/**"
       - "tools/asset-validator/validate_scene_visual_alignment.py"
       - "docs/SCENE_VISUAL_ALIGNMENT_V2.md"
+  pull_request:
+    paths:
+      - ".github/workflows/scene-visual-alignment-audit.yml"
+      - "feature/mathematics/**"
+      - "core/design-system/**"
+      - "content/**"
+      - "tools/asset-validator/validate_scene_visual_alignment.py"
+      - "docs/SCENE_VISUAL_ALIGNMENT_V2.md"
   workflow_dispatch:
 
 permissions:
