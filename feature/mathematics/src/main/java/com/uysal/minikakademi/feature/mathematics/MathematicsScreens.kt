@@ -1378,7 +1378,9 @@ private fun DigitTraceGame(
             (activeProgressIndex + 1).toFloat() / active.size.toFloat()
         }
 
-        if (ratio >= 0.80f) {
+        val reachedEnd = activeProgressIndex >= (active.lastIndex - 2).coerceAtLeast(0)
+
+        if (ratio >= 0.90f && reachedEnd) {
             if (currentStroke.isNotEmpty()) {
                 acceptedStrokes = acceptedStrokes + listOf(currentStroke)
             }
@@ -1392,7 +1394,7 @@ private fun DigitTraceGame(
                 hint = "${nextStroke + 1}. hareketin büyük başlangıç noktasından başla."
             }
         } else {
-            hint = "Başlangıç doğru. Şimdi ok yönünde yolun sonuna kadar ilerle."
+            hint = "Hareket bitiş noktasına ulaşmadı. Büyük başlangıç noktasından tekrar dene."
         }
 
         activeProgressIndex = 0
@@ -1489,6 +1491,8 @@ private fun DigitTraceGame(
                         radius = when {
                             pointIndex == 0 && isActive -> 10f
                             pointIndex == 0 -> 7f
+                            pointIndex == stroke.lastIndex && isActive -> 7f
+                            pointIndex == stroke.lastIndex -> 5.5f
                             else -> 4.5f
                         },
                         center = Offset(normalized.x * size.width, normalized.y * size.height)
@@ -1657,15 +1661,17 @@ private fun digitGuide(digit: String): List<List<Offset>> {
     }
 
     return when (digit) {
-        // MEB temel formu: üstten başla, sola doğru inerek ovali tamamla.
+        // MEB temel formu: saat 2 yönünden başla ve saat yönünün tersine tamamla.
         "0" -> listOf(
-            arc(0.50f, 0.52f, 0.22f, 0.32f, -90f, -450f, 64)
+            arc(0.50f, 0.52f, 0.22f, 0.32f, -30f, -390f, 64)
         )
 
-        // 1 iki hareket: kısa eğik çıkış ve ardından yukarıdan aşağı dik çizgi.
+        // 1 tek kesintisiz hareket: kısa eğik çıkıştan dik inişe devam eder.
         "1" -> listOf(
-            line(0.40f, 0.34f, 0.52f, 0.22f, 16),
-            line(0.52f, 0.22f, 0.52f, 0.82f, 42)
+            join(
+                line(0.40f, 0.34f, 0.52f, 0.22f, 16),
+                line(0.52f, 0.22f, 0.52f, 0.82f, 42)
+            )
         )
 
         // 2 tek akış: üst kavis -> sol alta iniş -> tabanda soldan sağa.
@@ -1732,8 +1738,9 @@ private fun digitGuide(digit: String): List<List<Offset>> {
             line(0.62f, 0.22f, 0.62f, 0.82f, 42)
         )
 
-        // 5: önce aşağı inip alt kavsi tamamla, sonra üst yatayı soldan sağa çiz.
+        // 5 iki hareket: önce üst yatay, sonra sol dik iniş ve alt kavis.
         "5" -> listOf(
+            line(0.35f, 0.27f, 0.68f, 0.27f, 24),
             join(
                 line(0.35f, 0.28f, 0.35f, 0.47f, 18),
                 cubic(
@@ -1750,8 +1757,7 @@ private fun digitGuide(digit: String): List<List<Offset>> {
                     Offset(0.29f, 0.73f),
                     28
                 )
-            ),
-            line(0.35f, 0.27f, 0.68f, 0.27f, 24)
+            )
         )
 
         // 6 tek hareket: üst sağdan sola kıvrıl, aşağı in ve alt halkayı içe doğru kapat.
@@ -1788,23 +1794,28 @@ private fun digitGuide(digit: String): List<List<Offset>> {
             )
         )
 
-        // 7: üst yatay soldan sağa, ardından sağ üstten sol alta eğik iniş.
+        // 7 iki hareket: üst yatay, sonra sağ üstten sol alta eğik iniş.
         "7" -> listOf(
-            join(
-                line(0.30f, 0.26f, 0.70f, 0.26f, 24),
-                line(0.70f, 0.26f, 0.43f, 0.82f, 36)
-            )
+            line(0.30f, 0.26f, 0.70f, 0.26f, 24),
+            line(0.70f, 0.26f, 0.43f, 0.82f, 36)
         )
 
-        // 8 tek kesintisiz hareket: üstten başla, merkezden geçerek iki halkayı tamamla.
+        // 8 tek kesintisiz hareket: saat 2 civarından başlayıp iki halkayı merkezde kesiştirir.
         "8" -> listOf(
             join(
                 cubic(
-                    Offset(0.50f, 0.23f),
-                    Offset(0.31f, 0.23f),
-                    Offset(0.30f, 0.43f),
+                    Offset(0.62f, 0.29f),
+                    Offset(0.54f, 0.20f),
+                    Offset(0.35f, 0.21f),
+                    Offset(0.31f, 0.38f),
+                    22
+                ),
+                cubic(
+                    Offset(0.31f, 0.38f),
+                    Offset(0.30f, 0.46f),
+                    Offset(0.40f, 0.50f),
                     Offset(0.50f, 0.52f),
-                    24
+                    18
                 ),
                 cubic(
                     Offset(0.50f, 0.52f),
@@ -1822,21 +1833,28 @@ private fun digitGuide(digit: String): List<List<Offset>> {
                 ),
                 cubic(
                     Offset(0.50f, 0.52f),
-                    Offset(0.70f, 0.43f),
-                    Offset(0.69f, 0.23f),
-                    Offset(0.50f, 0.23f),
-                    24
+                    Offset(0.60f, 0.48f),
+                    Offset(0.70f, 0.40f),
+                    Offset(0.69f, 0.33f),
+                    18
+                ),
+                cubic(
+                    Offset(0.69f, 0.33f),
+                    Offset(0.68f, 0.29f),
+                    Offset(0.65f, 0.27f),
+                    Offset(0.62f, 0.29f),
+                    14
                 )
             )
         )
 
-        // 9: üst halkayı tamamla, sağ birleşimden kuyruğu sol alta indir.
+        // 9: saat 2 civarından üst halkayı ters yönde tamamla, ardından kuyruğu sol alta indir.
         "9" -> listOf(
             join(
-                arc(0.49f, 0.40f, 0.20f, 0.18f, 0f, -360f, 46),
+                arc(0.49f, 0.40f, 0.20f, 0.18f, -30f, -390f, 46),
                 cubic(
-                    Offset(0.69f, 0.40f),
-                    Offset(0.68f, 0.57f),
+                    Offset(0.663f, 0.31f),
+                    Offset(0.69f, 0.52f),
                     Offset(0.59f, 0.73f),
                     Offset(0.47f, 0.82f),
                     30
